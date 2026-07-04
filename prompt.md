@@ -1,369 +1,298 @@
-# Task for Claude Code — Round 3
- 
-This prompt makes 5 changes to `app/page.tsx` (and `app/layout.tsx` for the font). **Do the sections in order** — later sections depend on things set up in earlier ones.
- 
-This prompt **replaces** the hero section from the earlier "Hero + Product Card Strip" prompt and the icon-rendering part of the earlier "Mega-dropdown" prompt. Everything else from those two prompts (the product card strip layout, the dropdown's open/close logic and product data) stays as-is except where noted below.
- 
----
- 
-## 0. Setup — do this first IF YOU HAVEN'T ALREADY.
- 
-```bash
-npm install lucide-react
-```
- 
-Confirm `framer-motion` is already installed (it should be — check `package.json`). If not:
- 
-```bash
-npm install framer-motion
-```
- 
-**File check:** Move the photo `FAG_0805.JPG` into the `/public` folder and rename it to `/public/dimitrios.jpg` (lowercase, no spaces — this avoids case-sensitivity bugs when deployed to Vercel, which runs on Linux and is picky about filename casing unlike Windows/Mac). If it currently lives outside `/public` (e.g. in a separate `/assets` folder), it must be moved — a plain `<img src="/dimitrios.jpg">` tag only resolves files sitting inside `/public`.
- 
----
- 
-## 1. Hero Section — Replace with Dimitrios Photo + Gradient Overlay
- 
-Replace the entire hero `<section>` with this:
- 
-```tsx
-<section style={{
-  position: "relative",
-  height: "640px",
-  overflow: "hidden",
-}}>
-  {/* Background photo */}
-  <img
-    src="/dimitrios.jpg"
-    alt="Δημήτριος Πλουμάκης"
-    style={{
-      position: "absolute",
-      inset: 0,
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      objectPosition: "center 20%",
-    }}
-  />
- 
-  {/* Blue gradient overlay — solid near the text, fading out toward the photo */}
-  <div style={{
-    position: "absolute",
-    inset: 0,
-    background: "linear-gradient(100deg, rgba(30,67,154,0.93) 0%, rgba(30,67,154,0.75) 35%, rgba(30,67,154,0.35) 70%, rgba(30,67,154,0.15) 100%)",
-  }} />
- 
-  {/* Text content */}
-  <div style={{
-    position: "relative",
-    zIndex: 2,
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: "0 64px",
-    maxWidth: "560px",
-  }}>
-    <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", marginBottom: "12px" }}>
-      Αξία έχει ό,τι είναι σημαντικό για σένα
-    </p>
-    <h1 style={{
-      color: "#fff",
-      fontFamily: "var(--font-ubuntu-sans), sans-serif",
-      fontSize: "42px",
-      fontWeight: 700,
-      lineHeight: 1.15,
-      margin: "0 0 20px",
-    }}>
-      Προστατεύουμε ό,τι αγαπάτε περισσότερο
-    </h1>
-    <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "15px", lineHeight: 1.6, marginBottom: "32px" }}>
-      Εξατομικευμένες ασφαλιστικές λύσεις για εσάς, την οικογένεια και την επιχείρησή σας.
-    </p>
-    <button style={{
-      background: "#fff",
-      color: "#1E439A",
-      fontWeight: 700,
-      fontFamily: "var(--font-ubuntu-sans), sans-serif",
-      padding: "14px 32px",
-      borderRadius: "999px",
-      border: "none",
-      cursor: "pointer",
-      width: "fit-content",
-      fontSize: "14px",
-    }}>
-      Ζητήστε Προσφορά
-    </button>
-  </div>
- 
-  {/* Stats row — unchanged content, repositioned bottom-left */}
-  <div style={{
-    position: "absolute",
-    bottom: "32px",
-    left: "64px",
-    zIndex: 2,
-    display: "flex",
-    gap: "40px",
-  }}>
-    <div>
-      <div style={{ color: "#fff", fontSize: "26px", fontWeight: 600, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>20+</div>
-      <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px" }}>Χρόνια εμπειρίας</div>
-    </div>
-    <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />
-    <div>
-      <div style={{ color: "#fff", fontSize: "26px", fontWeight: 600, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>500+</div>
-      <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px" }}>Ικανοποιημένοι πελάτες</div>
-    </div>
-    <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />
-    <div>
-      <div style={{ color: "#fff", fontSize: "26px", fontWeight: 600, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>15+</div>
-      <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px" }}>Ασφαλιστικές εταιρείες</div>
-    </div>
-  </div>
-</section>
-```
- 
-**Leave the product card strip (the white card with 6 categories) directly below this exactly where it is** — do not move or restyle its layout. Its icons get swapped in Section 5.
- 
----
- 
-## 2. Navbar — Center the Nav Links
- 
-Change the `<nav>` from its current 2-zone layout (logo | links+CTA together) to a 3-zone grid: logo left, links centered, CTA right. Also change the arrows make them something more minimal and simple adding a frame motion effect each time you mouseclick it. 
- 
-```tsx
-<nav style={{
-  display: "grid",
-  gridTemplateColumns: "auto 1fr auto",
-  alignItems: "center",
-  background: "#1E439A",
-  height: "88px",
-  padding: "0 36px",
-  position: "sticky",
-  top: 0,
-  zIndex: 100,
-}}>
-  {/* Logo — left */}
-  <img
-    src="/logo.png"
-    alt="Δημήτριος Πλουμάκης"
-    style={{ height: "60px", objectFit: "contain", justifySelf: "start" }}
-  />
- 
-  {/* Nav links — centered */}
-  <ul style={{
-    justifySelf: "center",
-    display: "flex",
-    alignItems: "center",
-    gap: "2px",
-    listStyle: "none",
-    margin: 0,
-    padding: 0,
-  }}>
-    {/* keep the existing Ιδιώτες / Επιχείρηση / Εμείς <li> items exactly as they are — only the parent <ul>'s positioning changes */}
-  </ul>
- 
-  {/* CTA — right, standing alone now (remove the old divider, it's no longer needed) */}
-  <button style={{
-    justifySelf: "end",
-    background: "#fff",
-    color: "#1E439A",
-    fontWeight: 700,
-    fontFamily: "var(--font-ubuntu-sans), sans-serif",
-    padding: "10px 20px",
-    borderRadius: "999px",
-    border: "none",
-    cursor: "pointer",
-    fontSize: "13px",
-  }}>
-    Ζητήστε Προσφορά
-  </button>
-</nav>
-```
- 
+# Task for Claude Code — Footer
+
+Add a full-width footer to `app/page.tsx`. This is a **new section** appended at the very bottom of the page — do not move, delete, or restyle anything above it.
+
 ---
 
-## 3. NavBar Options
-So in the options tab in "Ιδιώτες" and "Επιχείρηση" make the text larger and also the options to be grayscale 100% and whileHover to make it grayscale 0%. 
----
+## 0. Setup — do this first
 
-## 4. Font Family — Switch to Ubuntu Sans
- 
-In `app/layout.tsx`, replace the current font setup with:
- 
+No new packages are needed. Confirm the following imports already exist at the top of `app/page.tsx` (they should after Round 3):
+
 ```tsx
-import { Ubuntu_Sans } from "next/font/google";
- 
-const ubuntuSans = Ubuntu_Sans({
-  subsets: ["latin", "greek"], // "greek" subset is required — without it, Greek characters won't load correctly
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-ubuntu-sans",
-});
- 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="el" className={ubuntuSans.variable}>
-      <body>{children}</body>
-    </html>
-  );
-}
-```
- 
-Then, in `app/page.tsx` and `app/components/PartnersMarquee.tsx`: **find every instance** of
-```
-fontFamily: "'Century Gothic', 'Gill Sans', sans-serif"
-```
-and replace it with:
-```
-fontFamily: "var(--font-ubuntu-sans), sans-serif"
-```
- 
----
- 
-## 5. Framer Motion — Navbar Interactions
- 
-**Nav link hover:** wrap each nav link/button in `motion.button` or `motion.a`:
- 
-```tsx
-<motion.button
-  whileHover={{ y: -2 }}
-  whileTap={{ scale: 0.97 }}
-  transition={{ duration: 0.15 }}
-  onClick={() => toggleMenu("idiwtes")}
-  style={{ /* keep existing style object unchanged */ }}
->
-  Ιδιώτες
-  <span style={{ fontSize: "10px", opacity: 0.7 }}>▼</span>
-</motion.button>
-```
-Apply the same `whileHover`/`whileTap` wrapper to the "Επιχείρηση" button and the "Εμείς" link.
- 
-**Mega-dropdown open/close:** replace the plain conditional rendering with `AnimatePresence` so the panel animates out instead of vanishing instantly:
- 
-```tsx
-import { motion, AnimatePresence } from "framer-motion";
- 
-// ...
- 
-<AnimatePresence>
-  {activeMenu && (
-    <React.Fragment key="menu-group">
-      <motion.div
-        key="backdrop"
-        onClick={closeMenu}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        style={{
-          position: "fixed",
-          inset: 0,
-          top: "88px",
-          background: "rgba(0,0,0,0.45)",
-          backdropFilter: "blur(4px)",
-          zIndex: 90,
-        }}
-      />
-      <motion.div
-        key="panel"
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -12 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
-        style={{
-          position: "fixed",
-          top: "88px",
-          left: 0,
-          right: 0,
-          zIndex: 95,
-          background: "#fff",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
-          padding: "48px 64px 56px",
-          borderBottom: "1px solid #e8eaef",
-        }}
-      >
-        {/* keep all existing panel content (header + product grid) exactly as it is */}
-      </motion.div>
-    </React.Fragment>
-  )}
-</AnimatePresence>
-```
- 
----
- 
-## 6. Lucide Icons — Replace Emojis
- 
-Add this import near the top of `app/page.tsx`:
- 
-```tsx
+import { motion } from "framer-motion";
 import {
   Users, Home, Car, Heart, Briefcase, PiggyBank,
-  Leaf, Scale, TrendingUp, ShieldCheck, PawPrint,
-  Building2, Truck, ShieldAlert, Package,
 } from "lucide-react";
 ```
- 
-**Product card strip** — update the categories array to store the icon *component* (not an emoji string):
- 
+
+You will also need two Lucide icons that may not yet be imported. Add them to the existing import block if they're missing:
+
 ```tsx
-const PRODUCT_CARDS = [
-  { icon: Users, title: "Οικογένεια" },
-  { icon: Home, title: "Κατοικία" },
-  { icon: Car, title: "Αυτοκίνητο" },
-  { icon: Heart, title: "Υγεία" },
-  { icon: Briefcase, title: "Επιχείρηση" },
-  { icon: PiggyBank, title: "Αποταμίευση" },
-];
+import { Phone, Mail, MapPin, ChevronRight } from "lucide-react";
 ```
- 
-In the render, replace the emoji text inside each icon circle with the actual component:
- 
-```tsx
-<card.icon size={22} color="#1E439A" strokeWidth={1.75} />
-```
- 
-**Mega-dropdown** — update both product arrays the same way:
- 
-```tsx
-const IDIWTES_PRODUCTS = [
-  { icon: Heart, subtitle: "Νοσηλεία, Περίθαλψη", title: "Υγεία" },
-  { icon: Leaf, subtitle: "Προστασία, Οικογένεια", title: "Ζωή" },
-  { icon: Home, subtitle: "Σπίτι, Περιουσία", title: "Κατοικία" },
-  { icon: Scale, subtitle: "Ζημιές, Προστασία", title: "Αστική Ευθύνη" },
-  { icon: Car, subtitle: "Αυτοκίνητο, Ασφάλεια", title: "Όχημα" },
-  { icon: TrendingUp, subtitle: "Κεφάλαιο, Απόδοση", title: "Επένδυση" },
-  { icon: ShieldCheck, subtitle: "Δεδομένα, Ασφάλεια", title: "Cyber" },
-  { icon: PawPrint, subtitle: "Ζώο, Περίθαλψη", title: "Κατοικίδιο" },
-];
- 
-const EPIXEIRISI_PRODUCTS = [
-  { icon: Building2, subtitle: "Χώρος, Εξοπλισμός", title: "Επαγγελματικός Χώρος" },
-  { icon: Scale, subtitle: "Ζημιές Τρίτων", title: "Αστική Ευθύνη" },
-  { icon: Truck, subtitle: "Στόλος, Οχήματα", title: "Εταιρικά Οχήματα" },
-  { icon: ShieldAlert, subtitle: "Δεδομένα, Επιθέσεις", title: "Cyber" },
-  { icon: Users, subtitle: "Προσωπικό, Παροχές", title: "Ομαδική Ασφάλιση" },
-  { icon: Package, subtitle: "Εμπορεύματα, Μεταφορά", title: "Μεταφορά Εμπορευμάτων" },
-];
-```
- 
-In the dropdown's icon circle, replace the emoji render with:
- 
-```tsx
-<product.icon size={20} color="#1E439A" strokeWidth={1.75} />
-```
- 
----
-## 7. Adde New Pages
-For each product category, add a new page giving in detail descriptions about the plans. We will get into that later. For now you can just add the pages.
 
 ---
- 
-## 8. Organize all the assets and components
-Make all the components look clean in a folder making them ,all together and delete the assets in the `/assets` folder that are already in the `/public/partners` folder.
+
+## 1. Footer — Append at the Bottom of the Page
+
+Add the following JSX **after** all existing sections (partners marquee, split sections, stats band — after everything) and **before** the closing `</main>` (or `</>` fragment) tag.
+
+```tsx
+<footer style={{
+  background: "#0F2660",
+  color: "#fff",
+  padding: "64px 64px 32px",
+  fontFamily: "var(--font-ubuntu-sans), sans-serif",
+}}>
+
+  {/* ── Top grid: 4 columns ── */}
+  <div style={{
+    display: "grid",
+    gridTemplateColumns: "2fr 1fr 1fr 1.5fr",
+    gap: "48px",
+    paddingBottom: "48px",
+    borderBottom: "1px solid rgba(255,255,255,0.1)",
+  }}>
+
+    {/* Column 1 — Logo + tagline */}
+    <div>
+      <img
+        src="/logo.png"
+        alt="Δημήτριος Πλουμάκης"
+        style={{
+          height: "56px",
+          objectFit: "contain",
+          marginBottom: "20px",
+          display: "block",
+        }}
+      />
+      <p style={{
+        color: "rgba(255,255,255,0.65)",
+        fontSize: "14px",
+        lineHeight: 1.7,
+        maxWidth: "280px",
+        margin: "0 0 24px",
+      }}>
+        Εξατομικευμένες ασφαλιστικές λύσεις για ιδιώτες και επιχειρήσεις, με εμπειρία άνω των 20 ετών στη Λάρισα.
+      </p>
+
+      {/* Contact info */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <a
+          href="tel:+302410000000"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            color: "rgba(255,255,255,0.75)",
+            textDecoration: "none",
+            fontSize: "14px",
+          }}
+        >
+          <Phone size={15} strokeWidth={1.75} />
+          2410 000 000
+        </a>
+        <a
+          href="mailto:dploumakis@gmail.com"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            color: "rgba(255,255,255,0.75)",
+            textDecoration: "none",
+            fontSize: "14px",
+          }}
+        >
+          <Mail size={15} strokeWidth={1.75} />
+          dploumakis@gmail.com
+        </a>
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            color: "rgba(255,255,255,0.75)",
+            fontSize: "14px",
+          }}
+        >
+          <MapPin size={15} strokeWidth={1.75} />
+          Λάρισα, Θεσσαλία
+        </span>
+      </div>
+    </div>
+
+    {/* Column 2 — Ιδιώτες links */}
+    <div>
+      <h4 style={{
+        color: "#fff",
+        fontSize: "13px",
+        fontWeight: 700,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        margin: "0 0 20px",
+      }}>
+        Ιδιώτες
+      </h4>
+      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
+        {[
+          { label: "Υγεία" },
+          { label: "Ζωή" },
+          { label: "Κατοικία" },
+          { label: "Αστική Ευθύνη" },
+          { label: "Όχημα" },
+          { label: "Επένδυση" },
+          { label: "Κατοικίδιο" },
+        ].map((item) => (
+          <li key={item.label}>
+            <a
+              href="#"
+              style={{
+                color: "rgba(255,255,255,0.65)",
+                textDecoration: "none",
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                transition: "color 0.15s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
+            >
+              <ChevronRight size={12} strokeWidth={2} />
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Column 3 — Επιχείρηση links */}
+    <div>
+      <h4 style={{
+        color: "#fff",
+        fontSize: "13px",
+        fontWeight: 700,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        margin: "0 0 20px",
+      }}>
+        Επιχείρηση
+      </h4>
+      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
+        {[
+          { label: "Επαγγελματικός Χώρος" },
+          { label: "Αστική Ευθύνη" },
+          { label: "Εταιρικά Οχήματα" },
+          { label: "Cyber" },
+          { label: "Ομαδική Ασφάλιση" },
+          { label: "Μεταφορά Εμπορευμάτων" },
+        ].map((item) => (
+          <li key={item.label}>
+            <a
+              href="#"
+              style={{
+                color: "rgba(255,255,255,0.65)",
+                textDecoration: "none",
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                transition: "color 0.15s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
+            >
+              <ChevronRight size={12} strokeWidth={2} />
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Column 4 — Partners */}
+    <div>
+      <h4 style={{
+        color: "#fff",
+        fontSize: "13px",
+        fontWeight: 700,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        margin: "0 0 20px",
+      }}>
+        Συνεργαζόμενες Εταιρείες
+      </h4>
+      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
+        {[
+          "Interamerican",
+          "Allianz",
+          "Generali",
+          "AXA",
+          "Eurolife",
+          "Εθνική Ασφαλιστική",
+        ].map((name) => (
+          <li
+            key={name}
+            style={{
+              color: "rgba(255,255,255,0.65)",
+              fontSize: "14px",
+            }}
+          >
+            {name}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  {/* ── Bottom bar: copyright + legal links ── */}
+  <div style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: "28px",
+    flexWrap: "wrap",
+    gap: "12px",
+  }}>
+    <p style={{
+      color: "rgba(255,255,255,0.4)",
+      fontSize: "13px",
+      margin: 0,
+    }}>
+      © {new Date().getFullYear()} Δημήτριος Πλουμάκης — Ασφαλιστικός Διαμεσολαβητής. Με επιφύλαξη παντός δικαιώματος.
+    </p>
+    <div style={{ display: "flex", gap: "24px" }}>
+      {["Πολιτική Απορρήτου", "Όροι Χρήσης"].map((label) => (
+        <a
+          key={label}
+          href="#"
+          style={{
+            color: "rgba(255,255,255,0.4)",
+            fontSize: "13px",
+            textDecoration: "none",
+            transition: "color 0.15s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.75)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
+        >
+          {label}
+        </a>
+      ))}
+    </div>
+  </div>
+
+</footer>
+```
+
+---
+
+## 2. Phone Number — Update Before Going Live
+
+The phone number in the footer is currently a placeholder (`2410 000 000`). Before deploying to production, find this line in `app/page.tsx` and replace the number with the real one:
+
+```tsx
+href="tel:+302410000000"   // ← update this
+...
+2810 326 400               // ← and this display text
+```
+
+---
 
 ## Constraints
- 
+
 - Keep inline styles throughout — no Tailwind, no CSS modules
-- Preserve all existing Greek copy exactly
-- Do not touch the split sections, stats band (aside from moving it inside the new hero per Section 1), `globals.css`, or Partners marquee logic beyond the font swap in Section 3
-- Run `npm run dev` and check the Greek text renders correctly after the font change — if any Greek characters look like boxes/tofu, the `greek` subset didn't load properly
+- Preserve all existing Greek copy exactly as written elsewhere in the file
+- Do not touch any section above the footer
+- `new Date().getFullYear()` is intentional — it keeps the copyright year current automatically, no manual update needed each year
+- The `href="#"` on product links is a placeholder — these will be replaced with real routes once the individual product pages are built
+- Run `npm run dev` and verify the footer renders at the bottom of the page with no layout shifts or overflow issues

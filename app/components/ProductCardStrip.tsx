@@ -97,16 +97,14 @@ export default function ProductCardStrip() {
           }}>
             <card.icon size={22} color="#1E439A" strokeWidth={1.75} />
           </div>
-          <div style={{ textAlign: "center" }}>
-            <div style={{ color: "#888", fontSize: "11px" }}>Λύσεις για</div>
-            <div style={{
-              color: "#1E439A",
-              fontSize: "15px",
-              fontWeight: 600,
-              fontFamily: "var(--font-ubuntu-sans), sans-serif",
-            }}>
-              {card.title}
-            </div>
+          <div style={{
+            textAlign: "center",
+            color: "#1E439A",
+            fontSize: "15px",
+            fontWeight: 600,
+            fontFamily: "var(--font-ubuntu-sans), sans-serif",
+          }}>
+            {card.title}
           </div>
         </motion.div>
       ))}

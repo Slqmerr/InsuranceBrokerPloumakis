@@ -23,7 +23,7 @@ export default function ProductPageContent({
       {/* Page header */}
       <section style={{ background: "#1E439A", padding: "72px 64px" }}>
         <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "12px", letterSpacing: "0.5px", textTransform: "uppercase", margin: "0 0 12px" }}>
-          {categoryLabel} · {product.subtitle}
+          {categoryLabel}
         </p>
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <div style={{

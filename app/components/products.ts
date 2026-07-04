@@ -7,35 +7,35 @@ import {
 
 export type Product = {
   icon: LucideIcon;
-  subtitle: string;
   title: string;
   slug: string;
+  color: string; // revealed on hover when the grayscale filter lifts
 };
 
 export const IDIWTES_PRODUCTS: Product[] = [
-  { icon: Heart, subtitle: "Νοσηλεία, Περίθαλψη", title: "Υγεία", slug: "ygeia" },
-  { icon: Leaf, subtitle: "Προστασία, Οικογένεια", title: "Ζωή", slug: "zoi" },
-  { icon: Home, subtitle: "Σπίτι, Περιουσία", title: "Κατοικία", slug: "katoikia" },
-  { icon: Scale, subtitle: "Ζημιές, Προστασία", title: "Αστική Ευθύνη", slug: "astiki-efthyni" },
-  { icon: Car, subtitle: "Αυτοκίνητο, Μηχανή", title: "Όχημα", slug: "oxima" },
-  { icon: TrendingUp, subtitle: "Κεφάλαιο, Απόδοση", title: "Επένδυση", slug: "ependysi" },
-  { icon: ShieldCheck, subtitle: "Δεδομένα, Ασφάλεια", title: "Cyber", slug: "cyber" },
-  { icon: PawPrint, subtitle: "Ζώο, Περίθαλψη", title: "Κατοικίδιο", slug: "katoikidio" },
+  { icon: Heart, title: "Υγεία", slug: "ygeia", color: "#e0245e" },
+  { icon: Leaf,  title: "Ζωή", slug: "zoi", color: "#2e9e5b" },
+  { icon: Home, title: "Κατοικία", slug: "katoikia", color: "#1E439A" },
+  { icon: Scale,  title: "Αστική Ευθύνη", slug: "astiki-efthyni", color: "#7c3aed" },
+  { icon: Car,  title: "Όχημα", slug: "oxima", color: "#ea580c" },
+  { icon: TrendingUp, title: "Επένδυση", slug: "ependysi", color: "#0d9488" },
+  { icon: ShieldCheck,  title: "Cyber", slug: "cyber", color: "#4f46e5" },
+  { icon: PawPrint, title: "Κατοικίδιο", slug: "katoikidio", color: "#b45309" },
 ];
 
 export const EPIXEIRISI_PRODUCTS: Product[] = [
-  { icon: Building2, subtitle: "Χώρος, Εξοπλισμός", title: "Επαγγελματικός Χώρος", slug: "epaggelmatikos-xoros" },
-  { icon: Scale, subtitle: "Ζημιές Τρίτων", title: "Αστική Ευθύνη", slug: "astiki-efthyni" },
-  { icon: Truck, subtitle: "Στόλος, Οχήματα", title: "Εταιρικά Οχήματα", slug: "etairika-oximata" },
-  { icon: ShieldAlert, subtitle: "Δεδομένα, Επιθέσεις", title: "Cyber", slug: "cyber" },
-  { icon: Users, subtitle: "Προσωπικό, Παροχές", title: "Ομαδική Ασφάλιση", slug: "omadiki-asfalisi" },
-  { icon: Package, subtitle: "Εμπορεύματα, Μεταφορά", title: "Μεταφορά Εμπορευμάτων", slug: "metafora-emporeumaton" },
+  { icon: Building2, title: "Επαγγελματικός Χώρος", slug: "epaggelmatikos-xoros", color: "#1E439A" },
+  { icon: Scale, title: "Αστική Ευθύνη", slug: "astiki-efthyni", color: "#7c3aed" },
+  { icon: Truck, title: "Εταιρικά Οχήματα", slug: "etairika-oximata", color: "#ea580c" },
+  { icon: ShieldAlert, title: "Cyber", slug: "cyber", color: "#4f46e5" },
+  { icon: Users, title: "Ομαδική Ασφάλιση", slug: "omadiki-asfalisi", color: "#0d9488" },
+  { icon: Package, title: "Μεταφορά Εμπορευμάτων", slug: "metafora-emporeumaton", color: "#2e9e5b" },
 ];
 
 // Card-strip categories without a dropdown entry still get their own page
 export const EXTRA_IDIWTES_PAGES: Product[] = [
-  { icon: Users, subtitle: "Προστασία, Μέλλον", title: "Οικογένεια", slug: "oikogeneia" },
-  { icon: PiggyBank, subtitle: "Κεφάλαιο, Μέλλον", title: "Αποταμίευση", slug: "apotamieusi" },
+  { icon: Users, title: "Οικογένεια", slug: "oikogeneia", color: "#1E439A" },
+  { icon: PiggyBank, title: "Αποταμίευση", slug: "apotamieusi", color: "#0d9488" },
 ];
 
 export const PRODUCT_CARDS = [

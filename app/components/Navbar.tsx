@@ -189,75 +189,193 @@ export default function Navbar() {
                 zIndex: 95,
                 background: "#fff",
                 boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
-                padding: "48px 64px 56px",
+                padding: "40px 64px",
                 borderBottom: "1px solid #e8eaef",
               }}
             >
-              {/* Header */}
-              <div style={{ marginBottom: "36px" }}>
-                <p style={{ fontSize: "12px", color: "#888", marginBottom: "4px", letterSpacing: "0.5px", textTransform: "uppercase" }}>
-                  Τα προγράμματά μας για τον
-                </p>
-                <h2 style={{
-                  fontFamily: UBUNTU,
-                  fontSize: "26px",
-                  fontWeight: 700,
-                  color: "#1a1a1a",
-                  margin: 0,
-                }}>
-                  {activeMenu === "idiwtes" ? "Ιδιώτη" : "Επιχείρηση"}
-                </h2>
-              </div>
-
-              {/* Product Grid */}
               <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "4px",
+                display: "flex",
+                gap: "0px",
+                alignItems: "stretch",
               }}>
-                {(activeMenu === "idiwtes" ? IDIWTES_PRODUCTS : EPIXEIRISI_PRODUCTS).map((product) => (
-                  <motion.a
-                    key={product.title}
-                    href={`/${activeMenu === "idiwtes" ? "idiotes" : "epixeirisi"}/${product.slug}`}
-                    whileHover={{ filter: "grayscale(0%)" }}
-                    style={{
-                      filter: "grayscale(100%)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "16px",
-                      padding: "16px 20px",
-                      borderRadius: "10px",
-                      textDecoration: "none",
-                      cursor: "pointer",
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "#f5f7fb"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-                  >
-                    <div style={{
-                      width: "44px",
-                      height: "44px",
-                      borderRadius: "10px",
-                      background: "#e8eef8",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
+
+                {/* LEFT — product grid (existing content, keep all of it) */}
+                <div style={{ flex: "0 0 70%", paddingRight: "48px" }}>
+                  {/* Header */}
+                  <div style={{ marginBottom: "36px" }}>
+                    <p style={{ fontSize: "12px", color: "#888", marginBottom: "4px", letterSpacing: "0.5px", textTransform: "uppercase" }}>
+                      Τα προγράμματά μας για
+                    </p>
+                    <h2 style={{
+                      fontFamily: UBUNTU,
+                      fontSize: "26px",
+                      fontWeight: 700,
+                      color: "#1a1a1a",
+                      margin: 0,
                     }}>
-                      <product.icon size={20} color="#1E439A" strokeWidth={1.75} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: "13px", color: "#999" }}>{product.subtitle}</div>
-                      <div style={{
-                        fontSize: "17px",
+                      {activeMenu === "idiwtes" ? "ΙΔΙΩΤΕΣ" : "ΕΠΙΧΕΙΡΗΣΕΙΣ"}
+                    </h2>
+                  </div>
+
+                  {/* Product Grid */}
+                  <div style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gap: "4px",
+                  }}>
+                    {(activeMenu === "idiwtes" ? IDIWTES_PRODUCTS : EPIXEIRISI_PRODUCTS).map((product) => (
+                      <motion.a
+                        key={product.title}
+                        href={`/${activeMenu === "idiwtes" ? "idiotes" : "epixeirisi"}/${product.slug}`}
+                        initial={{ color: "#5c5c5c" }}
+                        whileHover={{ color: product.color }}
+                        transition={{ duration: 0.25 }}
+                        style={{
+                          color: "#5c5c5c",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "16px",
+                          padding: "16px 20px",
+                          borderRadius: "10px",
+                          textDecoration: "none",
+                          cursor: "pointer",
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "#f5f7fb"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                      >
+                        <div style={{
+                          width: "44px",
+                          height: "44px",
+                          borderRadius: "10px",
+                          background: "#e8eef8",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}>
+                          <product.icon size={20} color="currentColor" strokeWidth={1.75} />
+                        </div>
+                        <div style={{
+                          fontSize: "17px",
+                          fontWeight: 600,
+                          color: "inherit",
+                          fontFamily: UBUNTU,
+                        }}>
+                          {product.title}
+                        </div>
+                      </motion.a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* RIGHT — CTA panel */}
+                <div style={{
+                  flex: "0 0 30%",
+                  background: "#F0F4FF",
+                  borderRadius: "16px",
+                  padding: "36px 32px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  gap: "16px",
+                }}>
+                  {activeMenu === "idiwtes" && (
+                    <>
+                      <p style={{
+                        fontSize: "11px",
                         fontWeight: 600,
-                        color: "#1a1a1a",
-                        fontFamily: UBUNTU,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "#1E439A",
+                        margin: 0,
                       }}>
-                        {product.title}
-                      </div>
-                    </div>
-                  </motion.a>
-                ))}
+                        Δεν ξέρεις από πού να ξεκινήσεις;
+                      </p>
+                      <h3 style={{
+                        fontSize: "22px",
+                        fontWeight: 700,
+                        color: "#111827",
+                        margin: 0,
+                        lineHeight: 1.3,
+                        fontFamily: "var(--font-ubuntu-sans), sans-serif",
+                      }}>
+                      Βρες την κατάλληλη ασφάλεια για σένα
+                      </h3>
+                      <p style={{
+                        fontSize: "14px",
+                        color: "#4B5563",
+                        margin: 0,
+                        lineHeight: 1.65,
+                      }}>
+                        Μας λες τι χρειάζεσαι, εμείς συγκρίνουμε τις καλύτερες προσφορές από 15+ εταιρείες.
+                      </p>
+                      <button style={{
+                        marginTop: "8px",
+                        background: "#1E439A",
+                        color: "#fff",
+                        fontWeight: 700,
+                        fontFamily: "var(--font-ubuntu-sans), sans-serif",
+                        padding: "13px 24px",
+                        borderRadius: "999px",
+                        border: "none",
+                        cursor: "pointer",
+                        fontSize: "13px",
+                        width: "fit-content",
+                      }}>
+                        Κλείσε ραντεβού
+                      </button>
+                    </>
+                  )}
+
+                  {activeMenu === "epixeirisi" && (
+                    <>
+                      <p style={{
+                        fontSize: "11px",
+                        fontWeight: 600,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "#1E439A",
+                        margin: 0,
+                      }}>
+                        Ασφάλεια για επιχειρήσεις
+                      </p>
+                      <h3 style={{
+                        fontSize: "22px",
+                        fontWeight: 700,
+                        color: "#111827",
+                        margin: 0,
+                        lineHeight: 1.3,
+                        fontFamily: "var(--font-ubuntu-sans), sans-serif",
+                      }}>
+                        Είναι κάτι άλλο πο
+                      </h3>
+                      <p style={{
+                        fontSize: "14px",
+                        color: "#4B5563",
+                        margin: 0,
+                        lineHeight: 1.65,
+                      }}>
+                        Εξατομικευμένες λύσεις για μικρές και μεσαίες επιχειρήσεις — χωρίς περιττές καλύψεις.
+                      </p>
+                      <button style={{
+                        marginTop: "8px",
+                        background: "#1E439A",
+                        color: "#fff",
+                        fontWeight: 700,
+                        fontFamily: "var(--font-ubuntu-sans), sans-serif",
+                        padding: "13px 24px",
+                        borderRadius: "999px",
+                        border: "none",
+                        cursor: "pointer",
+                        fontSize: "13px",
+                        width: "fit-content",
+                      }}>
+                        Κλείσε ραντεβού
+                      </button>
+                    </>
+                  )}
+                </div>
+
               </div>
             </motion.div>
           </React.Fragment>
