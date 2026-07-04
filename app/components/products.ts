@@ -17,7 +17,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
   { icon: Leaf, subtitle: "Προστασία, Οικογένεια", title: "Ζωή", slug: "zoi" },
   { icon: Home, subtitle: "Σπίτι, Περιουσία", title: "Κατοικία", slug: "katoikia" },
   { icon: Scale, subtitle: "Ζημιές, Προστασία", title: "Αστική Ευθύνη", slug: "astiki-efthyni" },
-  { icon: Car, subtitle: "Αυτοκίνητο, Ασφάλεια", title: "Όχημα", slug: "oxima" },
+  { icon: Car, subtitle: "Αυτοκίνητο, Μηχανή", title: "Όχημα", slug: "oxima" },
   { icon: TrendingUp, subtitle: "Κεφάλαιο, Απόδοση", title: "Επένδυση", slug: "ependysi" },
   { icon: ShieldCheck, subtitle: "Δεδομένα, Ασφάλεια", title: "Cyber", slug: "cyber" },
   { icon: PawPrint, subtitle: "Ζώο, Περίθαλψη", title: "Κατοικίδιο", slug: "katoikidio" },
@@ -39,10 +39,10 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
 ];
 
 export const PRODUCT_CARDS = [
-  { icon: Users, title: "Οικογένεια" },
-  { icon: Home, title: "Κατοικία" },
-  { icon: Car, title: "Αυτοκίνητο" },
-  { icon: Heart, title: "Υγεία" },
-  { icon: Briefcase, title: "Επιχείρηση" },
-  { icon: PiggyBank, title: "Αποταμίευση" },
+  { icon: Users, title: "Οικογένεια", color: "#e4ebfb" },
+  { icon: Home, title: "Κατοικία", color: "#e3f3e8" },
+  { icon: Car, title: "Οχήματα", color: "#fdeede" },
+  { icon: Heart, title: "Υγεία", color: "#fbe4ec" },
+  { icon: Briefcase, title: "Επιχείρηση", color: "#ece4fb" },
+  { icon: PiggyBank, title: "Αποταμίευση", color: "#fdf3de" },
 ];

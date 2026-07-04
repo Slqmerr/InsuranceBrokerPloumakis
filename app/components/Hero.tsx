@@ -1,3 +1,33 @@
+"use client";
+
+import React from "react";
+import { animate, motion, useMotionValue, useTransform } from "framer-motion";
+
+const HERO_STATS = [
+  { value: 20, suffix: "+", label: "Χρόνια εμπειρίας" },
+  { value: 500, suffix: "+", label: "Ικανοποιημένοι πελάτες" },
+  { value: 15, suffix: "+", label: "Ασφαλιστικές εταιρείες" },
+];
+
+function CountUpStat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const count = useMotionValue(0);
+  const display = useTransform(count, (v) => `${Math.round(v)}${suffix}`);
+
+  React.useEffect(() => {
+    const controls = animate(count, value, { duration: 1.6, ease: "easeOut", delay: 0.4 });
+    return () => controls.stop();
+  }, [count, value]);
+
+  return (
+    <div>
+      <motion.div style={{ color: "#fff", fontSize: "26px", fontWeight: 600, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>
+        {display}
+      </motion.div>
+      <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px" }}>{label}</div>
+    </div>
+  );
+}
+
 export default function Hero() {
   return (
     <section style={{
@@ -69,30 +99,27 @@ export default function Hero() {
         </button>
       </div>
 
-      {/* Stats row — unchanged content, repositioned bottom-left */}
-      <div style={{
-        position: "absolute",
-        bottom: "32px",
-        left: "64px",
-        zIndex: 2,
-        display: "flex",
-        gap: "40px",
-      }}>
-        <div>
-          <div style={{ color: "#fff", fontSize: "26px", fontWeight: 600, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>20+</div>
-          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px" }}>Χρόνια εμπειρίας</div>
-        </div>
-        <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />
-        <div>
-          <div style={{ color: "#fff", fontSize: "26px", fontWeight: 600, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>500+</div>
-          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px" }}>Ικανοποιημένοι πελάτες</div>
-        </div>
-        <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />
-        <div>
-          <div style={{ color: "#fff", fontSize: "26px", fontWeight: 600, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>15+</div>
-          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px" }}>Ασφαλιστικές εταιρείες</div>
-        </div>
-      </div>
+      {/* Stats row — bottom-left, lifted above the overlapping product card strip */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+        style={{
+          position: "absolute",
+          bottom: "96px",
+          left: "64px",
+          zIndex: 2,
+          display: "flex",
+          gap: "40px",
+        }}
+      >
+        {HERO_STATS.map((stat, i) => (
+          <React.Fragment key={stat.label}>
+            {i > 0 && <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />}
+            <CountUpStat value={stat.value} suffix={stat.suffix} label={stat.label} />
+          </React.Fragment>
+        ))}
+      </motion.div>
     </section>
   );
 }
