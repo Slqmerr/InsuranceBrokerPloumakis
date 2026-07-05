@@ -28,7 +28,7 @@ export default function PartnersMarquee() {
   const loop = [...PARTNERS, ...PARTNERS];
 
   return (
-    <section style={{ background: "#fff", padding: "56px 0 64px" }}>
+    <section style={{ background: "#F5F7FB", padding: "56px 0 64px" }}>
       <h2
         style={{
           textAlign: "center",
@@ -41,7 +41,7 @@ export default function PartnersMarquee() {
           margin: "0 0 36px",
         }}
       >
-        Οι ασφαλιστικές μας εταιρίες
+        Συνεργαζόμενες εταιρείες
       </h2>
 
       <div className="marquee-viewport">

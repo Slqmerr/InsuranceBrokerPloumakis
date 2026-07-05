@@ -1,298 +1,276 @@
-# Task for Claude Code — Footer
+# Task for Claude Code — File 7: "Εμείς" / About Page
 
-Add a full-width footer to `app/page.tsx`. This is a **new section** appended at the very bottom of the page — do not move, delete, or restyle anything above it.
+Create a new page at `app/emeis/page.tsx`. This is the About page for Dimitrios Ploumakis.
 
----
-
-## 0. Setup — do this first
-
-No new packages are needed. Confirm the following imports already exist at the top of `app/page.tsx` (they should after Round 3):
-
-```tsx
-import { motion } from "framer-motion";
-import {
-  Users, Home, Car, Heart, Briefcase, PiggyBank,
-} from "lucide-react";
-```
-
-You will also need two Lucide icons that may not yet be imported. Add them to the existing import block if they're missing:
-
-```tsx
-import { Phone, Mail, MapPin, ChevronRight } from "lucide-react";
-```
+**Stack rules (same as always):** Inline styles only. No Tailwind. No CSS modules. Greek for all user-facing copy. English for code and file names.
 
 ---
 
-## 1. Footer — Append at the Bottom of the Page
+## Page structure (top to bottom)
 
-Add the following JSX **after** all existing sections (partners marquee, split sections, stats band — after everything) and **before** the closing `</main>` (or `</>` fragment) tag.
+1. Navbar (import and render the existing Navbar component)
+2. Hero section — split layout with bio placeholder
+3. Credentials strip
+4. Awards section
+5. Footer (import and render the existing Footer component)
 
+---
+
+## Section 1 — Hero (split layout)
+
+Full-width section, `min-height: 480px`, background `#1E439A`.
+
+Use a **two-column flex layout** (`flexDirection: "row"`):
+
+**Left column** (60% width) — text content:
 ```tsx
-<footer style={{
-  background: "#0F2660",
-  color: "#fff",
-  padding: "64px 64px 32px",
-  fontFamily: "var(--font-ubuntu-sans), sans-serif",
+<section style={{
+  display: "flex",
+  flexDirection: "row",
+  minHeight: "480px",
+  background: "#1E439A",
 }}>
-
-  {/* ── Top grid: 4 columns ── */}
+  {/* Left: bio content */}
   <div style={{
-    display: "grid",
-    gridTemplateColumns: "2fr 1fr 1fr 1.5fr",
-    gap: "48px",
-    paddingBottom: "48px",
-    borderBottom: "1px solid rgba(255,255,255,0.1)",
+    flex: "0 0 60%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: "80px 64px",
   }}>
+    <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "13px", marginBottom: "10px", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+      Ο άνθρωπος πίσω από την ασφάλιση
+    </p>
+    <h1 style={{
+      color: "#fff",
+      fontFamily: "var(--font-ubuntu-sans), sans-serif",
+      fontSize: "38px",
+      fontWeight: 700,
+      lineHeight: 1.2,
+      margin: "0 0 24px",
+    }}>
+      Δημήτριος Πλουμάκης
+    </h1>
 
-    {/* Column 1 — Logo + tagline */}
-    <div>
-      <img
-        src="/logo.png"
-        alt="Δημήτριος Πλουμάκης"
-        style={{
-          height: "56px",
-          objectFit: "contain",
-          marginBottom: "20px",
-          display: "block",
-        }}
-      />
-      <p style={{
-        color: "rgba(255,255,255,0.65)",
-        fontSize: "14px",
-        lineHeight: 1.7,
-        maxWidth: "280px",
-        margin: "0 0 24px",
-      }}>
-        Εξατομικευμένες ασφαλιστικές λύσεις για ιδιώτες και επιχειρήσεις, με εμπειρία άνω των 20 ετών στη Λάρισα.
-      </p>
+    {/*
+      ⚠️ BIO PLACEHOLDER — DO NOT FILL THIS IN YET.
+      Leave the following <p> block exactly as shown below.
+      The actual bio text will be provided separately by the client.
+      Keep the placeholder style so it is visually distinct during dev.
+    */}
+    <p style={{
+      color: "rgba(255,255,255,0.55)",
+      fontSize: "15px",
+      lineHeight: 1.7,
+      fontStyle: "italic",
+      border: "1px dashed rgba(255,255,255,0.3)",
+      padding: "16px",
+      borderRadius: "8px",
+      maxWidth: "480px",
+    }}>
+      [Βιογραφικό κείμενο — αναμένεται από τον πελάτη]
+    </p>
 
-      {/* Contact info */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <a
-          href="tel:+302410000000"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            color: "rgba(255,255,255,0.75)",
-            textDecoration: "none",
-            fontSize: "14px",
-          }}
-        >
-          <Phone size={15} strokeWidth={1.75} />
-          2410 000 000
-        </a>
-        <a
-          href="mailto:dploumakis@gmail.com"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            color: "rgba(255,255,255,0.75)",
-            textDecoration: "none",
-            fontSize: "14px",
-          }}
-        >
-          <Mail size={15} strokeWidth={1.75} />
-          dploumakis@gmail.com
-        </a>
-        <span
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            color: "rgba(255,255,255,0.75)",
-            fontSize: "14px",
-          }}
-        >
-          <MapPin size={15} strokeWidth={1.75} />
-          Λάρισα, Θεσσαλία
-        </span>
+    <div style={{ display: "flex", gap: "32px", marginTop: "40px" }}>
+      <div>
+        <div style={{ color: "#fff", fontSize: "24px", fontWeight: 700, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>25+</div>
+        <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>Χρόνια εμπειρίας</div>
+      </div>
+      <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />
+      <div>
+        <div style={{ color: "#fff", fontSize: "24px", fontWeight: 700, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>12+</div>
+        <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>Εθνικές διακρίσεις</div>
+      </div>
+      <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />
+      <div>
+        <div style={{ color: "#fff", fontSize: "24px", fontWeight: 700, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>6</div>
+        <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>Συνεργαζόμενες εταιρείες</div>
       </div>
     </div>
-
-    {/* Column 2 — Ιδιώτες links */}
-    <div>
-      <h4 style={{
-        color: "#fff",
-        fontSize: "13px",
-        fontWeight: 700,
-        letterSpacing: "0.08em",
-        textTransform: "uppercase",
-        margin: "0 0 20px",
-      }}>
-        Ιδιώτες
-      </h4>
-      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-        {[
-          { label: "Υγεία" },
-          { label: "Ζωή" },
-          { label: "Κατοικία" },
-          { label: "Αστική Ευθύνη" },
-          { label: "Όχημα" },
-          { label: "Επένδυση" },
-          { label: "Κατοικίδιο" },
-        ].map((item) => (
-          <li key={item.label}>
-            <a
-              href="#"
-              style={{
-                color: "rgba(255,255,255,0.65)",
-                textDecoration: "none",
-                fontSize: "14px",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                transition: "color 0.15s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
-            >
-              <ChevronRight size={12} strokeWidth={2} />
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-
-    {/* Column 3 — Επιχείρηση links */}
-    <div>
-      <h4 style={{
-        color: "#fff",
-        fontSize: "13px",
-        fontWeight: 700,
-        letterSpacing: "0.08em",
-        textTransform: "uppercase",
-        margin: "0 0 20px",
-      }}>
-        Επιχείρηση
-      </h4>
-      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-        {[
-          { label: "Επαγγελματικός Χώρος" },
-          { label: "Αστική Ευθύνη" },
-          { label: "Εταιρικά Οχήματα" },
-          { label: "Cyber" },
-          { label: "Ομαδική Ασφάλιση" },
-          { label: "Μεταφορά Εμπορευμάτων" },
-        ].map((item) => (
-          <li key={item.label}>
-            <a
-              href="#"
-              style={{
-                color: "rgba(255,255,255,0.65)",
-                textDecoration: "none",
-                fontSize: "14px",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                transition: "color 0.15s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
-            >
-              <ChevronRight size={12} strokeWidth={2} />
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-
-    {/* Column 4 — Partners */}
-    <div>
-      <h4 style={{
-        color: "#fff",
-        fontSize: "13px",
-        fontWeight: 700,
-        letterSpacing: "0.08em",
-        textTransform: "uppercase",
-        margin: "0 0 20px",
-      }}>
-        Συνεργαζόμενες Εταιρείες
-      </h4>
-      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-        {[
-          "Interamerican",
-          "Allianz",
-          "Generali",
-          "AXA",
-          "Eurolife",
-          "Εθνική Ασφαλιστική",
-        ].map((name) => (
-          <li
-            key={name}
-            style={{
-              color: "rgba(255,255,255,0.65)",
-              fontSize: "14px",
-            }}
-          >
-            {name}
-          </li>
-        ))}
-      </ul>
-    </div>
   </div>
 
-  {/* ── Bottom bar: copyright + legal links ── */}
+  {/* Right column: 40% width — photo of Dimitrios */}
   <div style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingTop: "28px",
-    flexWrap: "wrap",
-    gap: "12px",
+    flex: "0 0 40%",
+    overflow: "hidden",
+    position: "relative",
   }}>
-    <p style={{
-      color: "rgba(255,255,255,0.4)",
-      fontSize: "13px",
-      margin: 0,
-    }}>
-      © {new Date().getFullYear()} Δημήτριος Πλουμάκης — Ασφαλιστικός Διαμεσολαβητής. Με επιφύλαξη παντός δικαιώματος.
-    </p>
-    <div style={{ display: "flex", gap: "24px" }}>
-      {["Πολιτική Απορρήτου", "Όροι Χρήσης"].map((label) => (
-        <a
-          key={label}
-          href="#"
-          style={{
-            color: "rgba(255,255,255,0.4)",
-            fontSize: "13px",
-            textDecoration: "none",
-            transition: "color 0.15s",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.75)")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
-        >
-          {label}
-        </a>
-      ))}
-    </div>
+    <img
+      src="/dimitrios.jpg"
+      alt="Δημήτριος Πλουμάκης"
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        objectPosition: "center top",
+      }}
+    />
+    {/* subtle dark gradient on the left edge to blend with blue bg */}
+    <div style={{
+      position: "absolute",
+      inset: 0,
+      background: "linear-gradient(to right, rgba(30,67,154,0.5) 0%, transparent 40%)",
+    }} />
   </div>
-
-</footer>
+</section>
 ```
 
 ---
 
-## 2. Phone Number — Update Before Going Live
+## Section 2 — Credentials strip
 
-The phone number in the footer is currently a placeholder (`2410 000 000`). Before deploying to production, find this line in `app/page.tsx` and replace the number with the real one:
+White background, centered content. Two credential cards side by side.
 
 ```tsx
-href="tel:+302410000000"   // ← update this
-...
-2810 326 400               // ← and this display text
+<section style={{
+  background: "#fff",
+  padding: "64px 64px",
+}}>
+  <p style={{ color: "#1E439A", fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>
+    Εκπαίδευση & Πιστοποιήσεις
+  </p>
+  <h2 style={{
+    fontFamily: "var(--font-ubuntu-sans), sans-serif",
+    fontSize: "28px",
+    fontWeight: 700,
+    color: "#0F2660",
+    marginBottom: "40px",
+  }}>
+    Διεθνώς αναγνωρισμένες πιστοποιήσεις
+  </h2>
+
+  <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+
+    {/* Credential card 1 */}
+    <div style={{
+      flex: "1 1 300px",
+      border: "1px solid #e0e6f0",
+      borderRadius: "12px",
+      padding: "32px",
+      borderLeft: "4px solid #1E439A",
+    }}>
+      <div style={{ color: "#1E439A", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "10px" }}>
+        LIMRA · Windsor, Connecticut, U.S.A.
+      </div>
+      <h3 style={{ fontFamily: "var(--font-ubuntu-sans), sans-serif", fontSize: "17px", fontWeight: 700, color: "#0F2660", margin: "0 0 8px" }}>
+        Management Skills Seminar
+      </h3>
+      <p style={{ color: "#555", fontSize: "14px", lineHeight: 1.6, margin: "0 0 12px" }}>
+        Διεθνές σεμινάριο διοίκησης πωλήσεων ασφαλιστικής, παρεχόμενο από τον παγκόσμιο οργανισμό LIMRA — έναν από τους πιο έγκυρους φορείς επαγγελματικής κατάρτισης στον ασφαλιστικό κλάδο ανά τον κόσμο.
+      </p>
+      <div style={{ color: "#888", fontSize: "12px" }}>Φεβρουάριος 2012 · International Life, Ελλάδα</div>
+    </div>
+
+    {/* Credential card 2 */}
+    <div style={{
+      flex: "1 1 300px",
+      border: "1px solid #e0e6f0",
+      borderRadius: "12px",
+      padding: "32px",
+      borderLeft: "4px solid #1E439A",
+    }}>
+      <div style={{ color: "#1E439A", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "10px" }}>
+        LIMRA · EIAS (Ελληνικό Ινστιτούτο Ασφαλιστικών Σπουδών)
+      </div>
+      <h3 style={{ fontFamily: "var(--font-ubuntu-sans), sans-serif", fontSize: "17px", fontWeight: 700, color: "#0F2660", margin: "0 0 8px" }}>
+        Creating Clients: Moving from Sales to Market Development
+      </h3>
+      <p style={{ color: "#555", fontSize: "14px", lineHeight: 1.6, margin: "0 0 12px" }}>
+        Εξειδικευμένο πρόγραμμα ανάπτυξης αγοράς και στρατηγικής απόκτησης πελατών, σε συνεργασία με το EIAS — τον επίσημο εκπαιδευτικό φορέα του ασφαλιστικού κλάδου στην Ελλάδα.
+      </p>
+      <div style={{ color: "#888", fontSize: "12px" }}>Νοέμβριος 2013 · EIAS, Ελλάδα</div>
+    </div>
+
+  </div>
+</section>
+```
+
+---
+
+## Section 3 — Awards
+
+Light background (`#F5F7FB`), full-width.
+
+```tsx
+<section style={{
+  background: "#F5F7FB",
+  padding: "64px 64px",
+}}>
+  <p style={{ color: "#1E439A", fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>
+    Διακρίσεις
+  </p>
+  <h2 style={{
+    fontFamily: "var(--font-ubuntu-sans), sans-serif",
+    fontSize: "28px",
+    fontWeight: 700,
+    color: "#0F2660",
+    marginBottom: "12px",
+  }}>
+    Αναγνώριση σε εθνικό επίπεδο
+  </h2>
+  <p style={{ color: "#555", fontSize: "15px", lineHeight: 1.6, maxWidth: "600px", marginBottom: "48px" }}>
+    Για πάνω από μια δεκαετία, ο Δημήτριος Πλουμάκης βραβεύθηκε επανειλημμένα στα Πανελλήνια Συνέδρια Πωλήσεων, ανακηρύσσoντας τον ανάμεσα στους κορυφαίους ασφαλιστές της χώρας.
+  </p>
+
+  {/* Awards grid */}
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "16px" }}>
+
+    {[
+      { year: "2000", rank: "5ο βραβείο", category: "Ασφαλίστρων Κανονισμού", event: "31ο Πανελλήνιο Συνέδριο Πωλήσεων" },
+      { year: "2002", rank: "3ο βραβείο", category: "Διατηρησιμότητας", event: "33ο Πανελλήνιο Συνέδριο Πωλήσεων" },
+      { year: "2003", rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων", event: "Ημερίδα Βραβεύσεων, Αθήνα" },
+      { year: "2005", rank: "4ο βραβείο", category: "Κανονισμού Πωλήσεων", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων" },
+      { year: "2006", rank: "3ο βραβείο", category: "Παραγωγής Γενικών", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων" },
+      { year: "2006", rank: "5ο βραβείο", category: "Παραγωγής Ζωής", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων" },
+      { year: "2007", rank: "5ο βραβείο", category: "Παραγωγής Γενικών", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων" },
+      { year: "2007", rank: "5ο βραβείο", category: "Παραγωγής Ζωής", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων" },
+      { year: "2008", rank: "6ο βραβείο", category: "Παραγωγής Γενικών", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων" },
+      { year: "2012", rank: "4ο βραβείο", category: "Παραγωγής Γενικών", event: "39ο Πανελλήνιο Συνέδριο Πωλήσεων" },
+      { year: "2013", rank: "2ο βραβείο", category: "Παραγωγής Γενικών", event: "39ο Πανελλήνιο Συνέδριο, Costa Navarino" },
+      { year: "2025", rank: "Loyalty Award", category: "Sales Awards 2025", event: "NOW Insurance Group" },
+    ].map((award, i) => (
+      <div key={i} style={{
+        background: "#fff",
+        borderRadius: "10px",
+        padding: "24px",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "6px",
+      }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{
+            background: "#EEF2FF",
+            color: "#1E439A",
+            fontSize: "11px",
+            fontWeight: 700,
+            padding: "3px 10px",
+            borderRadius: "999px",
+          }}>{award.year}</span>
+          <span style={{ color: "#1E439A", fontWeight: 700, fontSize: "13px" }}>{award.rank}</span>
+        </div>
+        <div style={{ fontFamily: "var(--font-ubuntu-sans), sans-serif", fontWeight: 600, fontSize: "15px", color: "#0F2660" }}>
+          {award.category}
+        </div>
+        <div style={{ color: "#888", fontSize: "12px" }}>{award.event}</div>
+      </div>
+    ))}
+
+  </div>
+
+  {/* Context note */}
+  <p style={{ color: "#777", fontSize: "13px", marginTop: "32px", fontStyle: "italic" }}>
+    Όλα τα παραπάνω βραβεία απονεμήθηκαν από τον Όμιλο International Life στα ετήσια Πανελλήνια Συνέδρια Πωλήσεων, όπου αξιολογούνται όλοι οι ασφαλιστές και Unit Managers της χώρας.
+  </p>
+</section>
 ```
 
 ---
 
 ## Constraints
 
-- Keep inline styles throughout — no Tailwind, no CSS modules
-- Preserve all existing Greek copy exactly as written elsewhere in the file
-- Do not touch any section above the footer
-- `new Date().getFullYear()` is intentional — it keeps the copyright year current automatically, no manual update needed each year
-- The `href="#"` on product links is a placeholder — these will be replaced with real routes once the individual product pages are built
-- Run `npm run dev` and verify the footer renders at the bottom of the page with no layout shifts or overflow issues
+- Inline styles only — no Tailwind, no CSS modules
+- Import Navbar and Footer from their existing component files
+- Do NOT invent bio text — leave the placeholder exactly as written above
+- All text copy is final and in Greek — do not translate or modify
+- Run `npm run dev` and confirm the page renders at `/emeis`

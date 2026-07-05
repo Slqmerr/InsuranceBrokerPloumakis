@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS } from "./products";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
+const MotionLink = motion.create(Link);
 
 export default function Navbar() {
   const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
@@ -34,11 +36,13 @@ export default function Navbar() {
         fontFamily: UBUNTU,
       }}>
         {/* Logo — left */}
-        <img
-          src="/logo.png"
-          alt="Δημήτριος Πλουμάκης"
-          style={{ height: "60px", objectFit: "contain", justifySelf: "start" }}
-        />
+        <Link href="/" onClick={closeMenu} style={{ justifySelf: "start", display: "inline-flex" }}>
+          <img
+            src="/logo.png"
+            alt="Δημήτριος Πλουμάκης"
+            style={{ height: "60px", objectFit: "contain" }}
+          />
+        </Link>
 
         {/* Nav links — centered */}
         <ul style={{
@@ -104,7 +108,7 @@ export default function Navbar() {
                 fontFamily: "inherit",
               }}
             >
-              Επιχείρηση
+              Επιχειρήσεις
               <motion.span
                 animate={{ rotate: activeMenu === "epixeirisi" ? 180 : 0 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
@@ -117,11 +121,12 @@ export default function Navbar() {
 
           {/* Εμείς — plain link, no dropdown */}
           <li>
-            <motion.a
+            <MotionLink
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15 }}
-              href="#"
+              href="/emeis"
+              onClick={closeMenu}
               style={{
                 color: "rgba(255,255,255,0.80)",
                 textDecoration: "none",
@@ -132,7 +137,7 @@ export default function Navbar() {
               }}
             >
               Εμείς
-            </motion.a>
+            </MotionLink>
           </li>
 
         </ul>
@@ -347,7 +352,7 @@ export default function Navbar() {
                         lineHeight: 1.3,
                         fontFamily: "var(--font-ubuntu-sans), sans-serif",
                       }}>
-                        Είναι κάτι άλλο πο
+                        Είναι κάτι άλλο που σε ενδιαφέρει; 
                       </h3>
                       <p style={{
                         fontSize: "14px",
@@ -355,7 +360,7 @@ export default function Navbar() {
                         margin: 0,
                         lineHeight: 1.65,
                       }}>
-                        Εξατομικευμένες λύσεις για μικρές και μεσαίες επιχειρήσεις — χωρίς περιττές καλύψεις.
+                        Εξατομικευμένες λύσεις για μικρές,μεσαίες και μεγάλες επιχειρήσεις χωρίς περιττές καλύψεις.
                       </p>
                       <button style={{
                         marginTop: "8px",

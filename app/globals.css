@@ -55,7 +55,7 @@ body {
 
 /* pause while the visitor inspects a logo */
 .marquee-viewport:hover .marquee-track {
-  animation-play-state: paused;
+  animation-play-state: running;
 }
 
 @keyframes marquee-scroll {
