@@ -18,6 +18,20 @@ export type Product = {
 
 export const IDIWTES_PRODUCTS: Product[] = [
   {
+    icon: Users, title: "Οικογένεια", slug: "oikogeneia", color: "#1E439A",
+    image: "/products/oikogeneia.jpg",
+    intro: "Η προστασία της οικογένειας δεν είναι ένα μεμονωμένο προϊόν, αλλά ένας συνδυασμός καλύψεων που φροντίζει κάθε μέλος σε κάθε στάδιο της ζωής. Σχεδιάζουμε μαζί ένα ολοκληρωμένο πλέγμα ασφάλισης ζωής, εισοδήματος και υγείας, προσαρμοσμένο στις πραγματικές σας ανάγκες.",
+    description: "Στόχος μας είναι να εξασφαλίσουμε ότι, ό,τι κι αν συμβεί, η οικογένειά σας θα διατηρήσει το επίπεδο ζωής της χωρίς οικονομικές ανατροπές. Η ασφάλιση ζωής αποδίδει ένα εφάπαξ κεφάλαιο στους δικαιούχους σε περίπτωση απώλειας ζωής, ενώ η εισοδηματική προστασία αναπληρώνει το εισόδημα αν μια ασθένεια ή ένα ατύχημα σας εμποδίσει να εργαστείτε. Το ύψος του κεφαλαίου δεν είναι τυχαίο: το υπολογίζουμε μαζί, με βάση τις υποχρεώσεις, τα έξοδα και τους στόχους σας, ώστε η κάλυψη να είναι ούτε ελλιπής ούτε περιττά ακριβή.",
+    covers: [
+      "Ασφάλεια ζωής: εφάπαξ κεφάλαιο στους δικαιούχους σε περίπτωση απώλειας ζωής.",
+      "Εισοδηματική προστασία: αναπλήρωση εισοδήματος σε περίπτωση μόνιμης ή πρόσκαιρης ανικανότητας για εργασία, από ασθένεια ή ατύχημα.",
+      "Κάλυψη δανειακών υποχρεώσεων (π.χ. στεγαστικό), ώστε το βάρος να μη μεταφέρεται στους οικείους σας.",
+      "Προαιρετικές καλύψεις υγείας και προσωπικού ατυχήματος για κάθε μέλος της οικογένειας.",
+      "Δυνατότητα αποταμιευτικού σκέλους για το μέλλον των παιδιών — χωρίς εγγυημένη απόδοση, καθώς ο επενδυτικός κίνδυνος βαρύνει τον ασφαλισμένο.",
+      "Ευελιξία στο ύψος του κεφαλαίου και στη διάρκεια, με επανεξέταση καθώς αλλάζουν οι ανάγκες της οικογένειας.",
+    ],
+  },
+  {
     icon: Heart, title: "Υγεία", slug: "ygeia", color: "#e0245e",
     image: "/products/ygeia.jpg",
     intro: "Νοσοκομειακή και εξωνοσοκομειακή περίθαλψη, προσαρμοσμένη στις ανάγκες τις δικές σας και της οικογένειάς σας.",
@@ -218,22 +232,10 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
   },
 ];
 
-// Card-strip categories without a dropdown entry still get their own page
+// Card-strip categories without a dropdown entry still get their own page.
+// Keep exactly one entry per slug across this and IDIWTES_PRODUCTS —
+// generateStaticParams merges both arrays and duplicates trip Next.js.
 export const EXTRA_IDIWTES_PAGES: Product[] = [
-  {
-    icon: Users, title: "Οικογένεια", slug: "oikogeneia", color: "#1E439A",
-    image: "/products/oikogeneia.jpg",
-    intro: "Μια ολοκληρωμένη ματιά στην προστασία όσων αγαπάτε — υγεία, ζωή και περιουσία μαζί.",
-    description: "Η προστασία της οικογένειας δεν είναι ένα μόνο προϊόν, αλλά ο σωστός συνδυασμός καλύψεων υγείας, ζωής και περιουσίας ανάλογα με τις ανάγκες κάθε μέλους. Ως ασφαλιστικός σας σύμβουλος, σχεδιάζουμε μαζί ένα ισορροπημένο πλάνο, χωρίς περιττές ή αλληλεπικαλυπτόμενες καλύψεις.",
-    covers: [
-      "Νοσοκομειακή και εξωνοσοκομειακή υγεία",
-      "Ασφάλιση ζωής και εισοδήματος",
-      "Προστασία κατοικίας και περιουσίας",
-      "Καλύψεις για παιδιά",
-      "Αποταμίευση για το μέλλον",
-      "Ενιαίος σχεδιασμός καλύψεων",
-    ],
-  },
   {
     icon: PiggyBank, title: "Αποταμίευση", slug: "apotamieusi", color: "#0d9488",
     image: "/products/apotamieusi.jpg",
@@ -251,10 +253,11 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
 ];
 
 export const PRODUCT_CARDS = [
-  { icon: Users, title: "Οικογένεια", color: "#e4ebfb" },
-  { icon: Home, title: "Κατοικία", color: "#e3f3e8" },
-  { icon: Car, title: "Οχήματα", color: "#fdeede" },
-  { icon: Heart, title: "Υγεία", color: "#fbe4ec" },
-  { icon: Briefcase, title: "Επιχείρηση", color: "#ece4fb" },
-  { icon: PiggyBank, title: "Αποταμίευση", color: "#fdf3de" },
+  { icon: Users, title: "Οικογένεια", color: "#e4ebfb", href: "/idiotes/oikogeneia" },
+  { icon: Home, title: "Κατοικία", color: "#e3f3e8", href: "/idiotes/katoikia" },
+  { icon: Car, title: "Οχήματα", color: "#fdeede", href: "/idiotes/oxima" },
+  { icon: Heart, title: "Υγεία", color: "#fbe4ec", href: "/idiotes/ygeia" },
+  // No /epixeirisi landing page yet — first business product is the default
+  { icon: Briefcase, title: "Επιχείρηση", color: "#ece4fb", href: "/epixeirisi/epaggelmatikos-xoros" },
+  { icon: PiggyBank, title: "Αποταμίευση", color: "#fdf3de", href: "/idiotes/apotamieusi" },
 ];

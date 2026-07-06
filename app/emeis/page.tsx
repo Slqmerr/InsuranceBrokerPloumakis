@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion, animate, useInView, type Variants } from "framer-motion";
+import { Trophy } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PartnersMarquee from "../components/PartnersMarquee";
@@ -57,6 +58,45 @@ function StatValue({ value, suffix = "" }: { value: number; suffix?: string }) {
 
   return <span ref={ref}>{display}{suffix}</span>;
 }
+
+/* Awards data — lifted out so the summary card can compute totals from it */
+type AwardEntry = {
+  year: string;
+  month?: string;
+  event: string;
+  awards: { rank: string; category: string }[];
+};
+
+const AWARD_ENTRIES: AwardEntry[] = [
+  { month: "Μάρτιος", year: "2000", event: "31ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
+  { month: "Μάρτιος", year: "2002", event: "33ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "3ο βραβείο", category: "Διατηρησιμότητας" }] },
+  { month: "Μάρτιος", year: "2003", event: "Ημερίδα Βραβεύσεων, Αθήνα", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
+  { month: "Μάρτιος", year: "2005", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "4ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
+  {
+    month: "Σεπτέμβριος", year: "2006", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [
+      { rank: "3ο βραβείο", category: "Παραγωγής Γενικών" },
+      { rank: "5ο βραβείο", category: "Παραγωγής Ζωής" },
+    ]
+  },
+  {
+    month: "Μάρτιος", year: "2007", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [
+      { rank: "5ο βραβείο", category: "Παραγωγής Γενικών" },
+      { rank: "5ο βραβείο", category: "Παραγωγής Ζωής" },
+    ]
+  },
+  { month: "Μάρτιος", year: "2008", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "6ο βραβείο", category: "Παραγωγής Γενικών" }] },
+  { month: "Μάρτιος", year: "2012", event: "39ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "4ο βραβείο", category: "Παραγωγής Γενικών" }] },
+  { month: "Μάρτιος", year: "2013", event: "39ο Πανελλήνιο Συνέδριο, Costa Navarino", awards: [{ rank: "2ο βραβείο", category: "Παραγωγής Γενικών" }] },
+  { year: "2025", event: "NOW Insurance Group", awards: [{ rank: "Loyalty Award", category: "Sales Awards 2025" }] },
+];
+
+const TOTAL_AWARDS = AWARD_ENTRIES.reduce((n, e) => n + e.awards.length, 0);
+const AWARD_CATEGORY_COUNTS = Object.entries(
+  AWARD_ENTRIES.flatMap((e) => e.awards).reduce<Record<string, number>>((acc, a) => {
+    acc[a.category] = (acc[a.category] ?? 0) + 1;
+    return acc;
+  }, {})
+).sort((a, b) => b[1] - a[1]);
 
 export default function EmeisPage() {
   return (
@@ -329,30 +369,11 @@ export default function EmeisPage() {
           Για πάνω από μια δεκαετία, ο Δημήτριος Πλουμάκης βραβεύθηκε επανειλημμένα στα Πανελλήνια Συνέδρια Πωλήσεων, ανακηρύσσoντας τον ανάμεσα στους κορυφαίους ασφαλιστές της χώρας.
         </motion.p>
 
-        {/* Minimal timeline — year first, then event; multiple awards grouped per year */}
-        <div style={{ maxWidth: "860px" }}>
-          {([
-            { month: "Μάρτιος", year: "2000", event: "31ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
-            { month: "Μάρτιος", year: "2002", event: "33ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "3ο βραβείο", category: "Διατηρησιμότητας" }] },
-            { month: "Μάρτιος", year: "2003", event: "Ημερίδα Βραβεύσεων, Αθήνα", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
-            { month: "Μάρτιος", year: "2005", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "4ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
-            {
-              month: "Σεπτέμβριος", year: "2006", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [
-                { rank: "3ο βραβείο", category: "Παραγωγής Γενικών" },
-                { rank: "5ο βραβείο", category: "Παραγωγής Ζωής" },
-              ]
-            },
-            {
-              month: "Μάρτιος", year: "2007", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [
-                { rank: "5ο βραβείο", category: "Παραγωγής Γενικών" },
-                { rank: "5ο βραβείο", category: "Παραγωγής Ζωής" },
-              ]
-            },
-            { month: "Μάρτιος", year: "2008", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "6ο βραβείο", category: "Παραγωγής Γενικών" }] },
-            { month: "Μάρτιος", year: "2012", event: "39ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "4ο βραβείο", category: "Παραγωγής Γενικών" }] },
-            { month: "Μάρτιος", year: "2013", event: "39ο Πανελλήνιο Συνέδριο, Costa Navarino", awards: [{ rank: "2ο βραβείο", category: "Παραγωγής Γενικών" }] },
-            {  year: "2025", event: "NOW Insurance Group", awards: [{ rank: "Loyalty Award", category: "Sales Awards 2025" }] },
-          ] as { year: string; month?: string; event: string; awards: { rank: string; category: string }[] }[]).map((entry, i, arr) => {
+        {/* Minimal timeline — year first, then event; multiple awards grouped per year.
+            Sticky summary card fills the right column. */}
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 860px) 300px", gap: "64px", alignItems: "start" }}>
+        <div>
+          {AWARD_ENTRIES.map((entry, i, arr) => {
             const isLast = i === arr.length - 1;
             return (
               <motion.div
@@ -433,7 +454,57 @@ export default function EmeisPage() {
             );
           })}
         </div>
-  
+
+        {/* Sticky summary card — totals computed from AWARD_ENTRIES */}
+        <motion.aside
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-60px" }}
+          style={{
+            position: "sticky",
+            top: "112px",
+            background: "#fff",
+            borderRadius: "24px",
+            boxShadow: "0 12px 40px rgba(18,35,85,0.12)",
+            padding: "32px 28px",
+          }}
+        >
+          <div style={{
+            width: "48px",
+            height: "48px",
+            borderRadius: "14px",
+            background: "#e8eef8",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "18px",
+          }}>
+            <Trophy size={24} color="#1E439A" strokeWidth={1.75} />
+          </div>
+
+          <div style={{ fontFamily: UBUNTU, fontSize: "42px", fontWeight: 700, color: "#1E439A", lineHeight: 1 }}>
+            <StatValue value={TOTAL_AWARDS} />
+          </div>
+          <div style={{ fontSize: "14px", fontWeight: 600, color: "#0F2660", margin: "6px 0 2px" }}>
+            διακρίσεις συνολικά
+          </div>
+          <div style={{ fontSize: "12px", color: "#888", marginBottom: "22px" }}>
+            2000 – 2025 · 25 χρόνια πορείας
+          </div>
+
+          <div style={{ height: "1px", background: "#eef0f4", marginBottom: "18px" }} />
+
+          <div style={{ display: "grid", gap: "12px" }}>
+            {AWARD_CATEGORY_COUNTS.map(([category, count]) => (
+              <div key={category} style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px" }}>
+                <span style={{ fontSize: "13px", color: "#555" }}>{category}</span>
+                <span style={{ fontFamily: UBUNTU, fontSize: "15px", fontWeight: 700, color: "#1E439A" }}>{count}</span>
+              </div>
+            ))}
+          </div>
+        </motion.aside>
+        </div>
 
         {/* Context note */}
         <motion.p

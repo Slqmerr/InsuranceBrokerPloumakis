@@ -17,5 +17,5 @@ export default async function IdiotesProductPage({
   const product = ALL_IDIWTES.find((p) => p.slug === slug);
   if (!product) notFound();
 
-  return <ProductPageContent product={product} categoryLabel="Ιδιώτες" />;
+  return <ProductPageContent product={product} categoryLabel="" />;
 }

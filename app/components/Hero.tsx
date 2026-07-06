@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 
 const HERO_STATS = [
@@ -83,20 +84,20 @@ export default function Hero() {
         <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "15px", lineHeight: 1.6, marginBottom: "32px" }}>
           Εξατομικευμένες ασφαλιστικές λύσεις για εσάς, την οικογένεια και την επιχείρησή σας.
         </p>
-        <button style={{
+        <Link href="/epikoinonia" style={{
           background: "#fff",
           color: "#1E439A",
           fontWeight: 700,
           fontFamily: "var(--font-ubuntu-sans), sans-serif",
           padding: "14px 32px",
           borderRadius: "999px",
-          border: "none",
+          textDecoration: "none",
           cursor: "pointer",
           width: "fit-content",
           fontSize: "14px",
         }}>
-          Ζητήστε Προσφορά
-        </button>
+          Κλείσε Ραντεβού
+        </Link>
       </div>
 
       {/* Stats row — bottom-left, lifted above the overlapping product card strip */}

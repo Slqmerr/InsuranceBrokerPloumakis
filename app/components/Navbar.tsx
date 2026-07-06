@@ -143,7 +143,7 @@ export default function Navbar() {
         </ul>
 
         {/* CTA — right, standing alone */}
-        <button style={{
+        <Link href="/epikoinonia" onClick={closeMenu} style={{
           justifySelf: "end",
           background: "#fff",
           color: "#1E439A",
@@ -151,13 +151,13 @@ export default function Navbar() {
           fontFamily: UBUNTU,
           padding: "10px 20px",
           borderRadius: "999px",
-          border: "none",
+          textDecoration: "none",
           cursor: "pointer",
           fontSize: "13px",
           whiteSpace: "nowrap",
         }}>
-          Ζητήστε Προσφορά
-        </button>
+          Κλείσε Ραντεβού
+        </Link>
       </nav>
 
       {/* Backdrop + Mega Dropdown */}
@@ -198,7 +198,15 @@ export default function Navbar() {
                 borderBottom: "1px solid #e8eaef",
               }}
             >
-              <div style={{
+              {/* Re-run the entrance animation when hopping between menus while open */}
+              <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={activeMenu}
+                initial={{ opacity: 0, y: -12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                style={{
                 display: "flex",
                 gap: "0px",
                 alignItems: "stretch",
@@ -314,7 +322,7 @@ export default function Navbar() {
                       }}>
                         Μας λες τι χρειάζεσαι, εμείς συγκρίνουμε τις καλύτερες προσφορές από 15+ εταιρείες.
                       </p>
-                      <button style={{
+                      <Link href="/epikoinonia" onClick={closeMenu} style={{
                         marginTop: "8px",
                         background: "#1E439A",
                         color: "#fff",
@@ -322,13 +330,13 @@ export default function Navbar() {
                         fontFamily: "var(--font-ubuntu-sans), sans-serif",
                         padding: "13px 24px",
                         borderRadius: "999px",
-                        border: "none",
+                        textDecoration: "none",
                         cursor: "pointer",
                         fontSize: "13px",
                         width: "fit-content",
                       }}>
                         Κλείσε ραντεβού
-                      </button>
+                      </Link>
                     </>
                   )}
 
@@ -362,7 +370,7 @@ export default function Navbar() {
                       }}>
                         Εξατομικευμένες λύσεις για μικρές,μεσαίες και μεγάλες επιχειρήσεις χωρίς περιττές καλύψεις.
                       </p>
-                      <button style={{
+                      <Link href="/epikoinonia" onClick={closeMenu} style={{
                         marginTop: "8px",
                         background: "#1E439A",
                         color: "#fff",
@@ -370,18 +378,19 @@ export default function Navbar() {
                         fontFamily: "var(--font-ubuntu-sans), sans-serif",
                         padding: "13px 24px",
                         borderRadius: "999px",
-                        border: "none",
+                        textDecoration: "none",
                         cursor: "pointer",
                         fontSize: "13px",
                         width: "fit-content",
                       }}>
                         Κλείσε ραντεβού
-                      </button>
+                      </Link>
                     </>
                   )}
                 </div>
 
-              </div>
+              </motion.div>
+              </AnimatePresence>
             </motion.div>
           </React.Fragment>
         )}

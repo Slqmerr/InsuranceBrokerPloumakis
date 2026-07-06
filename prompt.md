@@ -1,276 +1,251 @@
-# Task for Claude Code — File 7: "Εμείς" / About Page
+# Task for Claude Code — Round 4B
 
-Create a new page at `app/emeis/page.tsx`. This is the About page for Dimitrios Ploumakis.
+Build a **product-specific quote request page** as a new dynamic route: `/prosfora/[slug]`.
+Each product's `Ζητήστε Προσφορά` / `Με ενδιαφέρει` button (added in prompt 10) links to `/prosfora/${product.slug}`. This page shows a contact form whose fields **change depending on the product** — a business quote asks for different things than a health quote.
 
-**Stack rules (same as always):** Inline styles only. No Tailwind. No CSS modules. Greek for all user-facing copy. English for code and file names.
+Conventions unchanged: **inline styles only**, all user-facing copy in **Greek**, lucide-react icons, Ubuntu Sans (`var(--font-ubuntu-sans), sans-serif`), brand blue `#1E439A`.
 
----
-
-## Page structure (top to bottom)
-
-1. Navbar (import and render the existing Navbar component)
-2. Hero section — split layout with bio placeholder
-3. Credentials strip
-4. Awards section
-5. Footer (import and render the existing Footer component)
+> **Prerequisite:** run prompt 10 first (it creates the buttons that link here).
 
 ---
 
-## Section 1 — Hero (split layout)
+## Design overview
 
-Full-width section, `min-height: 480px`, background `#1E439A`.
+Rather than hand-writing 14 separate forms, drive the form from **data**. Define a small set of field descriptors, group products into **profiles** (health, life/family, auto, home, business-place, group, cargo, liability, cyber, savings, pet), map each slug to a profile, and render the form generically. Every form = a shared **base block** (contact details + consent) plus the profile's product-specific fields. Adding a product later becomes one line in the slug→profile map.
 
-Use a **two-column flex layout** (`flexDirection: "row"`):
+Create two new files and one new route:
+- `app/components/quoteForms.ts` — the field descriptor type, base fields, profile field-sets, and the slug→profile map (data + Greek labels).
+- `app/components/QuoteForm.tsx` — a `"use client"` component that renders and validates the form for a given slug.
+- `app/prosfora/[slug]/page.tsx` — the dynamic route that resolves the product + profile and renders `QuoteForm`.
 
-**Left column** (60% width) — text content:
+---
+
+## 1. `app/components/quoteForms.ts`
+
+### Field descriptor type
+
+```ts
+export type QuoteField = {
+  name: string;                 // unique key, e.g. "age"
+  label: string;                // Greek label shown to the user
+  type: "text" | "tel" | "email" | "number" | "select" | "textarea" | "checkbox";
+  required?: boolean;
+  options?: string[];           // only for type "select"
+  placeholder?: string;
+};
+```
+
+### Base fields — on EVERY form
+
+Order: contact fields first, then (later, after the product fields) the message + consent. Structure the file so the form renders `BASE_TOP` fields, then the profile fields, then `BASE_BOTTOM` fields.
+
+`BASE_TOP`:
+| name | label | type | required |
+|---|---|---|---|
+| `fullName` | `Ονοματεπώνυμο` | text | ✔ |
+| `phone` | `Τηλέφωνο` | tel | ✔ |
+| `email` | `Email` | email | ✔ |
+| `area` | `Περιοχή / Πόλη` | text | |
+| `contactPref` | `Προτιμώμενος τρόπος επικοινωνίας` | select — options: `["Τηλέφωνο", "Email", "SMS / Viber"]` | |
+
+`BASE_BOTTOM`:
+| name | label | type | required |
+|---|---|---|---|
+| `message` | `Πρόσθετες πληροφορίες / Σχόλια` | textarea | |
+| `consent` | `Συναινώ στην επεξεργασία των στοιχείων μου για την αποστολή προσφοράς, σύμφωνα με την Πολιτική Απορρήτου.` | checkbox | ✔ |
+
+> The `consent` checkbox is a legal requirement (GDPR) for collecting personal data in Greece — do not omit it or make it optional. Its label references a **Πολιτική Απορρήτου** page that doesn't exist yet: render the words "Πολιτική Απορρήτου" inside the label as a link to `/politiki-aporritou` and add `// TODO: create the Privacy Policy page` next to it.
+
+### Profile field-sets
+
+Define each profile as a `QuoteField[]`. Use these exactly (Greek labels as written):
+
+**HEALTH**
+- `age` — `Ηλικία` — number — required
+- `peopleCount` — `Άτομα προς ασφάλιση` — number
+- `coverageType` — `Τύπος κάλυψης που σας ενδιαφέρει` — select — `["Νοσοκομειακή", "Εξωνοσοκομειακή", "Και τα δύο"]`
+- `existingCover` — `Έχετε ήδη ασφάλιση υγείας;` — select — `["Ναι", "Όχι"]`
+- `smoker` — `Καπνιστής / -τρια;` — select — `["Ναι", "Όχι"]`
+
+**LIFE_FAMILY** (Ζωή, Οικογένεια)
+- `age` — `Ηλικία` — number — required
+- `dependents` — `Αριθμός εξαρτώμενων μελών` — number
+- `goal` — `Κύριος στόχος` — select — `["Προστασία οικογένειας", "Κάλυψη δανείου / στεγαστικού", "Εισοδηματική προστασία", "Αποταμίευση για τα παιδιά"]`
+- `coverAmount` — `Επιθυμητό κεφάλαιο κάλυψης` — select — `["Έως 50.000€", "50.000€ – 100.000€", "100.000€ – 200.000€", "Άνω των 200.000€", "Δεν είμαι σίγουρος/-η"]`
+
+**AUTO** (Όχημα, Εταιρικά Οχήματα)
+- `vehicleType` — `Τύπος οχήματος` — select — `["Επιβατικό", "Μοτοσικλέτα", "Επαγγελματικό / Φορτηγό", "Στόλος οχημάτων"]`
+- `makeModel` — `Μάρκα & Μοντέλο` — text
+- `year` — `Έτος πρώτης κυκλοφορίας` — number
+- `use` — `Χρήση οχήματος` — select — `["Ιδιωτική", "Επαγγελματική"]`
+- `coverLevel` — `Επιθυμητή κάλυψη` — select — `["Βασική (υποχρεωτική αστική ευθύνη)", "Μερική (πυρός / κλοπής)", "Μικτή (ιδίων ζημιών)"]`
+
+**HOME** (Κατοικία)
+- `propertyType` — `Τύπος κατοικίας` — select — `["Διαμέρισμα", "Μονοκατοικία", "Εξοχική κατοικία"]`
+- `sqm` — `Τετραγωνικά μέτρα` — number
+- `ownership` — `Ιδιοκτήτης ή ενοικιαστής;` — select — `["Ιδιοκτήτης", "Ενοικιαστής"]`
+- `buildYear` — `Έτος κατασκευής` — number
+- `security` — `Υπάρχει συναγερμός / μέτρα ασφαλείας;` — select — `["Ναι", "Όχι"]`
+
+**BUSINESS_PLACE** (Επαγγελματικός Χώρος)
+- `companyName` — `Επωνυμία επιχείρησης` — text — required
+- `activity` — `Κλάδος / Δραστηριότητα` — text — required
+- `employees` — `Αριθμός εργαζομένων` — number
+- `sqm` — `Τετραγωνικά μέτρα χώρου` — number
+- `turnover` — `Ετήσιος τζίρος` — select — `["Έως 100.000€", "100.000€ – 500.000€", "500.000€ – 1εκ.€", "Άνω του 1εκ.€", "Προτιμώ να μην απαντήσω"]`
+
+**GROUP** (Ομαδική Ασφάλιση)
+- `companyName` — `Επωνυμία επιχείρησης` — text — required
+- `employees` — `Αριθμός εργαζομένων προς κάλυψη` — number — required
+- `activity` — `Κλάδος / Δραστηριότητα` — text
+- `desiredCover` — `Επιθυμητές καλύψεις` — select — `["Ζωή", "Υγεία", "Ζωή & Υγεία", "Σύνταξη / Αποταμίευση"]`
+
+**CARGO** (Μεταφορά Εμπορευμάτων)
+- `companyName` — `Επωνυμία επιχείρησης` — text — required
+- `goodsType` — `Είδος εμπορευμάτων` — text — required
+- `transportMode` — `Τρόπος μεταφοράς` — select — `["Οδικώς", "Θαλάσσια", "Αεροπορικά", "Συνδυασμένη"]`
+- `frequency` — `Συχνότητα αποστολών` — select — `["Περιστασιακά", "Τακτικά", "Καθημερινά"]`
+- `cargoValue` — `Ενδεικτική αξία ανά αποστολή` — text
+
+**LIABILITY** (Αστική Ευθύνη — appears in both Ιδιώτες and Επιχειρήσεις)
+- `audience` — `Αφορά ιδιώτη ή επιχείρηση;` — select — `["Ιδιώτης", "Επιχείρηση"]` — required
+- `activity` — `Δραστηριότητα / πλαίσιο ευθύνης` — text
+- `employees` — `Αριθμός εργαζομένων (εφόσον αφορά επιχείρηση)` — number
+
+**CYBER** (Cyber — both contexts)
+- `audience` — `Αφορά ιδιώτη ή επιχείρηση;` — select — `["Ιδιώτης", "Επιχείρηση"]` — required
+- `employees` — `Αριθμός εργαζομένων (εφόσον αφορά επιχείρηση)` — number
+- `dataSensitivity` — `Διαχειρίζεστε δεδομένα πελατών ή online συναλλαγές;` — select — `["Ναι", "Όχι", "Εν μέρει"]`
+
+**SAVINGS_INVEST** (Αποταμίευση, Επένδυση)
+- `age` — `Ηλικία` — number
+- `goal` — `Στόχος` — select — `["Σύνταξη", "Αποταμίευση για τα παιδιά", "Δημιουργία κεφαλαίου", "Άλλο"]`
+- `horizon` — `Χρονικός ορίζοντας` — select — `["Έως 5 έτη", "5 – 10 έτη", "Άνω των 10 ετών"]`
+- `monthly` — `Ενδεικτικό μηνιαίο ποσό` — select — `["Έως 100€", "100€ – 300€", "300€ – 500€", "Άνω των 500€"]`
+
+**PET** (Κατοικίδιο)
+- `animalType` — `Είδος ζώου` — select — `["Σκύλος", "Γάτα", "Άλλο"]`
+- `breed` — `Ράτσα` — text
+- `petAge` — `Ηλικία ζώου` — number
+
+### slug → profile map
+
+```ts
+export const SLUG_TO_PROFILE: Record<string, keyof typeof PROFILES> = {
+  ygeia: "HEALTH",
+  zoi: "LIFE_FAMILY",
+  oikogeneia: "LIFE_FAMILY",
+  katoikia: "HOME",
+  "astiki-efthyni": "LIABILITY",
+  oxima: "AUTO",
+  ependysi: "SAVINGS_INVEST",
+  cyber: "CYBER",
+  katoikidio: "PET",
+  apotamieusi: "SAVINGS_INVEST",
+  "epaggelmatikos-xoros": "BUSINESS_PLACE",
+  "etairika-oximata": "AUTO",
+  "omadiki-asfalisi": "GROUP",
+  "metafora-emporeumaton": "CARGO",
+};
+```
+
+Expose a helper `getQuoteFields(slug: string): QuoteField[]` that returns `[...BASE_TOP, ...profileFields, ...BASE_BOTTOM]`, falling back to `[...BASE_TOP, ...BASE_BOTTOM]` (contact-only) if the slug isn't in the map.
+
+For the two **SAVINGS_INVEST** and the investment case, when rendering the `Επένδυση` (`ependysi`) form, show a short honest disclosure line above the submit button: *"Οι επενδυτικές επιλογές δεν εγγυώνται απόδοση· ο κίνδυνος βαρύνει τον ασφαλισμένο."* This keeps the site informational and consistent with the product-page framing. (You can flag this with a boolean on the profile, e.g. `investmentDisclosure: true`, rather than special-casing the slug in the component.)
+
+---
+
+## 2. `app/components/QuoteForm.tsx` (`"use client"`)
+
+Props: `{ slug: string; productTitle: string; categoryLabel: string }`.
+
+Behaviour:
+- Call `getQuoteFields(slug)` and render each field from its descriptor:
+  - `text` / `tel` / `email` / `number` → `<input>` with the matching `type`.
+  - `select` → `<select>` with a disabled placeholder first option (`Επιλέξτε…`) then `options`.
+  - `textarea` → `<textarea rows={4}>`.
+  - `checkbox` → an `<input type="checkbox">` beside its (possibly link-containing) label.
+- Manage all values in a single `useState` object keyed by field `name`. **No browser storage** (no `localStorage`/`sessionStorage`).
+- **Validation on submit:** every `required` field must be non-empty; `email` must match a basic email pattern; `phone` must be at least 8 digits; `consent` must be checked. Show inline Greek error messages under invalid fields (e.g. `Το πεδίο είναι υποχρεωτικό`, `Μη έγκυρο email`) and do not submit until valid.
+- **Do NOT use an HTML `<form>` with native submit** if that causes a full page reload; use a button with an `onClick` handler, or a `<form>` with `onSubmit={e => e.preventDefault()}`. Either is fine as long as there's no unintended reload.
+- **On successful submit**, replace the form with a Greek success state: a lucide `CheckCircle2` icon + heading `Ευχαριστούμε!` + `Λάβαμε το αίτημά σας. Θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατό.`
+
+### Submission mechanism (no backend)
+
+This project has **no custom backend**, so the form can't POST to our own server. Implement submission as a single isolated function `submitQuote(payload)` with a clearly-marked integration point, and default to the zero-setup option so it works immediately:
+
+- **Default (works with no signup):** build a `mailto:` link — `mailto:REPLACE_WITH_DIMITRIOS_EMAIL?subject=Αίτημα προσφοράς: <productTitle>&body=<all field labels + values, URL-encoded>` — and trigger it on submit. Add `// TODO: replace REPLACE_WITH_DIMITRIOS_EMAIL with the real address`.
+- **Recommended before launch (leave commented, with a clear note):** swap `submitQuote` to POST the payload as JSON to a no-backend form service (e.g. Web3Forms or Formspree) so the visitor never leaves the site and submissions arrive reliably by email. Leave a commented stub and a `// TODO` explaining that this needs an access key from the chosen service.
+
+Keep the mailto vs. form-service choice contained entirely inside `submitQuote` so the rest of the component doesn't care which is used.
+
+### Styling
+- Match the site: white page, brand-blue accents, Ubuntu Sans, generous spacing, pill-radius submit button in `#1E439A` with white text. Labels `13–14px`, muted grey (`#4b5563`); inputs full-width with `1px solid #d8dce4`, `10px` radius, `12px 14px` padding, `15px` font; focus state with a blue border. Keep it clean and single-column, max width ~`560px`, centered.
+- Submit button label: `Αποστολή αιτήματος`.
+
+---
+
+## 3. `app/prosfora/[slug]/page.tsx`
+
+Mirror the existing product route pattern. Resolve the product across **all** product arrays so any slug works and we can show the correct title:
+
 ```tsx
-<section style={{
-  display: "flex",
-  flexDirection: "row",
-  minHeight: "480px",
-  background: "#1E439A",
-}}>
-  {/* Left: bio content */}
-  <div style={{
-    flex: "0 0 60%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: "80px 64px",
-  }}>
-    <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "13px", marginBottom: "10px", letterSpacing: "0.08em", textTransform: "uppercase" }}>
-      Ο άνθρωπος πίσω από την ασφάλιση
-    </p>
-    <h1 style={{
-      color: "#fff",
-      fontFamily: "var(--font-ubuntu-sans), sans-serif",
-      fontSize: "38px",
-      fontWeight: 700,
-      lineHeight: 1.2,
-      margin: "0 0 24px",
-    }}>
-      Δημήτριος Πλουμάκης
-    </h1>
+import { notFound } from "next/navigation";
+import Navbar from "../../components/Navbar";
+import QuoteForm from "../../components/QuoteForm";
+import { IDIWTES_PRODUCTS, EXTRA_IDIWTES_PAGES, EPIXEIRISI_PRODUCTS } from "../../components/products";
 
-    {/*
-      ⚠️ BIO PLACEHOLDER — DO NOT FILL THIS IN YET.
-      Leave the following <p> block exactly as shown below.
-      The actual bio text will be provided separately by the client.
-      Keep the placeholder style so it is visually distinct during dev.
-    */}
-    <p style={{
-      color: "rgba(255,255,255,0.55)",
-      fontSize: "15px",
-      lineHeight: 1.7,
-      fontStyle: "italic",
-      border: "1px dashed rgba(255,255,255,0.3)",
-      padding: "16px",
-      borderRadius: "8px",
-      maxWidth: "480px",
-    }}>
-      [Βιογραφικό κείμενο — αναμένεται από τον πελάτη]
-    </p>
+const ALL = [...IDIWTES_PRODUCTS, ...EXTRA_IDIWTES_PAGES, ...EPIXEIRISI_PRODUCTS];
 
-    <div style={{ display: "flex", gap: "32px", marginTop: "40px" }}>
-      <div>
-        <div style={{ color: "#fff", fontSize: "24px", fontWeight: 700, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>25+</div>
-        <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>Χρόνια εμπειρίας</div>
-      </div>
-      <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />
-      <div>
-        <div style={{ color: "#fff", fontSize: "24px", fontWeight: 700, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>12+</div>
-        <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>Εθνικές διακρίσεις</div>
-      </div>
-      <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />
-      <div>
-        <div style={{ color: "#fff", fontSize: "24px", fontWeight: 700, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>6</div>
-        <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>Συνεργαζόμενες εταιρείες</div>
-      </div>
-    </div>
-  </div>
+export function generateStaticParams() {
+  // de-duplicate slugs (astiki-efthyni & cyber appear twice)
+  const slugs = Array.from(new Set(ALL.map((p) => p.slug)));
+  return slugs.map((slug) => ({ slug }));
+}
 
-  {/* Right column: 40% width — photo of Dimitrios */}
-  <div style={{
-    flex: "0 0 40%",
-    overflow: "hidden",
-    position: "relative",
-  }}>
-    <img
-      src="/dimitrios.jpg"
-      alt="Δημήτριος Πλουμάκης"
-      style={{
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-        objectPosition: "center top",
-      }}
-    />
-    {/* subtle dark gradient on the left edge to blend with blue bg */}
-    <div style={{
-      position: "absolute",
-      inset: 0,
-      background: "linear-gradient(to right, rgba(30,67,154,0.5) 0%, transparent 40%)",
-    }} />
-  </div>
-</section>
+export default async function ProsforaPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const product = ALL.find((p) => p.slug === slug);
+  if (!product) notFound();
+
+
+  return (
+    <main style={{ fontFamily: "var(--font-ubuntu-sans), sans-serif", background: "#fff", color: "#1a1a1a", minHeight: "100vh" }}>
+      <Navbar />
+      {/* Breadcrumb: 🏠 > product title > Προσφορά — reuse the same breadcrumb pattern from ProductPageContent */}
+      {/* Heading: e.g. "Ζητήστε προσφορά για <product.title>" */}
+      <QuoteForm slug={slug} productTitle={product.title} categoryLabel="" />
+    </main>
+  );
+}
+```
+
+Add a page heading above the form, e.g. `Ζητήστε προσφορά για {product.title}` with a short subline `Συμπληρώστε τα στοιχεία σας και θα επικοινωνήσουμε μαζί σας με μια εξατομικευμένη προσφορά.` Add the same breadcrumb strip used on product pages, with a third crumb: `🏠 > {product.title} > Προσφορά`.
+
+---
+
+## Verification checklist
+
+1. `npm run dev` — no TypeScript errors.
+2. From a product page, clicking `Ζητήστε Προσφορά` **and** `Με ενδιαφέρει` both open `/prosfora/<slug>`.
+3. The form fields change by product: check `/prosfora/ygeia` (age, coverage type…), `/prosfora/epaggelmatikos-xoros` (company name, turnover…), `/prosfora/oxima` (vehicle type, make/model…), `/prosfora/astiki-efthyni` (the Ιδιώτης/Επιχείρηση selector appears).
+4. Submitting with empty required fields or unchecked consent shows Greek errors and blocks submit.
+5. A valid submit shows the `Ευχαριστούμε!` success state.
+6. `/prosfora/ependysi` shows the no-guaranteed-return disclosure line.
+7. No duplicate-slug warning from `generateStaticParams`.
+8. Greek renders correctly; no browser-storage APIs used.
+
+## Commit
+
+```
+git add -A
+git commit -m "Add product-specific quote request form at /prosfora/[slug]"
+git push
 ```
 
 ---
 
-## Section 2 — Credentials strip
+## Open items to hand back (not for Claude Code to guess)
 
-White background, centered content. Two credential cards side by side.
-
-```tsx
-<section style={{
-  background: "#fff",
-  padding: "64px 64px",
-}}>
-  <p style={{ color: "#1E439A", fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>
-    Εκπαίδευση & Πιστοποιήσεις
-  </p>
-  <h2 style={{
-    fontFamily: "var(--font-ubuntu-sans), sans-serif",
-    fontSize: "28px",
-    fontWeight: 700,
-    color: "#0F2660",
-    marginBottom: "40px",
-  }}>
-    Διεθνώς αναγνωρισμένες πιστοποιήσεις
-  </h2>
-
-  <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
-
-    {/* Credential card 1 */}
-    <div style={{
-      flex: "1 1 300px",
-      border: "1px solid #e0e6f0",
-      borderRadius: "12px",
-      padding: "32px",
-      borderLeft: "4px solid #1E439A",
-    }}>
-      <div style={{ color: "#1E439A", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "10px" }}>
-        LIMRA · Windsor, Connecticut, U.S.A.
-      </div>
-      <h3 style={{ fontFamily: "var(--font-ubuntu-sans), sans-serif", fontSize: "17px", fontWeight: 700, color: "#0F2660", margin: "0 0 8px" }}>
-        Management Skills Seminar
-      </h3>
-      <p style={{ color: "#555", fontSize: "14px", lineHeight: 1.6, margin: "0 0 12px" }}>
-        Διεθνές σεμινάριο διοίκησης πωλήσεων ασφαλιστικής, παρεχόμενο από τον παγκόσμιο οργανισμό LIMRA — έναν από τους πιο έγκυρους φορείς επαγγελματικής κατάρτισης στον ασφαλιστικό κλάδο ανά τον κόσμο.
-      </p>
-      <div style={{ color: "#888", fontSize: "12px" }}>Φεβρουάριος 2012 · International Life, Ελλάδα</div>
-    </div>
-
-    {/* Credential card 2 */}
-    <div style={{
-      flex: "1 1 300px",
-      border: "1px solid #e0e6f0",
-      borderRadius: "12px",
-      padding: "32px",
-      borderLeft: "4px solid #1E439A",
-    }}>
-      <div style={{ color: "#1E439A", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "10px" }}>
-        LIMRA · EIAS (Ελληνικό Ινστιτούτο Ασφαλιστικών Σπουδών)
-      </div>
-      <h3 style={{ fontFamily: "var(--font-ubuntu-sans), sans-serif", fontSize: "17px", fontWeight: 700, color: "#0F2660", margin: "0 0 8px" }}>
-        Creating Clients: Moving from Sales to Market Development
-      </h3>
-      <p style={{ color: "#555", fontSize: "14px", lineHeight: 1.6, margin: "0 0 12px" }}>
-        Εξειδικευμένο πρόγραμμα ανάπτυξης αγοράς και στρατηγικής απόκτησης πελατών, σε συνεργασία με το EIAS — τον επίσημο εκπαιδευτικό φορέα του ασφαλιστικού κλάδου στην Ελλάδα.
-      </p>
-      <div style={{ color: "#888", fontSize: "12px" }}>Νοέμβριος 2013 · EIAS, Ελλάδα</div>
-    </div>
-
-  </div>
-</section>
-```
-
----
-
-## Section 3 — Awards
-
-Light background (`#F5F7FB`), full-width.
-
-```tsx
-<section style={{
-  background: "#F5F7FB",
-  padding: "64px 64px",
-}}>
-  <p style={{ color: "#1E439A", fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>
-    Διακρίσεις
-  </p>
-  <h2 style={{
-    fontFamily: "var(--font-ubuntu-sans), sans-serif",
-    fontSize: "28px",
-    fontWeight: 700,
-    color: "#0F2660",
-    marginBottom: "12px",
-  }}>
-    Αναγνώριση σε εθνικό επίπεδο
-  </h2>
-  <p style={{ color: "#555", fontSize: "15px", lineHeight: 1.6, maxWidth: "600px", marginBottom: "48px" }}>
-    Για πάνω από μια δεκαετία, ο Δημήτριος Πλουμάκης βραβεύθηκε επανειλημμένα στα Πανελλήνια Συνέδρια Πωλήσεων, ανακηρύσσoντας τον ανάμεσα στους κορυφαίους ασφαλιστές της χώρας.
-  </p>
-
-  {/* Awards grid */}
-  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "16px" }}>
-
-    {[
-      { year: "2000", rank: "5ο βραβείο", category: "Ασφαλίστρων Κανονισμού", event: "31ο Πανελλήνιο Συνέδριο Πωλήσεων" },
-      { year: "2002", rank: "3ο βραβείο", category: "Διατηρησιμότητας", event: "33ο Πανελλήνιο Συνέδριο Πωλήσεων" },
-      { year: "2003", rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων", event: "Ημερίδα Βραβεύσεων, Αθήνα" },
-      { year: "2005", rank: "4ο βραβείο", category: "Κανονισμού Πωλήσεων", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων" },
-      { year: "2006", rank: "3ο βραβείο", category: "Παραγωγής Γενικών", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων" },
-      { year: "2006", rank: "5ο βραβείο", category: "Παραγωγής Ζωής", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων" },
-      { year: "2007", rank: "5ο βραβείο", category: "Παραγωγής Γενικών", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων" },
-      { year: "2007", rank: "5ο βραβείο", category: "Παραγωγής Ζωής", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων" },
-      { year: "2008", rank: "6ο βραβείο", category: "Παραγωγής Γενικών", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων" },
-      { year: "2012", rank: "4ο βραβείο", category: "Παραγωγής Γενικών", event: "39ο Πανελλήνιο Συνέδριο Πωλήσεων" },
-      { year: "2013", rank: "2ο βραβείο", category: "Παραγωγής Γενικών", event: "39ο Πανελλήνιο Συνέδριο, Costa Navarino" },
-      { year: "2025", rank: "Loyalty Award", category: "Sales Awards 2025", event: "NOW Insurance Group" },
-    ].map((award, i) => (
-      <div key={i} style={{
-        background: "#fff",
-        borderRadius: "10px",
-        padding: "24px",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "6px",
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{
-            background: "#EEF2FF",
-            color: "#1E439A",
-            fontSize: "11px",
-            fontWeight: 700,
-            padding: "3px 10px",
-            borderRadius: "999px",
-          }}>{award.year}</span>
-          <span style={{ color: "#1E439A", fontWeight: 700, fontSize: "13px" }}>{award.rank}</span>
-        </div>
-        <div style={{ fontFamily: "var(--font-ubuntu-sans), sans-serif", fontWeight: 600, fontSize: "15px", color: "#0F2660" }}>
-          {award.category}
-        </div>
-        <div style={{ color: "#888", fontSize: "12px" }}>{award.event}</div>
-      </div>
-    ))}
-
-  </div>
-
-  {/* Context note */}
-  <p style={{ color: "#777", fontSize: "13px", marginTop: "32px", fontStyle: "italic" }}>
-    Όλα τα παραπάνω βραβεία απονεμήθηκαν από τον Όμιλο International Life στα ετήσια Πανελλήνια Συνέδρια Πωλήσεων, όπου αξιολογούνται όλοι οι ασφαλιστές και Unit Managers της χώρας.
-  </p>
-</section>
-```
-
----
-
-## Constraints
-
-- Inline styles only — no Tailwind, no CSS modules
-- Import Navbar and Footer from their existing component files
-- Do NOT invent bio text — leave the placeholder exactly as written above
-- All text copy is final and in Greek — do not translate or modify
-- Run `npm run dev` and confirm the page renders at `/emeis`
+- Dimitrios's real email for the `mailto:` fallback (or the decision to use Web3Forms/Formspree instead).
+- A **Πολιτική Απορρήτου** (`/politiki-aporritou`) page — legally required before the form goes live.

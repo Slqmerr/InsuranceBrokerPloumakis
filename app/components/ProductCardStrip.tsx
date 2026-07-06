@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { motion, useAnimationControls } from "framer-motion";
 import { PRODUCT_CARDS } from "./products";
 
@@ -67,46 +68,49 @@ export default function ProductCardStrip() {
       />
 
       {PRODUCT_CARDS.map((card, i) => (
-        <motion.div
-          key={card.title}
-          onMouseEnter={(e) => {
-            const r = e.currentTarget.getBoundingClientRect();
-            activate(i, e.clientX - r.left < r.width / 2);
-          }}
-          whileTap={{ scale: 0.98 }}
-          style={{
-            position: "relative",
-            zIndex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "12px",
-            padding: "60px 8px",
-            cursor: "pointer",
-          }}
-        >
-          <div style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "50%",
-            background: "#e8eef8",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-            <card.icon size={22} color="#1E439A" strokeWidth={1.75} />
-          </div>
-          <div style={{
-            textAlign: "center",
-            color: "#1E439A",
-            fontSize: "15px",
-            fontWeight: 600,
-            fontFamily: "var(--font-ubuntu-sans), sans-serif",
-          }}>
-            {card.title}
-          </div>
-        </motion.div>
+        // display: contents keeps the Link out of the grid layout — the
+        // motion.div stays the grid item, the whole tile navigates.
+        <Link key={card.title} href={card.href} style={{ textDecoration: "none", display: "contents" }}>
+          <motion.div
+            onMouseEnter={(e) => {
+              const r = e.currentTarget.getBoundingClientRect();
+              activate(i, e.clientX - r.left < r.width / 2);
+            }}
+            whileTap={{ scale: 0.98 }}
+            style={{
+              position: "relative",
+              zIndex: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "12px",
+              padding: "60px 8px",
+              cursor: "pointer",
+            }}
+          >
+            <div style={{
+              width: "48px",
+              height: "48px",
+              borderRadius: "50%",
+              background: "#e8eef8",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+              <card.icon size={22} color="#1E439A" strokeWidth={1.75} />
+            </div>
+            <div style={{
+              textAlign: "center",
+              color: "#1E439A",
+              fontSize: "15px",
+              fontWeight: 600,
+              fontFamily: "var(--font-ubuntu-sans), sans-serif",
+            }}>
+              {card.title}
+            </div>
+          </motion.div>
+        </Link>
       ))}
     </div>
   );

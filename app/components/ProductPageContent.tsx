@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Award, Check, ChevronRight, Home, Phone, ShieldCheck, Users } from "lucide-react";
 import Navbar from "./Navbar";
+import HeroCtaButtons from "./HeroCtaButtons";
 import type { Product } from "./products";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
@@ -29,7 +30,30 @@ export default function ProductPageContent({
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
+          position: "relative",
         }}>
+          {/* Breadcrumb — home icon › current product (plain text, not a link),
+              pinned to the top of the panel so the centered copy is untouched */}
+          <nav
+            aria-label="breadcrumb"
+            style={{
+              position: "absolute",
+              top: "24px",
+              left: "64px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              fontFamily: UBUNTU,
+              fontSize: "13px",
+            }}
+          >
+            <Link href="/" aria-label="Αρχική" style={{ display: "inline-flex", alignItems: "center", color: "rgba(255,255,255,0.75)" }}>
+              <Home size={16} strokeWidth={1.9} />
+            </Link>
+            <ChevronRight size={14} strokeWidth={1.9} color="rgba(255,255,255,0.5)" />
+            <span style={{ color: "#fff", fontWeight: 600 }}>{product.title}</span>
+          </nav>
+
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "12px", letterSpacing: "0.5px", textTransform: "uppercase", margin: "0 0 16px" }}>
             {categoryLabel}
           </p>
@@ -56,25 +80,13 @@ export default function ProductPageContent({
             {product.intro}
           </p>
 
-          {/* TODO: repoint to the contact section / Calendly embed once it exists */}
-          <Link href="/" style={{
-            background: "#fff",
-            color: "#1E439A",
-            fontWeight: 700,
-            fontFamily: UBUNTU,
-            padding: "13px 30px",
-            borderRadius: "999px",
-            textDecoration: "none",
-            fontSize: "14px",
-            width: "fit-content",
-          }}>
-            Ζητήστε Προσφορά
-          </Link>
+          {/* Quote page arrives with prompt 11 — links 404 in dev until then */}
+          <HeroCtaButtons href={`/prosfora/${product.slug}`} />
         </div>
 
         {/* Right: product photo — absolutely positioned so its intrinsic size
-            can't stretch the grid row; the blue panel drives the hero height */}
-        <div style={{ position: "relative", overflow: "hidden", minHeight: "460px" }}>
+            can't inflate the grid row; the blue panel alone sets the hero height */}
+        <div style={{ position: "relative", minHeight: "460px" }}>
           <img
             src={product.image}
             alt={product.title}
@@ -83,8 +95,15 @@ export default function ProductPageContent({
         </div>
       </section>
 
-      {/* Body — description + what it covers */}
-      <section style={{ padding: "64px", maxWidth: "760px" }}>
+      {/* Body — description + what it covers, with a sticky CTA sidebar */}
+      <section style={{
+        padding: "64px",
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 720px) 320px",
+        gap: "64px",
+        alignItems: "start",
+      }}>
+        <div>
         <p style={{ fontSize: "16px", color: "#444", lineHeight: 1.75, margin: "0 0 40px" }}>
           {product.description}
         </p>
@@ -105,9 +124,105 @@ export default function ProductPageContent({
           Συνεργαζόμαστε με κορυφαίες ασφαλιστικές εταιρείες, ώστε να βρούμε μαζί το πρόγραμμα που ταιριάζει στις ανάγκες σας. Επικοινωνήστε μαζί μας για μια εξατομικευμένη προσφορά.
         </p>
 
-        <Link href="/" style={{ color: "#1E439A", fontSize: "14px", fontWeight: 600, textDecoration: "none" }}>
-          ← Επιστροφή στην αρχική
+        <Link href={`/prosfora/${product.slug}`} style={{
+          background: "#1E439A",
+          color: "#fff",
+          fontWeight: 700,
+          fontFamily: UBUNTU,
+          padding: "13px 30px",
+          borderRadius: "999px",
+          textDecoration: "none",
+          fontSize: "14px",
+          display: "inline-block",
+        }}>
+          Ζητήστε Προσφορά
         </Link>
+        </div>
+
+        {/* Sticky sidebar — trust points + CTAs follow the reader */}
+        <aside style={{
+          position: "sticky",
+          top: "112px",
+          background: "#fff",
+          borderRadius: "24px",
+          boxShadow: "0 12px 40px rgba(18,35,85,0.12)",
+          padding: "32px 28px",
+        }}>
+          <h3 style={{ fontFamily: UBUNTU, fontSize: "17px", fontWeight: 700, color: "#0F2660", margin: "0 0 20px" }}>
+            Γιατί μαζί μας
+          </h3>
+
+          <div style={{ display: "grid", gap: "14px", marginBottom: "26px" }}>
+            {[
+              { icon: Award, text: "20+ χρόνια εμπειρίας" },
+              { icon: Users, text: "500+ ικανοποιημένοι πελάτες" },
+              { icon: ShieldCheck, text: "15+ συνεργαζόμενες εταιρείες" },
+            ].map((item) => (
+              <div key={item.text} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "10px",
+                  background: "#e8eef8",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}>
+                  <item.icon size={18} color="#1E439A" strokeWidth={1.75} />
+                </div>
+                <span style={{ fontSize: "14px", color: "#333", fontWeight: 600 }}>{item.text}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ height: "1px", background: "#eef0f4", margin: "0 0 24px" }} />
+
+          <div style={{ display: "grid", gap: "10px" }}>
+            <Link href={`/prosfora/${product.slug}`} style={{
+              background: "#1E439A",
+              color: "#fff",
+              fontWeight: 700,
+              fontFamily: UBUNTU,
+              padding: "13px 24px",
+              borderRadius: "999px",
+              textDecoration: "none",
+              fontSize: "14px",
+              textAlign: "center",
+            }}>
+              Ζητήστε Προσφορά
+            </Link>
+            <Link href="/epikoinonia" style={{
+              background: "transparent",
+              color: "#1E439A",
+              border: "1.5px solid #1E439A",
+              fontWeight: 700,
+              fontFamily: UBUNTU,
+              padding: "12px 24px",
+              borderRadius: "999px",
+              textDecoration: "none",
+              fontSize: "14px",
+              textAlign: "center",
+            }}>
+              Κλείσε Ραντεβού
+            </Link>
+          </div>
+
+          <a href="tel:+302810326400" style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            marginTop: "20px",
+            color: "#4b5563",
+            textDecoration: "none",
+            fontSize: "14px",
+            fontWeight: 600,
+          }}>
+            <Phone size={15} color="#1E439A" strokeWidth={1.75} />
+            2810 326 400
+          </a>
+        </aside>
       </section>
     </main>
   );
