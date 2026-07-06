@@ -1,6 +1,10 @@
 "use client";
 
-import { Phone, Mail, MapPin, ChevronRight } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
+
+const OFFICE_ADDRESS = "Κυδωνίας 8 & Ανδρεαδάκη Βασίλη 2, 71202 Ηράκλειο";
+// Keyless Google Maps embed — geocodes the address server-side
+const MAP_EMBED_SRC = `https://maps.google.com/maps?q=${encodeURIComponent("Κυδωνίας 8, Ηράκλειο 71202")}&z=17&hl=el&output=embed`;
 
 export default function Footer() {
   return (
@@ -11,11 +15,11 @@ export default function Footer() {
       fontFamily: "var(--font-ubuntu-sans), sans-serif",
     }}>
 
-      {/* ── Top grid: 4 columns ── */}
+      {/* ── Top grid: contact column + location minimap ── */}
       <div style={{
         display: "grid",
-        gridTemplateColumns: "2fr 1fr 1fr 1.5fr",
-        gap: "48px",
+        gridTemplateColumns: "1fr 1.2fr",
+        gap: "64px",
         paddingBottom: "48px",
         borderBottom: "1px solid rgba(255,255,255,0.1)",
       }}>
@@ -81,13 +85,13 @@ export default function Footer() {
                 fontSize: "14px",
               }}
             >
-              <MapPin size={15} strokeWidth={1.75} />
-              Ηράκλειο,Κρήτης
+              <MapPin size={15} strokeWidth={1.75} style={{ flexShrink: 0 }} />
+              {OFFICE_ADDRESS}
             </span>
           </div>
         </div>
 
-        {/* Column 2 — Ιδιώτες links */}
+        {/* Column 2 — Location minimap */}
         <div>
           <h4 style={{
             color: "#fff",
@@ -97,117 +101,21 @@ export default function Footer() {
             textTransform: "uppercase",
             margin: "0 0 20px",
           }}>
-            Ιδιώτες
+            Πού θα μας βρείτε
           </h4>
-          <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-            {[
-              { label: "Υγεία" },
-              { label: "Ζωή" },
-              { label: "Κατοικία" },
-              { label: "Αστική Ευθύνη" },
-              { label: "Όχημα" },
-              { label: "Επένδυση" },
-              { label: "Κατοικίδιο" },
-            ].map((item) => (
-              <li key={item.label}>
-                <a
-                  href="#"
-                  style={{
-                    color: "rgba(255,255,255,0.65)",
-                    textDecoration: "none",
-                    fontSize: "14px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    transition: "color 0.15s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
-                >
-                  <ChevronRight size={12} strokeWidth={2} />
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Column 3 — Επιχείρηση links */}
-        <div>
-          <h4 style={{
-            color: "#fff",
-            fontSize: "13px",
-            fontWeight: 700,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            margin: "0 0 20px",
-          }}>
-          Επιχείρηση
-          </h4>
-          <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-            {[
-              { label: "Επαγγελματικός Χώρος" },
-              { label: "Αστική Ευθύνη" },
-              { label: "Εταιρικά Οχήματα" },
-              { label: "Cyber" },
-              { label: "Ομαδική Ασφάλιση" },
-              { label: "Μεταφορά Εμπορευμάτων" },
-            ].map((item) => (
-              <li key={item.label}>
-                <a
-                  href="#"
-                  style={{
-                    color: "rgba(255,255,255,0.65)",
-                    textDecoration: "none",
-                    fontSize: "14px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    transition: "color 0.15s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
-                >
-                  <ChevronRight size={12} strokeWidth={2} />
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Column 4 — Partners */}
-        <div>
-          <h4 style={{
-            color: "#fff",
-            fontSize: "13px",
-            fontWeight: 700,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            margin: "0 0 20px",
-          }}>
-            Συνεργαζόμενες Εταιρείες
-          </h4>
-          <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-            {[
-              "Interamerican",
-              "Allianz",
-              "Generali",
-              "AXA",
-              "Eurolife",
-              "Εθνική Ασφαλιστική",
-            ].map((name) => (
-              <li
-                key={name}
-                style={{
-                  color: "rgba(255,255,255,0.65)",
-                  fontSize: "14px",
-                }}
-              >
-                {name}
-              </li>
-            ))}
-          </ul>
+          <iframe
+            src={MAP_EMBED_SRC}
+            title={`Χάρτης — ${OFFICE_ADDRESS}`}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            style={{
+              width: "100%",
+              height: "260px",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: "16px",
+              display: "block",
+            }}
+          />
         </div>
       </div>
 
