@@ -329,13 +329,14 @@ export default function EmeisPage() {
           Για πάνω από μια δεκαετία, ο Δημήτριος Πλουμάκης βραβεύθηκε επανειλημμένα στα Πανελλήνια Συνέδρια Πωλήσεων, ανακηρύσσoντας τον ανάμεσα στους κορυφαίους ασφαλιστές της χώρας.
         </motion.p>
 
-        {/* Minimal timeline — year first, then event; multiple awards grouped per year */}
-        <div style={{ maxWidth: "860px" }}>
+        {/* Alternating timeline — nodes fan out on both sides of a central axis */}
+        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           {([
             { month: "Μάρτιος", year: "2000", event: "31ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
-            { month: "Μάρτιος", year: "2002", event: "33ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "3ο βραβείο", category: "Διατηρησιμότητας" }] },
-            { month: "Μάρτιος", year: "2003", event: "Ημερίδα Βραβεύσεων, Αθήνα", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
-            { month: "Μάρτιος", year: "2005", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "4ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
+            { year: "2002", event: "33ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "3ο βραβείο", category: "Διατηρησιμότητας" }] },
+            { year: "2003", event: "Ημερίδα Βραβεύσεων, Αθήνα", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
+            
+            { month: "Μάρτιος", year: "2005", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "4ο βραβείο", category: "Κανονισμού Πωλήσεων" },{ rank: "3ο βραβείο", category: "Παραγωγής" }] },
             {
               month: "Σεπτέμβριος", year: "2006", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [
                 { rank: "3ο βραβείο", category: "Παραγωγής Γενικών" },
@@ -348,87 +349,128 @@ export default function EmeisPage() {
                 { rank: "5ο βραβείο", category: "Παραγωγής Ζωής" },
               ]
             },
-            { month: "Μάρτιος", year: "2008", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "6ο βραβείο", category: "Παραγωγής Γενικών" }] },
+            { month: "Μάρτιος", year: "2008", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "6ο βραβείο", category: "Παραγωγής Γενικών " }] },
             { month: "Μάρτιος", year: "2012", event: "39ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "4ο βραβείο", category: "Παραγωγής Γενικών" }] },
-            { month: "Μάρτιος", year: "2013", event: "39ο Πανελλήνιο Συνέδριο, Costa Navarino", awards: [{ rank: "2ο βραβείο", category: "Παραγωγής Γενικών" }] },
+            { month: "Μάιος", year: "2013", event: "39ο Πανελλήνιο Συνέδριο, Costa Navarino", awards: [{ rank: "2ο βραβείο", category: "Παραγωγής Γενικών" }] },
             {  year: "2025", event: "NOW Insurance Group", awards: [{ rank: "Loyalty Award", category: "Sales Awards 2025" }] },
           ] as { year: string; month?: string; event: string; awards: { rank: string; category: string }[] }[]).map((entry, i, arr) => {
             const isLast = i === arr.length - 1;
+            const isEven = i % 2 === 0;
+
+            // Even rows put the date on the left / content on the right; odd rows swap.
+            // The slide-in origin is flipped so each side animates in from the outer edge.
+            const dateAlign: "right" | "left" = isEven ? "right" : "left";
+            const contentAlign: "right" | "left" = isEven ? "left" : "right";
+            const dateVariant: Variants = {
+              hidden: { opacity: 0, x: isEven ? -28 : 28 },
+              show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
+            };
+            const contentVariant: Variants = {
+              hidden: { opacity: 0, x: isEven ? 28 : -28 },
+              show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut", delay: 0.1 } },
+            };
+
+            // Date node — anchored toward the central axis
+            const dateBlock = (
+              <motion.div variants={dateVariant} style={{ textAlign: dateAlign, paddingTop: "2px" }}>
+                {entry.month && (
+                  <div style={{ color: "#888", fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "2px" }}>
+                    {entry.month}
+                  </div>
+                )}
+                <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#1E439A", lineHeight: 1.1 }}>
+                  {entry.year}
+                </div>
+              </motion.div>
+            );
+
+            // Divider — dot pops, line grows downward
+            const dividerBlock = (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <motion.div
+                  variants={dotPop}
+                  whileHover={{ scale: 1.5 }}
+                  style={{
+                    width: "9px",
+                    height: "9px",
+                    borderRadius: "50%",
+                    border: "2px solid #1E439A",
+                    background: "#fff",
+                    boxShadow: "0 0 0 5px #EEF2FF",
+                    marginTop: "12px",
+                    flexShrink: 0,
+                  }}
+                />
+                <motion.div
+                  variants={lineGrow}
+                  style={{
+                    width: "1px",
+                    flex: 1,
+                    marginTop: "10px",
+                    transformOrigin: "top",
+                    background: isLast
+                      ? "linear-gradient(to bottom, #C9D4EC 0%, transparent 90%)"
+                      : "linear-gradient(to bottom, #C9D4EC 0%, #C9D4EC 70%, rgba(201,212,236,0.35) 100%)",
+                  }}
+                />
+              </div>
+            );
+
+            // Content node — text hugs the central axis
+            const contentBlock = (
+              <motion.div
+                variants={contentVariant}
+                whileHover={{ x: isEven ? 6 : -6 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                style={{ paddingBottom: isLast ? "8px" : "40px", paddingTop: "6px", textAlign: contentAlign }}
+              >
+                <div style={{ color: "#1E439A", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
+                  {entry.event}
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px", alignItems: isEven ? "flex-start" : "flex-end" }}>
+                  {entry.awards.map((award) => (
+                    <div
+                      key={award.rank + award.category}
+                      style={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        gap: "10px",
+                        flexDirection: isEven ? "row" : "row-reverse",
+                      }}
+                    >
+                      <span style={{ color: "#1E439A", fontWeight: 700, fontSize: "13px", whiteSpace: "nowrap" }}>
+                        {award.rank}
+                      </span>
+                      <span style={{ fontFamily: UBUNTU, fontWeight: 600, fontSize: "16px", color: "#0F2660" }}>
+                        {award.category}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            );
+
             return (
               <motion.div
                 key={entry.year + entry.event}
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true, margin: "-60px" }}
-                style={{ display: "grid", gridTemplateColumns: "150px 56px 1fr" }}
+                style={{ display: "grid", gridTemplateColumns: "1fr 80px 1fr", alignItems: "start" }}
               >
-
-                {/* Date — slides in from the left */}
-                <motion.div variants={dateSlide} style={{ textAlign: "right", paddingTop: "2px" }}>
-                  {entry.month && (
-                    <div style={{ color: "#888", fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "2px" }}>
-                      {entry.month}
-                    </div>
-                  )}
-                  <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#1E439A", lineHeight: 1.1 }}>
-                    {entry.year}
-                  </div>
-                </motion.div>
-
-                {/* Divider — dot pops, line grows downward */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <motion.div
-                    variants={dotPop}
-                    whileHover={{ scale: 1.5 }}
-                    style={{
-                      width: "9px",
-                      height: "9px",
-                      borderRadius: "50%",
-                      border: "2px solid #1E439A",
-                      background: "#fff",
-                      boxShadow: "0 0 0 5px #EEF2FF",
-                      marginTop: "12px",
-                      flexShrink: 0,
-                    }}
-                  />
-                  <motion.div
-                    variants={lineGrow}
-                    style={{
-                      width: "1px",
-                      flex: 1,
-                      marginTop: "10px",
-                      transformOrigin: "top",
-                      background: isLast
-                        ? "linear-gradient(to bottom, #C9D4EC 0%, transparent 90%)"
-                        : "linear-gradient(to bottom, #C9D4EC 0%, #C9D4EC 70%, rgba(201,212,236,0.35) 100%)",
-                    }}
-                  />
-                </div>
-
-                {/* Content — slides in from the right */}
-                <motion.div
-                  variants={contentSlide}
-                  whileHover={{ x: 6 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  style={{ paddingBottom: isLast ? "8px" : "40px", paddingTop: "6px" }}
-                >
-                  <div style={{ color: "#1E439A", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
-                    {entry.event}
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    {entry.awards.map((award) => (
-                      <div key={award.rank + award.category} style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                        <span style={{ color: "#1E439A", fontWeight: 700, fontSize: "13px", whiteSpace: "nowrap" }}>
-                          {award.rank}
-                        </span>
-                        <span style={{ fontFamily: UBUNTU, fontWeight: 600, fontSize: "16px", color: "#0F2660" }}>
-                          {award.category}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-
+                {isEven ? (
+                  <>
+                    {dateBlock}
+                    {dividerBlock}
+                    {contentBlock}
+                  </>
+                ) : (
+                  <>
+                    {contentBlock}
+                    {dividerBlock}
+                    {dateBlock}
+                  </>
+                )}
               </motion.div>
             );
           })}
