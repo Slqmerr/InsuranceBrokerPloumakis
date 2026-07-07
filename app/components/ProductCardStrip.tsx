@@ -38,7 +38,7 @@ export default function ProductCardStrip() {
       onMouseLeave={deactivate}
       style={{
         background: "#fff",
-        boxShadow: "0 12px 40px rgba(18,35,85,0.12)",
+        boxShadow: "0 12px 40px rgba(122,21,25,0.12)",
         borderRadius: "24px",
         margin: "-48px 52px 0",
         position: "relative",
@@ -93,16 +93,16 @@ export default function ProductCardStrip() {
               width: "48px",
               height: "48px",
               borderRadius: "50%",
-              background: "#e8eef8",
+              background: "#fbe9ea",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}>
-              <card.icon size={22} color="#1E439A" strokeWidth={1.75} />
+              <card.icon size={22} color="#c1272d" strokeWidth={1.75} />
             </div>
             <div style={{
               textAlign: "center",
-              color: "#1E439A",
+              color: "#c1272d",
               fontSize: "15px",
               fontWeight: 600,
               fontFamily: "var(--font-ubuntu-sans), sans-serif",

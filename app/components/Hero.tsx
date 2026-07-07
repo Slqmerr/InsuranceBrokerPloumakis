@@ -50,11 +50,11 @@ export default function Hero() {
         }}
       />
 
-      {/* Blue gradient overlay — solid near the text, fading out toward the photo */}
+      {/* Red gradient overlay — solid near the text, fading out toward the photo */}
       <div style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(100deg, rgba(30,67,154,0.93) 0%, rgba(30,67,154,0.75) 35%, rgba(30,67,154,0.35) 70%, rgba(30,67,154,0.15) 100%)",
+        background: "linear-gradient(100deg, rgba(193,39,45,0.93) 0%, rgba(193,39,45,0.75) 35%, rgba(193,39,45,0.35) 70%, rgba(193,39,45,0.15) 100%)",
       }} />
 
       {/* Text content */}
@@ -86,7 +86,7 @@ export default function Hero() {
         </p>
         <Link href="/epikoinonia" style={{
           background: "#fff",
-          color: "#1E439A",
+          color: "#c1272d",
           fontWeight: 700,
           fontFamily: "var(--font-ubuntu-sans), sans-serif",
           padding: "14px 32px",

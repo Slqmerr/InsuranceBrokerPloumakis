@@ -12,7 +12,7 @@ export type Product = {
   color: string; // revealed on hover when the grayscale filter lifts
   image: string; // hero photo, lives in /public/products/
   imagePosition?: string; // object-position for the hero photo (default "center")
-  intro: string; // short hero paragraph (blue panel)
+  intro: string; // short hero paragraph (red panel)
   description: string; // opening body paragraph
   covers: string[]; // "Τι καλύπτει" list
   needs: string[]; // "Τι θα χρειαστείτε" sidebar checklist — what the client should have ready for a quote
@@ -20,7 +20,7 @@ export type Product = {
 
 export const IDIWTES_PRODUCTS: Product[] = [
   {
-    icon: Users, title: "Οικογένεια", slug: "oikogeneia", color: "#1E439A",
+    icon: Users, title: "Οικογένεια", slug: "oikogeneia", color: "#c1272d",
     image: "/products/oikogeneia.jpg",
     intro: "Η προστασία της οικογένειας δεν είναι ένα μεμονωμένο προϊόν, αλλά ένας συνδυασμός καλύψεων που φροντίζει κάθε μέλος σε κάθε στάδιο της ζωής. Σχεδιάζουμε μαζί ένα ολοκληρωμένο πλέγμα ασφάλισης ζωής, εισοδήματος και υγείας, προσαρμοσμένο στις πραγματικές σας ανάγκες.",
     description: "Στόχος μας είναι να εξασφαλίσουμε ότι, ό,τι κι αν συμβεί, η οικογένειά σας θα διατηρήσει το επίπεδο ζωής της χωρίς οικονομικές ανατροπές. Η ασφάλιση ζωής αποδίδει ένα εφάπαξ κεφάλαιο στους δικαιούχους σε περίπτωση απώλειας ζωής, ενώ η εισοδηματική προστασία αναπληρώνει το εισόδημα αν μια ασθένεια ή ένα ατύχημα σας εμποδίσει να εργαστείτε. Το ύψος του κεφαλαίου δεν είναι τυχαίο: το υπολογίζουμε μαζί, με βάση τις υποχρεώσεις, τα έξοδα και τους στόχους σας, ώστε η κάλυψη να είναι ούτε ελλιπής ούτε περιττά ακριβή.",
@@ -77,7 +77,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
     ],
   },
   {
-    icon: Home, title: "Κατοικία", slug: "katoikia", color: "#1E439A",
+    icon: Home, title: "Κατοικία", slug: "katoikia", color: "#c1272d",
     image: "/products/katoikia.jpg",
     intro: "Προστασία για το σπίτι και το περιεχόμενό του, από τη φωτιά μέχρι τον σεισμό.",
     description: "Η ασφάλιση κατοικίας καλύπτει το κτίριο και το περιεχόμενο από πυρκαγιά, σεισμό, πλημμύρα, κλοπή και άλλα απρόβλεπτα, μειώνοντας το κόστος αποκατάστασης μιας ζημιάς. Το πρόγραμμα διαμορφώνεται ανάλογα με τα χαρακτηριστικά της κατοικίας και τις καλύψεις που επιλέγετε, ενώ υπό προϋποθέσεις μπορεί να συνεπάγεται και μείωση του ΕΝΦΙΑ.",
@@ -196,7 +196,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
 
 export const EPIXEIRISI_PRODUCTS: Product[] = [
   {
-    icon: Building2, title: "Επαγγελματικός Χώρος", slug: "epaggelmatikos-xoros", color: "#1E439A",
+    icon: Building2, title: "Επαγγελματικός Χώρος", slug: "epaggelmatikos-xoros", color: "#c1272d",
     image: "/products/epaggelmatikos-xoros.jpg",
     intro: "Προστασία για το κτίριο, τον εξοπλισμό και τα εμπορεύματα της επιχείρησής σας.",
     description: "Η ασφάλιση επαγγελματικού χώρου καλύπτει την επαγγελματική σας στέγη και το περιεχόμενό της από πυρκαγιά, φυσικά φαινόμενα, κλοπή και άλλους κινδύνους, ώστε να εξασφαλίζεται η συνεχής λειτουργία της επιχείρησης. Οι καλύψεις προσαρμόζονται στα τετραγωνικά και στο ασφαλιζόμενο κεφάλαιο.",
@@ -338,7 +338,7 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
 ];
 
 export const PRODUCT_CARDS = [
-  { icon: Users, title: "Οικογένεια", color: "#e4ebfb", href: "/idiotes/oikogeneia" },
+  { icon: Users, title: "Οικογένεια", color: "#f9dcde", href: "/idiotes/oikogeneia" },
   { icon: Home, title: "Κατοικία", color: "#e3f3e8", href: "/idiotes/katoikia" },
   { icon: Car, title: "Οχήματα", color: "#fdeede", href: "/idiotes/oxima" },
   { icon: Heart, title: "Υγεία", color: "#fbe4ec", href: "/idiotes/ygeia" },

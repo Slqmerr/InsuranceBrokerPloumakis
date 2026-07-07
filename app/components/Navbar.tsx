@@ -27,7 +27,7 @@ export default function Navbar() {
         display: "grid",
         gridTemplateColumns: "auto 1fr auto",
         alignItems: "center",
-        background: "#1E439A",
+        background: "#c1272d",
         height: "88px",
         padding: "0 36px",
         position: "sticky",
@@ -164,7 +164,7 @@ export default function Navbar() {
           </a>
           <Link href="/epikoinonia" onClick={closeMenu} style={{
             background: "#fff",
-            color: "#1E439A",
+            color: "#c1272d",
             fontWeight: 700,
             fontFamily: UBUNTU,
             padding: "10px 20px",
@@ -272,14 +272,14 @@ export default function Navbar() {
                           textDecoration: "none",
                           cursor: "pointer",
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = "#f5f7fb"; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "#fdf6f6"; }}
                         onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
                       >
                         <div style={{
                           width: "44px",
                           height: "44px",
                           borderRadius: "10px",
-                          background: "#e8eef8",
+                          background: "#fbe9ea",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -303,7 +303,7 @@ export default function Navbar() {
                 {/* RIGHT — CTA panel */}
                 <div style={{
                   flex: "0 0 30%",
-                  background: "#F0F4FF",
+                  background: "#fdeff0",
                   borderRadius: "16px",
                   padding: "36px 32px",
                   display: "flex",
@@ -318,7 +318,7 @@ export default function Navbar() {
                         fontWeight: 600,
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
-                        color: "#1E439A",
+                        color: "#c1272d",
                         margin: 0,
                       }}>
                         Δεν ξέρεις από πού να ξεκινήσεις;
@@ -343,7 +343,7 @@ export default function Navbar() {
                       </p>
                       <Link href="/epikoinonia" onClick={closeMenu} style={{
                         marginTop: "8px",
-                        background: "#1E439A",
+                        background: "#c1272d",
                         color: "#fff",
                         fontWeight: 700,
                         fontFamily: "var(--font-ubuntu-sans), sans-serif",
@@ -366,7 +366,7 @@ export default function Navbar() {
                         fontWeight: 600,
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
-                        color: "#1E439A",
+                        color: "#c1272d",
                         margin: 0,
                       }}>
                         Ασφάλεια για επιχειρήσεις
@@ -391,7 +391,7 @@ export default function Navbar() {
                       </p>
                       <Link href="/epikoinonia" onClick={closeMenu} style={{
                         marginTop: "8px",
-                        background: "#1E439A",
+                        background: "#c1272d",
                         color: "#fff",
                         fontWeight: 700,
                         fontFamily: "var(--font-ubuntu-sans), sans-serif",

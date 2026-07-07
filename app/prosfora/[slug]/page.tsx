@@ -30,8 +30,8 @@ export default async function ProsforaPage({
     <main style={{ fontFamily: UBUNTU, background: "#fff", color: "#1a1a1a", width: "100%", minHeight: "100vh" }}>
       <Navbar />
 
-      {/* Blue header band — breadcrumb + heading, matching the product hero style */}
-      <section style={{ background: "#1E439A", padding: "24px 64px 88px" }}>
+      {/* Red header band — breadcrumb + heading, matching the product hero style */}
+      <section style={{ background: "#c1272d", padding: "24px 64px 88px" }}>
         <nav
           aria-label="breadcrumb"
           style={{

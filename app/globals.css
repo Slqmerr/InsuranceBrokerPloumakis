@@ -100,17 +100,17 @@ body {
 }
 
 label:hover .consent-box {
-  border-color: #1e439a;
+  border-color: #c1272d;
 }
 
 /* the real (invisible) input sits right before the box */
 input:focus-visible + .consent-box {
-  box-shadow: 0 0 0 3px rgba(30, 67, 154, 0.3);
+  box-shadow: 0 0 0 3px rgba(193,39,45,0.3);
 }
 
 .consent-box.checked {
-  background: #1e439a;
-  border-color: #1e439a;
+  background: #c1272d;
+  border-color: #c1272d;
   animation: checkbox-pop 0.35s ease;
 }
 

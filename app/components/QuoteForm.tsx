@@ -7,7 +7,7 @@ import { getQuoteFields, hasInvestmentDisclosure, type QuoteField } from "./quot
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
-// Rounded card that overlaps the blue header band, like the homepage card strip
+// Rounded card that overlaps the red header band, like the homepage card strip
 const CARD: React.CSSProperties = {
   maxWidth: "640px",
   margin: "-40px auto 80px",
@@ -15,7 +15,7 @@ const CARD: React.CSSProperties = {
   zIndex: 10,
   background: "#fff",
   borderRadius: "24px",
-  boxShadow: "0 12px 40px rgba(18,35,85,0.12)",
+  boxShadow: "0 12px 40px rgba(122,21,25,0.12)",
   padding: "36px 36px 40px",
   fontFamily: UBUNTU,
 };
@@ -34,7 +34,7 @@ const INPUT: React.CSSProperties = {
 };
 
 const focusOn = (e: React.FocusEvent<HTMLElement>) => {
-  e.currentTarget.style.borderColor = "#1E439A";
+  e.currentTarget.style.borderColor = "#c1272d";
 };
 const focusOff = (e: React.FocusEvent<HTMLElement>) => {
   e.currentTarget.style.borderColor = "#d8dce4";
@@ -138,7 +138,7 @@ export default function QuoteForm({
   if (submitted) {
     return (
       <div className="fade-up" style={{ ...CARD, padding: "80px 40px", textAlign: "center" }}>
-        <CheckCircle2 size={56} color="#1E439A" strokeWidth={1.75} style={{ marginBottom: "20px" }} />
+        <CheckCircle2 size={56} color="#c1272d" strokeWidth={1.75} style={{ marginBottom: "20px" }} />
         <h2 style={{ fontSize: "28px", fontWeight: 700, margin: "0 0 12px" }}>Ευχαριστούμε!</h2>
         <p style={{ fontSize: "16px", color: "#4b5563", lineHeight: 1.6, margin: 0 }}>
           Λάβαμε το αίτημά σας. Θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατό.
@@ -159,7 +159,7 @@ export default function QuoteForm({
     return (
       <>
         {before}
-        <Link href={field.link.href} style={{ color: "#1E439A", fontWeight: 600 }}>
+        <Link href={field.link.href} style={{ color: "#c1272d", fontWeight: 600 }}>
           {field.link.text}
         </Link>
         {after}
@@ -303,10 +303,10 @@ export default function QuoteForm({
         type="button"
         onClick={handleSubmit}
         disabled={sending}
-        onMouseEnter={(e) => { if (!sending) e.currentTarget.style.background = "#16337a"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.background = "#1E439A"; }}
+        onMouseEnter={(e) => { if (!sending) e.currentTarget.style.background = "#9e1e23"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.background = "#c1272d"; }}
         style={{
-          background: "#1E439A",
+          background: "#c1272d",
           color: "#fff",
           fontWeight: 700,
           fontFamily: UBUNTU,

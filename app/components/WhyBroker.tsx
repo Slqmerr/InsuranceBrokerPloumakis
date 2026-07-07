@@ -40,14 +40,14 @@ const REASONS = [
 
 export default function WhyBroker() {
   return (
-    <section style={{ background: "#F5F7FB", padding: "72px 64px" }}>
+    <section style={{ background: "#fdf6f6", padding: "72px 64px" }}>
       
       <motion.h2
         variants={fadeUp}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "-60px" }}
-        style={{ fontFamily: UBUNTU, fontSize: "28px", fontWeight: 700, color: "#0F2660", margin: "0 0 12px", maxWidth: "620px", lineHeight: 1.25 }}
+        style={{ fontFamily: UBUNTU, fontSize: "28px", fontWeight: 700, color: "#7a1519", margin: "0 0 12px", maxWidth: "620px", lineHeight: 1.25 }}
       >
         Γιατί να με εμπιστευτείτε;
       </motion.h2>
@@ -79,7 +79,7 @@ export default function WhyBroker() {
               background: "#fff",
               borderRadius: "24px",
               padding: "32px 28px",
-              boxShadow: "0 12px 40px rgba(18,35,85,0.08)",
+              boxShadow: "0 12px 40px rgba(122,21,25,0.08)",
               display: "flex",
               flexDirection: "column",
               gap: "16px",
@@ -89,14 +89,14 @@ export default function WhyBroker() {
               width: "56px",
               height: "56px",
               borderRadius: "50%",
-              background: "#e8eef8",
+              background: "#fbe9ea",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}>
-              <r.icon size={26} color="#1E439A" strokeWidth={1.75} />
+              <r.icon size={26} color="#c1272d" strokeWidth={1.75} />
             </div>
-            <h3 style={{ fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#0F2660", margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#7a1519", margin: 0, lineHeight: 1.3 }}>
               {r.title}
             </h3>
             <p style={{ color: "#555", fontSize: "14px", lineHeight: 1.65, margin: 0 }}>
