@@ -123,7 +123,7 @@ export default function ProductPageContent({
         <p style={{ fontSize: "14px", color: "#777", lineHeight: 1.7, margin: "0 0 32px" }}>
           Συνεργαζόμαστε με κορυφαίες ασφαλιστικές εταιρείες, ώστε να βρούμε μαζί το πρόγραμμα που ταιριάζει στις ανάγκες σας. Επικοινωνήστε μαζί μας για μια εξατομικευμένη προσφορά.
         </p>
-
+ {/* LINK */ }
         <Link href={`/prosfora/${product.slug}`} style={{
           background: "#1E439A",
           color: "#fff",

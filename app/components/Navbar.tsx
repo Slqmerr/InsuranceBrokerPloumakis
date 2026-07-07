@@ -136,7 +136,7 @@ export default function Navbar() {
                 display: "inline-block",
               }}
             >
-              Εμείς
+              Καριέρα
             </MotionLink>
           </li>
 

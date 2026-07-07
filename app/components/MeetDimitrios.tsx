@@ -63,12 +63,7 @@ export default function MeetDimitrios() {
           viewport={{ once: true, margin: "-80px" }}
           style={{ display: "flex", flexDirection: "column", gap: "18px" }}
         >
-          <motion.p
-            variants={fadeUp}
-            style={{ color: "#1E439A", fontSize: "13px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", margin: 0 }}
-          >
-            Ο άνθρωπος πίσω από την ασφάλιση
-          </motion.p>
+          
 
           <motion.h2
             variants={fadeUp}
@@ -81,7 +76,7 @@ export default function MeetDimitrios() {
             variants={fadeUp}
             style={{ color: "#555", fontSize: "16px", lineHeight: 1.7, margin: 0, maxWidth: "480px" }}
           >
-            Με περισσότερα από 25 χρόνια εμπειρίας στον ασφαλιστικό κλάδο, ο Δημήτριος συνδυάζει διεθνείς πιστοποιήσεις με βαθιά γνώση της αγοράς — και μια σταθερή αρχή: το συμφέρον του πελάτη πάνω απ' όλα.
+            Με περισσότερα από 25 χρόνια εμπειρίας στον ασφαλιστικό κλάδο, συνδυάζω διεθνείς πιστοποιήσεις με βαθιά γνώση της αγοράς και μια σταθερή αρχή: το συμφέρον του πελάτη πάνω απ' όλα.
           </motion.p>
 
           <motion.div
@@ -114,7 +109,7 @@ export default function MeetDimitrios() {
               href="/emeis"
               style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#1E439A", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}
             >
-              Γνωρίστε τον Δημήτριο
+              Γνωρίστε με
               <ArrowRight size={16} strokeWidth={2} />
             </Link>
           </motion.div>

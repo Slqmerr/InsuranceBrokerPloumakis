@@ -5,8 +5,8 @@ import Link from "next/link";
 import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 
 const HERO_STATS = [
-  { value: 20, suffix: "+", label: "Χρόνια εμπειρίας" },
-  { value: 500, suffix: "+", label: "Ικανοποιημένοι πελάτες" },
+  { value: 25, suffix: "+", label: "Χρόνια εμπειρίας" },
+  { value: 3000, suffix: "+", label: "Ικανοποιημένοι πελάτες" },
   { value: 15, suffix: "+", label: "Ασφαλιστικές εταιρείες" },
 ];
 

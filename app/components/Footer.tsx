@@ -2,7 +2,7 @@
 
 import { Phone, Mail, MapPin } from "lucide-react";
 
-const OFFICE_ADDRESS = "Κυδωνίας 8 & Ανδρεαδάκη Βασίλη 2, 71202 Ηράκλειο";
+const OFFICE_ADDRESS = "Κυδωνίας 8 & Ανδρεαδάκη, 71202 Ηράκλειο";
 // Keyless Google Maps embed — geocodes the address server-side
 const MAP_EMBED_SRC = `https://maps.google.com/maps?q=${encodeURIComponent("Κυδωνίας 8, Ηράκλειο 71202")}&z=17&hl=el&output=embed`;
 
