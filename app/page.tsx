@@ -5,6 +5,9 @@ import Hero from "./components/Hero";
 import ProductCardStrip from "./components/ProductCardStrip";
 import PartnersMarquee from "./components/PartnersMarquee";
 import Footer from "./components/Footer";
+import WhyBroker from "./components/WhyBroker";
+import HowItWorks from "./components/HowItWorks";
+import MeetDimitrios from "./components/MeetDimitrios";
 
 export default function Home() {
   return (
@@ -34,6 +37,9 @@ export default function Home() {
         </p>
       </div>
 
+      {/* === WHY A BROKER === */}
+      <WhyBroker />
+
       {/* ── SPLIT: Family — photo cut by the left edge, its curve carving into the colored band that fills the rest ── */}
       <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch", marginBottom: "128px" }}>
         {/* Colored band runs under the photo's curve all the way to the right edge */}
@@ -54,12 +60,7 @@ export default function Home() {
           padding: "48px 64px",
         }}>
           <div style={{ maxWidth: "460px" }}>
-            <p style={{
-              color: "#1E439A", fontSize: "13px", fontWeight: 700,
-              letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "14px",
-            }}>
-              Οικογένεια
-            </p>
+            
             <h3 style={{
               fontFamily: "var(--font-ubuntu-sans), sans-serif",
               fontSize: "30px", fontWeight: 600, color: "#1E439A", lineHeight: 1.25, marginBottom: "16px",
@@ -113,7 +114,14 @@ export default function Home() {
         />
       </section>
 
-      
+      {/* === HOW IT WORKS === */}
+      <HowItWorks />
+
+      {/* === MEET DIMITRIOS === */}
+      <MeetDimitrios />
+
+      {/* ==== PARTNERS MARQUEE ==== */}
+      <PartnersMarquee />
 
       {/* ==== FOOTER =====*/}
       <Footer />

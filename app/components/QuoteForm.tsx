@@ -40,34 +40,6 @@ const focusOff = (e: React.FocusEvent<HTMLElement>) => {
   e.currentTarget.style.borderColor = "#d8dce4";
 };
 
-// TODO: replace REPLACE_WITH_DIMITRIOS_EMAIL with the real address
-const QUOTE_EMAIL = "REPLACE_WITH_DIMITRIOS_EMAIL";
-
-/**
- * Single integration point for delivering the quote request — the rest of the
- * component doesn't know (or care) how it's sent.
- *
- * Default: zero-setup mailto link, works with no signup.
- *
- * TODO (recommended before launch): swap to a no-backend form service so the
- * visitor never leaves the site and submissions arrive reliably by email.
- * Needs an access key from the chosen service (e.g. web3forms.com):
- *
- *   return fetch("https://api.web3forms.com/submit", {
- *     method: "POST",
- *     headers: { "Content-Type": "application/json" },
- *     body: JSON.stringify({
- *       access_key: "YOUR_WEB3FORMS_ACCESS_KEY",
- *       subject,
- *       ...Object.fromEntries(entries.map(({ label, value }) => [label, value])),
- *     }),
- *   });
- */
-function submitQuote(subject: string, entries: { label: string; value: string }[]) {
-  const body = encodeURIComponent(entries.map(({ label, value }) => `${label}: ${value}`).join("\n"));
-  window.location.href = `mailto:${QUOTE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${body}`;
-}
-
 type Values = Record<string, string | boolean>;
 
 // Section grouping for the base fields; everything else is product-specific
@@ -99,6 +71,9 @@ export default function QuoteForm({
   const [values, setValues] = React.useState<Values>({});
   const [errors, setErrors] = React.useState<Record<string, string>>({});
   const [submitted, setSubmitted] = React.useState(false);
+  const [sending, setSending] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState("");
+  const [honeypot, setHoneypot] = React.useState("");
 
   const setValue = (name: string, value: string | boolean) => {
     setValues((prev) => ({ ...prev, [name]: value }));
@@ -126,18 +101,38 @@ export default function QuoteForm({
     return Object.values(next).every((msg) => !msg);
   };
 
-  const handleSubmit = () => {
-    if (!validate()) return;
-    const entries = fields
-      .filter((f) => f.type !== "checkbox")
-      .map((f) => ({
-        label: f.label,
-        value: typeof values[f.name] === "string" ? (values[f.name] as string).trim() : "",
-      }))
-      .filter((entry) => entry.value);
-    if (categoryLabel) entries.unshift({ label: "Κατηγορία", value: categoryLabel });
-    submitQuote(subject ?? `Αίτημα προσφοράς: ${productTitle}`, entries);
-    setSubmitted(true);
+  // The API route (/api/quote) re-validates against the same field
+  // definitions, builds the email and delivers it
+  const handleSubmit = async () => {
+    if (!validate() || sending) return;
+    setSubmitError("");
+    setSending(true);
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug,
+          subject: subject ?? `Αίτημα προσφοράς: ${productTitle}`,
+          categoryLabel,
+          values,
+          company: honeypot,
+        }),
+      });
+      if (res.ok) {
+        setSubmitted(true);
+        return;
+      }
+      if (res.status === 422) {
+        const data = await res.json().catch(() => null);
+        if (data?.fields) setErrors(data.fields);
+      }
+      setSubmitError("Κάτι πήγε στραβά κατά την αποστολή. Δοκιμάστε ξανά ή καλέστε μας απευθείας.");
+    } catch {
+      setSubmitError("Κάτι πήγε στραβά κατά την αποστολή. Δοκιμάστε ξανά ή καλέστε μας απευθείας.");
+    } finally {
+      setSending(false);
+    }
   };
 
   if (submitted) {
@@ -281,10 +276,27 @@ export default function QuoteForm({
         </p>
       )}
 
+      {/* Honeypot — invisible to people, tempting to bots */}
+      <input
+        type="text"
+        name="company"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+      />
+
+      {submitError && (
+        <p style={{ color: "#dc2626", fontSize: "14px", margin: 0 }}>{submitError}</p>
+      )}
+
       <button
         type="button"
         onClick={handleSubmit}
-        onMouseEnter={(e) => { e.currentTarget.style.background = "#16337a"; }}
+        disabled={sending}
+        onMouseEnter={(e) => { if (!sending) e.currentTarget.style.background = "#16337a"; }}
         onMouseLeave={(e) => { e.currentTarget.style.background = "#1E439A"; }}
         style={{
           background: "#1E439A",
@@ -295,12 +307,13 @@ export default function QuoteForm({
           padding: "12px 30px",
           borderRadius: "999px",
           border: "none",
-          cursor: "pointer",
+          cursor: sending ? "wait" : "pointer",
+          opacity: sending ? 0.7 : 1,
           width: "fit-content",
           transition: "background 0.2s ease",
         }}
       >
-        Αποστολή αιτήματος
+        {sending ? "Αποστολή..." : "Αποστολή αιτήματος"}
       </button>
     </form>
   );

@@ -11,6 +11,7 @@ export type Product = {
   slug: string;
   color: string; // revealed on hover when the grayscale filter lifts
   image: string; // hero photo, lives in /public/products/
+  imagePosition?: string; // object-position for the hero photo (default "center")
   intro: string; // short hero paragraph (blue panel)
   description: string; // opening body paragraph
   covers: string[]; // "Τι καλύπτει" list
@@ -90,6 +91,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
   {
     icon: Car, title: "Όχημα", slug: "oxima", color: "#ea580c",
     image: "/products/oxima.jpg",
+    imagePosition: "center top",
     intro: "Από τη βασική υποχρεωτική κάλυψη μέχρι πλήρη προστασία με οδική βοήθεια.",
     description: "Η ασφάλιση οχήματος περιλαμβάνει την υποχρεωτική κάλυψη αστικής ευθύνης και μια σειρά προαιρετικών καλύψεων για ίδιες ζημιές, κλοπή και φυσικά φαινόμενα. Επιλέγετε το πρόγραμμα που ταιριάζει στο όχημα και στις ανάγκες σας, με υπηρεσίες όπως οδική βοήθεια και φροντίδα ατυχήματος.",
     covers: [
@@ -177,6 +179,7 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
   {
     icon: Truck, title: "Εταιρικά Οχήματα", slug: "etairika-oximata", color: "#ea580c",
     image: "/products/oxima.jpg",
+    imagePosition: "center",
     intro: "Ολοκληρωμένη κάλυψη για τον στόλο και τα επαγγελματικά οχήματα της επιχείρησης.",
     description: "Η ασφάλιση εταιρικών οχημάτων εξασφαλίζει τα επαγγελματικά αυτοκίνητα και φορτηγά της επιχείρησης με ενιαία διαχείριση και καλύψεις προσαρμοσμένες στη χρήση τους. Περιλαμβάνει υποχρεωτική αστική ευθύνη, προαιρετικές καλύψεις και υποστήριξη οδικής βοήθειας.",
     covers: [
@@ -238,7 +241,7 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
 export const EXTRA_IDIWTES_PAGES: Product[] = [
   {
     icon: PiggyBank, title: "Αποταμίευση", slug: "apotamieusi", color: "#0d9488",
-    image: "/products/apotamieusi.jpg",
+    image: "/products/ependysi.jpg",
     intro: "Χτίστε σταδιακά ένα κεφάλαιο για τους στόχους σας και τη σύνταξή σας.",
     description: "Τα αποταμιευτικά και συνταξιοδοτικά προγράμματα σας βοηθούν να δημιουργήσετε συστηματικά ένα κεφάλαιο για το μέλλον — τη σύνταξη, τις σπουδές των παιδιών ή έναν μακροπρόθεσμο στόχο. Ορισμένα προσφέρουν εγγυημένη ελάχιστη απόδοση, ενώ τα επενδυτικού τύπου συνδέονται με τις αγορές και δεν έχουν εγγυημένη απόδοση.",
     covers: [
