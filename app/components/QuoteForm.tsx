@@ -137,7 +137,7 @@ export default function QuoteForm({
 
   if (submitted) {
     return (
-      <div style={{ ...CARD, padding: "80px 40px", textAlign: "center" }}>
+      <div className="fade-up" style={{ ...CARD, padding: "80px 40px", textAlign: "center" }}>
         <CheckCircle2 size={56} color="#1E439A" strokeWidth={1.75} style={{ marginBottom: "20px" }} />
         <h2 style={{ fontSize: "28px", fontWeight: 700, margin: "0 0 12px" }}>Ευχαριστούμε!</h2>
         <p style={{ fontSize: "16px", color: "#4b5563", lineHeight: 1.6, margin: 0 }}>
@@ -167,7 +167,7 @@ export default function QuoteForm({
     );
   };
 
-  // Eurolife-style: the label lives inside the field as placeholder text
+  
   const placeholderFor = (field: QuoteField) =>
     (field.placeholder ?? field.label) + (field.required ? " *" : "");
 
@@ -219,12 +219,19 @@ export default function QuoteForm({
     field.type === "checkbox" ? (
       <div key={field.name}>
         <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontSize: "13px", color: "#4b5563", lineHeight: 1.5, cursor: "pointer" }}>
+          {/* Real checkbox stays in the tree (keyboard + screen readers); the
+              animated .consent-box right after it is what the visitor sees */}
           <input
             type="checkbox"
             checked={values[field.name] === true}
             onChange={(e) => setValue(field.name, e.target.checked)}
-            style={{ marginTop: "2px", width: "16px", height: "16px", accentColor: "#1E439A", flexShrink: 0, cursor: "pointer" }}
+            style={{ position: "absolute", opacity: 0, width: "18px", height: "18px", margin: 0, cursor: "pointer" }}
           />
+          <span className={`consent-box${values[field.name] === true ? " checked" : ""}`} aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="4 12.5 9.5 18 20 6.5" />
+            </svg>
+          </span>
           <span>{renderLabelText(field)}</span>
         </label>
         {renderError(field.name)}

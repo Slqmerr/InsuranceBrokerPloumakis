@@ -70,7 +70,7 @@ export default function Home() {
             <p style={{ fontSize: "15px", color: "#4a5568", lineHeight: 1.7, marginBottom: "24px" }}>
               Ζωή, υγεία, εισοδηματική προστασία — σχεδιάζω ολοκληρωμένα πακέτα που φροντίζουν για κάθε μέλος της οικογένειάς σας, σε κάθε στιγμή.
             </p>
-            <a href="/idiotes/ygeia" style={{ color: "#1E439A", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
+            <a href="/idiotes/oikogeneia" style={{ color: "#1E439A", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
               Δείτε τα προϊόντα Οικογένειας →
             </a>
           </div>
@@ -99,7 +99,7 @@ export default function Home() {
               Από το σπίτι και το αυτοκίνητο μέχρι την επιχείρησή σας — καλύπτω όλους τους κλάδους με λύσεις που ταιριάζουν στις πραγματικές σας ανάγκες.
             </p>
             <a href="/idiotes/katoikia" style={{ color: "#1E439A", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
-              Δείτε τα προϊόντα Περιουσίας →
+              Δείτε τα προϊόντα Κατοικίας →
             </a>
           </div>
         </div>

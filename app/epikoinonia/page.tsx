@@ -16,6 +16,7 @@ export default function EpikoinoniaPage() {
       <section style={{ background: "#1E439A", padding: "24px 64px 88px" }}>
         <nav
           aria-label="breadcrumb"
+          className="fade-up"
           style={{
             display: "flex",
             alignItems: "center",
@@ -32,20 +33,22 @@ export default function EpikoinoniaPage() {
           <span style={{ color: "#fff", fontWeight: 600 }}>Επικοινωνία</span>
         </nav>
 
-        <h1 style={{ color: "#fff", fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, margin: "0 0 12px", lineHeight: 1.2 }}>
+        <h1 className="fade-up" style={{ color: "#fff", fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, margin: "0 0 12px", lineHeight: 1.2, animationDelay: "0.08s" }}>
           Κλείστε ραντεβού ή στείλτε μας την ερώτησή σας
         </h1>
-        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "16px", lineHeight: 1.6, margin: 0, maxWidth: "560px" }}>
+        <p className="fade-up" style={{ color: "rgba(255,255,255,0.85)", fontSize: "16px", lineHeight: 1.6, margin: 0, maxWidth: "560px", animationDelay: "0.16s" }}>
           Συμπληρώστε τα στοιχεία σας και θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατό.
         </p>
       </section>
 
-      <QuoteForm
-        slug="epikoinonia"
-        productTitle="Επικοινωνία"
-        categoryLabel=""
-        subject="Επικοινωνία / Ραντεβού μέσω ιστοσελίδας"
-      />
+      <div className="fade-up" style={{ animationDelay: "0.24s" }}>
+        <QuoteForm
+          slug="epikoinonia"
+          productTitle="Επικοινωνία"
+          categoryLabel=""
+          subject="Επικοινωνία / Ραντεβού μέσω ιστοσελίδας"
+        />
+      </div>
     </main>
   );
 }

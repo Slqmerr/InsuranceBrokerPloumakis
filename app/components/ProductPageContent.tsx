@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Award, Check, ChevronRight, Home, Phone, ShieldCheck, Users } from "lucide-react";
+import { Check, ChevronRight, FileText, Home, Phone } from "lucide-react";
 import Navbar from "./Navbar";
 import HeroCtaButtons from "./HeroCtaButtons";
 import type { Product } from "./products";
@@ -149,16 +149,12 @@ export default function ProductPageContent({
           padding: "32px 28px",
         }}>
           <h3 style={{ fontFamily: UBUNTU, fontSize: "17px", fontWeight: 700, color: "#0F2660", margin: "0 0 20px" }}>
-            Γιατί μαζί μας
+            Τι θα χρειαστείτε
           </h3>
 
-          <div style={{ display: "grid", gap: "14px", marginBottom: "26px" }}>
-            {[
-              { icon: Award, text: "20+ χρόνια εμπειρίας" },
-              { icon: Users, text: "500+ ικανοποιημένοι πελάτες" },
-              { icon: ShieldCheck, text: "15+ συνεργαζόμενες εταιρείες" },
-            ].map((item) => (
-              <div key={item.text} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ display: "grid", gap: "14px", marginBottom: "20px" }}>
+            {product.needs.map((item) => (
+              <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
                 <div style={{
                   width: "36px",
                   height: "36px",
@@ -169,12 +165,16 @@ export default function ProductPageContent({
                   justifyContent: "center",
                   flexShrink: 0,
                 }}>
-                  <item.icon size={18} color="#1E439A" strokeWidth={1.75} />
+                  <FileText size={17} color="#1E439A" strokeWidth={1.75} />
                 </div>
-                <span style={{ fontSize: "14px", color: "#333", fontWeight: 600 }}>{item.text}</span>
+                <span style={{ fontSize: "14px", color: "#333", fontWeight: 600, lineHeight: 1.45, alignSelf: "center" }}>{item}</span>
               </div>
             ))}
           </div>
+
+          <p style={{ fontSize: "13px", color: "#777", lineHeight: 1.5, margin: "0 0 24px" }}>
+            Τα υπόλοιπα τα αναλαμβάνουμε εμείς.
+          </p>
 
           <div style={{ height: "1px", background: "#eef0f4", margin: "0 0 24px" }} />
 

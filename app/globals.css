@@ -67,8 +67,99 @@ body {
   }
 }
 
+/* ── Entrance animation — stagger with an inline animationDelay ── */
+.fade-up {
+  opacity: 0;
+  animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Consent checkbox — box pops, check mark draws itself in ── */
+.consent-box {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid #c3c9d4;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+label:hover .consent-box {
+  border-color: #1e439a;
+}
+
+/* the real (invisible) input sits right before the box */
+input:focus-visible + .consent-box {
+  box-shadow: 0 0 0 3px rgba(30, 67, 154, 0.3);
+}
+
+.consent-box.checked {
+  background: #1e439a;
+  border-color: #1e439a;
+  animation: checkbox-pop 0.35s ease;
+}
+
+.consent-box svg {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+}
+
+.consent-box.checked svg {
+  animation: check-draw 0.25s ease-out 0.08s forwards;
+}
+
+@keyframes checkbox-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(0.8);
+  }
+  75% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
+    animation: none;
+  }
+  .fade-up {
+    animation: none;
+    opacity: 1;
+  }
+  .consent-box.checked {
+    animation: none;
+  }
+  .consent-box svg {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+  .consent-box.checked svg {
     animation: none;
   }
 }

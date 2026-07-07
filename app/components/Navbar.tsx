@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Phone } from "lucide-react";
 import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS } from "./products";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
@@ -142,22 +142,41 @@ export default function Navbar() {
 
         </ul>
 
-        {/* CTA — right, standing alone */}
-        <Link href="/epikoinonia" onClick={closeMenu} style={{
+        {/* Phone + CTA — right */}
+        <div style={{
           justifySelf: "end",
-          background: "#fff",
-          color: "#1E439A",
-          fontWeight: 700,
-          fontFamily: UBUNTU,
-          padding: "10px 20px",
-          borderRadius: "999px",
-          textDecoration: "none",
-          cursor: "pointer",
-          fontSize: "13px",
-          whiteSpace: "nowrap",
+          display: "flex",
+          alignItems: "center",
+          gap: "20px",
         }}>
-          Κλείσε Ραντεβού
-        </Link>
+          <a href="tel:+302810326400" style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            color: "rgba(255,255,255,0.85)",
+            textDecoration: "none",
+            fontSize: "15px",
+            fontWeight: 500,
+            whiteSpace: "nowrap",
+          }}>
+            <Phone size={15} strokeWidth={1.75} />
+            2810 326 400
+          </a>
+          <Link href="/epikoinonia" onClick={closeMenu} style={{
+            background: "#fff",
+            color: "#1E439A",
+            fontWeight: 700,
+            fontFamily: UBUNTU,
+            padding: "10px 20px",
+            borderRadius: "999px",
+            textDecoration: "none",
+            cursor: "pointer",
+            fontSize: "13px",
+            whiteSpace: "nowrap",
+          }}>
+            Κλείσε Ραντεβού
+          </Link>
+        </div>
       </nav>
 
       {/* Backdrop + Mega Dropdown */}
