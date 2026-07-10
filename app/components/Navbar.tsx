@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Phone } from "lucide-react";
+import { ChevronDown, Phone, MapPin } from "lucide-react";
 import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS } from "./products";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
@@ -164,9 +164,32 @@ export default function Navbar() {
 
         </ul>
 
-        {/* Phone + CTA — right */}
+        {/* Address + Phone + CTA — right */}
         <div style={{
           justifySelf: "end",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          gap: "6px",
+        }}>
+        <a
+          href="https://maps.google.com/?q=Κυδωνίας 8 %26 Ανδρεαδάκη, 71202 Ηράκλειο"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            color: "rgba(255,255,255,0.6)",
+            textDecoration: "none",
+            fontSize: "12px",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <MapPin size={12} strokeWidth={1.75} />
+          Κυδωνίας 8 &amp; Ανδρεαδάκη, 71202 Ηράκλειο
+        </a>
+        <div style={{
           display: "flex",
           alignItems: "center",
           gap: "20px",
@@ -198,6 +221,7 @@ export default function Navbar() {
           }}>
             Κλείσε Ραντεβού
           </Link>
+        </div>
         </div>
       </nav>
 
@@ -256,25 +280,24 @@ export default function Navbar() {
                 {/* LEFT — product grid (existing content, keep all of it) */}
                 <div style={{ flex: "0 0 70%", paddingRight: "48px" }}>
                   {/* Header */}
-                  <div style={{ marginBottom: "36px" }}>
-                    <p style={{ fontSize: "12px", color: "#888", marginBottom: "4px", letterSpacing: "0.5px", textTransform: "uppercase" }}>
-                      Τα προγράμματά μας για
-                    </p>
-                    <h2 style={{
-                      fontFamily: UBUNTU,
-                      fontSize: "26px",
-                      fontWeight: 700,
-                      color: "#1a1a1a",
-                      margin: 0,
+                  <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
+                    <span style={{
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      letterSpacing: "0.05em",
+                      textTransform: "none",
+                      color: "#1E439A",
+                      whiteSpace: "nowrap",
                     }}>
-                      {activeMenu === "idiwtes" ? "ΙΔΙΩΤΕΣ" : "ΕΠΙΧΕΙΡΗΣΕΙΣ"}
-                    </h2>
+                      Προγράμματα για {activeMenu === "idiwtes" ? "ιδιώτες" : "επιχειρήσεις"}
+                    </span>
+                    <div style={{ flex: 1, height: "1px", background: "#e8eaef" }} />
                   </div>
 
                   {/* Product Grid */}
                   <div style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gridTemplateColumns: activeMenu === "idiwtes" ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
                     gap: "4px",
                   }}>
                     {(activeMenu === "idiwtes" ? IDIWTES_PRODUCTS : EPIXEIRISI_PRODUCTS).map((product) => (
