@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import QuoteForm from "../../components/QuoteForm";
 import { IDIWTES_PRODUCTS, EXTRA_IDIWTES_PAGES, EPIXEIRISI_PRODUCTS } from "../../components/products";
 
@@ -63,6 +64,8 @@ export default async function ProsforaPage({
       </section>
 
       <QuoteForm slug={slug} productTitle={product.title} categoryLabel="" />
+
+      <Footer />
     </main>
   );
 }

@@ -50,7 +50,7 @@ export default function Home() {
           alt="Οικογένεια"
           style={{
             position: "relative",
-            width: "100%", height: "480px", objectFit: "cover", display: "block",
+            width: "100%", height: "480px", objectFit: "cover", objectPosition: "center 70%", display: "block",
             borderRadius: "0 240px 240px 0",
           }}
         />
@@ -121,8 +121,7 @@ export default function Home() {
       {/* === MEET DIMITRIOS === */}
       <MeetDimitrios />
 
-      {/* ==== PARTNERS MARQUEE ==== */}
-      <PartnersMarquee />
+      
 
       {/* ==== FOOTER =====*/}
       <Footer />

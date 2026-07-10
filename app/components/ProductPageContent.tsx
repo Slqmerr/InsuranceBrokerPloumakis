@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Check, ChevronRight, FileText, Home, Phone } from "lucide-react";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 import HeroCtaButtons from "./HeroCtaButtons";
 import type { Product } from "./products";
 
@@ -224,6 +225,8 @@ export default function ProductPageContent({
           </a>
         </aside>
       </section>
+
+      <Footer />
     </main>
   );
 }

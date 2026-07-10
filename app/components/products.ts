@@ -43,6 +43,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
   {
     icon: Home, title: "Κατοικία", slug: "katoikia", color: "#1E439A",
     image: "/products/katoikia.jpg",
+    imagePosition: "58% center", // couple on the sofa sits right of center
     intro: "Προστασία για το σπίτι και το περιεχόμενό του, από τη φωτιά μέχρι τον σεισμό.",
     description: "Η ασφάλιση κατοικίας καλύπτει το κτίριο και το περιεχόμενο από πυρκαγιά, σεισμό, πλημμύρα, κλοπή και άλλα απρόβλεπτα, μειώνοντας το κόστος αποκατάστασης μιας ζημιάς. Το πρόγραμμα διαμορφώνεται ανάλογα με τα χαρακτηριστικά της κατοικίας και τις καλύψεις που επιλέγετε, ενώ υπό προϋποθέσεις μπορεί να συνεπάγεται και μείωση του ΕΝΦΙΑ.",
     covers: [
@@ -63,6 +64,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
   {
     icon: Scale, title: "Αστική Ευθύνη", slug: "astiki-efthyni", color: "#7c3aed",
     image: "/products/astiki-efthyni.jpg",
+    imagePosition: "75% 40%", // warning sign occupies the right third
     intro: "Κάλυψη για ζημιές που ενδέχεται να προκαλέσετε άθελά σας σε τρίτους.",
     description: "Η ασφάλιση αστικής ευθύνης σας προστατεύει από τις αποζημιώσεις που μπορεί να κληθείτε να καταβάλετε για σωματικές βλάβες ή υλικές ζημιές σε τρίτους, στην καθημερινότητά σας ή ως ιδιοκτήτης κατοικίας. Καλύπτει και την οικογένεια, ακόμη και ζημιές που προκαλεί το κατοικίδιό σας.",
     covers: [
@@ -100,8 +102,9 @@ export const IDIWTES_PRODUCTS: Product[] = [
     ],
   },
   {
-    icon: TrendingUp, title: "Επένδυση", slug: "ependysi", color: "#0d9488",
+    icon: TrendingUp, title: "Επενδύσεις", slug: "ependysi", color: "#0d9488",
     image: "/products/ependysi.jpg",
+    imagePosition: "35% center", // coin cup with seedling sits left of center
     intro: "Συνδυασμός συστηματικής επένδυσης και ασφαλιστικής προστασίας, με μακροπρόθεσμο ορίζοντα.",
     description: "Τα επενδυτικά προγράμματα (unit linked) συνδέουν τις καταβολές σας με αμοιβαία κεφάλαια, ώστε να χτίσετε σταδιακά κεφάλαιο για το μέλλον, ενώ παράλληλα παρέχουν ασφάλιση ζωής. Το επενδυτικό μείγμα προσαρμόζεται στο προφίλ σας. Σημειώνεται ότι τα προγράμματα αυτά δεν έχουν εγγυημένη απόδοση και ο επενδυτικός κίνδυνος βαρύνει τον ασφαλισμένο.",
     covers: [
@@ -140,6 +143,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
   {
     icon: PawPrint, title: "Κατοικίδια", slug: "katoikidio", color: "#b45309",
     image: "/products/katoikidio.jpg",
+    imagePosition: "center 30%", // tall photo — dog and owner faces in the upper third
     intro: "Κτηνιατρική φροντίδα για τον τετράποδο φίλο σας, χωρίς άγχος για το κόστος.",
     description: "Η ασφάλιση κατοικιδίου καλύπτει έξοδα νοσηλείας, εξετάσεων και θεραπειών για σκύλους και γάτες, από ατύχημα ή ασθένεια. Προγράμματα όπως το ERGO My Pet προσφέρουν κάλυψη ανεξαρτήτως ράτσας και, συνήθως, την αστική ευθύνη του ιδιοκτήτη αν το ζώο προκαλέσει ζημιά σε τρίτους.",
     covers: [
@@ -176,7 +180,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
     ],
   },
   {
-    icon: Plane, title: "Ταξίδι", slug: "taxidi", color: "#f59e0b",
+    icon: Plane, title: "Ταξιδιωτικές Ασφαλίσεις", slug: "taxidi", color: "#f59e0b",
     image: "/products/taxidi.jpg",
     intro: "Ηρεμία σε κάθε ταξίδι, στην Ελλάδα και στο εξωτερικό — από μια καθυστερημένη πτήση έως ένα απρόοπτο ιατρικό περιστατικό.",
     description: "Η ταξιδιωτική ασφάλιση αναλαμβάνει τα απρόοπτα που μπορεί να προκύψουν πριν ή κατά τη διάρκεια ενός ταξιδιού: από ένα επείγον ιατρικό περιστατικό στο εξωτερικό, μέχρι καθυστέρηση πτήσης ή απώλεια αποσκευών. Τα προγράμματα προσαρμόζονται στον προορισμό, τη διάρκεια και τον σκοπό του ταξιδιού σας, είτε πρόκειται για διακοπές, επαγγελματική μετακίνηση ή ταξίδι που απαιτεί θεώρηση Schengen.",
@@ -200,6 +204,7 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
   {
     icon: Building2, title: "Επαγγελματικός Χώρος", slug: "epaggelmatikos-xoros", color: "#1E439A",
     image: "/products/epaggelmatikos-xoros.jpg",
+    imagePosition: "25% center", // meeting room is on the left, right side is a dark corridor
     intro: "Προστασία για το κτίριο, τον εξοπλισμό και τα εμπορεύματα της επιχείρησής σας.",
     description: "Η ασφάλιση επαγγελματικού χώρου καλύπτει την επαγγελματική σας στέγη και το περιεχόμενό της από πυρκαγιά, φυσικά φαινόμενα, κλοπή και άλλους κινδύνους, ώστε να εξασφαλίζεται η συνεχής λειτουργία της επιχείρησης. Οι καλύψεις προσαρμόζονται στα τετραγωνικά και στο ασφαλιζόμενο κεφάλαιο.",
     covers: [
@@ -219,6 +224,7 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
   {
     icon: Scale, title: "Αστική Ευθύνη", slug: "astiki-efthyni", color: "#7c3aed",
     image: "/products/astiki-efthyni.jpg",
+    imagePosition: "75% 40%", // warning sign occupies the right third
     intro: "Κάλυψη για ζημιές σε τρίτους κατά τη λειτουργία της επιχείρησής σας.",
     description: "Κάθε επιχείρηση αναλαμβάνει ευθύνες έναντι πελατών, εργαζομένων και τρίτων. Η ασφάλιση αστικής ευθύνης επιχειρήσεων καλύπτει σωματικές βλάβες ή υλικές ζημιές που ενδέχεται να προκληθούν σε τρίτους, με όρια κάλυψης συνήθως από 100.000€ έως 1.000.000€ ανάλογα με τις ανάγκες σας.",
     covers: [
@@ -277,6 +283,7 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
   {
     icon: Users, title: "Ομαδική Ασφάλιση", slug: "omadiki-asfalisi", color: "#0d9488",
     image: "/products/omadiki-asfalisi.jpg",
+    imagePosition: "40% center", // team around the table is center-left, right edge is a dark frame
     intro: "Παροχές υγείας και ζωής για τους εργαζομένους σας — ένα ισχυρό κίνητρο.",
     description: "Η ομαδική ασφάλιση προσφέρει καλύψεις ζωής και υγείας στο προσωπικό σας, αναπληρώνοντας ελλείψεις του δημόσιου φορέα και ενισχύοντας την αφοσίωση των εργαζομένων. Διαμορφώνεται με βάση τις ανάγκες της ομάδας σας, ενώ συχνά συνοδεύεται από φορολογικά οφέλη.",
     covers: [
@@ -321,6 +328,7 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
   {
     icon: Users, title: "Οικογένεια", slug: "oikogeneia", color: "#1E439A",
     image: "/products/oikogeneia.jpg",
+    imagePosition: "center 40%", // faces slightly above the vertical center
     intro: "Η προστασία της οικογένειας δεν είναι ένα μεμονωμένο προϊόν, αλλά ένας συνδυασμός καλύψεων που φροντίζει κάθε μέλος σε κάθε στάδιο της ζωής. Σχεδιάζουμε μαζί ένα ολοκληρωμένο πλέγμα ασφάλισης ζωής, εισοδήματος και υγείας, προσαρμοσμένο στις πραγματικές σας ανάγκες.",
     description: "Στόχος μας είναι να εξασφαλίσουμε ότι, ό,τι κι αν συμβεί, η οικογένειά σας θα διατηρήσει το επίπεδο ζωής της χωρίς οικονομικές ανατροπές. Η ασφάλιση ζωής αποδίδει ένα εφάπαξ κεφάλαιο στους δικαιούχους σε περίπτωση απώλειας ζωής, ενώ η εισοδηματική προστασία αναπληρώνει το εισόδημα αν μια ασθένεια ή ένα ατύχημα σας εμποδίσει να εργαστείτε. Το ύψος του κεφαλαίου δεν είναι τυχαίο: το υπολογίζουμε μαζί, με βάση τις υποχρεώσεις, τα έξοδα και τους στόχους σας, ώστε η κάλυψη να είναι ούτε ελλιπής ούτε περιττά ακριβή.",
     covers: [
@@ -340,6 +348,7 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
   {
     icon: PiggyBank, title: "Αποταμίευση", slug: "apotamieusi", color: "#0d9488",
     image: "/products/ependysi.jpg",
+    imagePosition: "35% center", // coin cup with seedling sits left of center
     intro: "Χτίστε σταδιακά ένα κεφάλαιο για τους στόχους σας και τη σύνταξή σας.",
     description: "Τα αποταμιευτικά και συνταξιοδοτικά προγράμματα σας βοηθούν να δημιουργήσετε συστηματικά ένα κεφάλαιο για το μέλλον — τη σύνταξη, τις σπουδές των παιδιών ή έναν μακροπρόθεσμο στόχο. Ορισμένα προσφέρουν εγγυημένη ελάχιστη απόδοση, ενώ τα επενδυτικού τύπου συνδέονται με τις αγορές και δεν έχουν εγγυημένη απόδοση.",
     covers: [
@@ -361,9 +370,9 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
 export const PRODUCT_CARDS = [
   { icon: Heart, title: "Υγεία", color: "#fbe4ec", href: "/idiotes/ygeia" },
   { icon: Home, title: "Κατοικία", color: "#e3f3e8", href: "/idiotes/katoikia" },
-  { icon: Car, title: "Οχήματα", color: "#fdeede", href: "/idiotes/oxima" },
+  { icon: Car, title: "Οχήματα", color: "#dee8fd", href: "/idiotes/oxima" },
   // No /epixeirisi landing page yet — first business product is the default
   { icon: Briefcase, title: "Επιχείρηση", color: "#ece4fb", href: "/epixeirisi/epaggelmatikos-xoros" },
   { icon: PiggyBank, title: "Αποταμίευση", color: "#fdf3de", href: "/idiotes/apotamieusi" },
-  { icon: Plane, title: "Ταξίδι", color: "#fef0d9", href: "/idiotes/taxidi" },
+  { icon: Sailboat, title: "Σκάφη", color: "#d9f0fe", href: "/idiotes/skafi" },
 ];

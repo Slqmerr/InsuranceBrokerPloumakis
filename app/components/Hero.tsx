@@ -1,33 +1,18 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { animate, motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
-const HERO_STATS = [
-  { value: 25, suffix: "+", label: "Χρόνια εμπειρίας" },
-  { value: 3000, suffix: "+", label: "Ικανοποιημένοι πελάτες" },
-  { value: 15, suffix: "+", label: "Ασφαλιστικές εταιρείες" },
+// height compensates for each file's padding/aspect so the marks look the same size
+const PARTNER_LOGOS = [
+  { src: "/partners/interamerican.png", alt: "Interamerican", height: 22 },
+  { src: "/partners/eurolife.png", alt: "Eurolife FFH", height: 56 },
+  { src: "/partners/allianz.png", alt: "Allianz", height: 26 },
+  { src: "/partners/generali.svg", alt: "Generali", height: 36 },
+  { src: "/partners/ergo.png", alt: "ERGO", height: 24 },
+  { src: "/partners/aig.png", alt: "AIG", height: 30 },
+  { src: "/partners/interlife.png", alt: "Interlife", height: 28 },
 ];
-
-function CountUpStat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
-  const count = useMotionValue(0);
-  const display = useTransform(count, (v) => `${Math.round(v)}${suffix}`);
-
-  React.useEffect(() => {
-    const controls = animate(count, value, { duration: 1.6, ease: "easeOut", delay: 0.4 });
-    return () => controls.stop();
-  }, [count, value]);
-
-  return (
-    <div>
-      <motion.div style={{ color: "#fff", fontSize: "26px", fontWeight: 600, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>
-        {display}
-      </motion.div>
-      <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px" }}>{label}</div>
-    </div>
-  );
-}
 
 export default function Hero() {
   return (
@@ -100,7 +85,7 @@ export default function Hero() {
         </Link>
       </div>
 
-      {/* Stats row — bottom-left, lifted above the overlapping product card strip */}
+      {/* Partner logo marquee — full-width, lifted above the overlapping product card strip */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -108,18 +93,35 @@ export default function Hero() {
         style={{
           position: "absolute",
           bottom: "96px",
-          left: "64px",
+          left: 0,
+          right: 0,
           zIndex: 2,
-          display: "flex",
-          gap: "40px",
+          overflow: "hidden",
+          maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
         }}
       >
-        {HERO_STATS.map((stat, i) => (
-          <React.Fragment key={stat.label}>
-            {i > 0 && <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />}
-            <CountUpStat value={stat.value} suffix={stat.suffix} label={stat.label} />
-          </React.Fragment>
-        ))}
+        <motion.div
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ repeat: Infinity, ease: "linear", duration: 40 }}
+          style={{ display: "flex", alignItems: "center", gap: "72px", width: "max-content", paddingRight: "72px" }}
+        >
+          {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((logo, i) => (
+            <img
+              key={`${logo.alt}-${i}`}
+              src={logo.src}
+              alt={i < PARTNER_LOGOS.length ? logo.alt : ""}
+              aria-hidden={i >= PARTNER_LOGOS.length}
+              style={{
+                height: `${logo.height}px`,
+                width: "auto",
+                objectFit: "contain",
+                filter: "brightness(0) invert(1)",
+                opacity: 0.75,
+              }}
+            />
+          ))}
+        </motion.div>
       </motion.div>
     </section>
   );
