@@ -136,7 +136,29 @@ export default function Navbar() {
                 display: "inline-block",
               }}
             >
-              Καριέρα
+              Σχετικά
+            </MotionLink>
+          </li>
+
+          {/* Συνεργάσου μαζί μας — plain link, no dropdown */}
+          <li>
+            <MotionLink
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.15 }}
+              href="/synergasia"
+              onClick={closeMenu}
+              style={{
+                color: "rgba(255,255,255,0.80)",
+                textDecoration: "none",
+                fontSize: "17px",
+                padding: "6px 12px",
+                borderRadius: "4px",
+                display: "inline-block",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Συνεργάσου μαζί μας
             </MotionLink>
           </li>
 

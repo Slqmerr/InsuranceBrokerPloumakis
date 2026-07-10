@@ -1,511 +1,273 @@
-# Task for Claude Code — Homepage Trust Sections
+# Task for Claude Code — Prompt 16: Footer Socials, Terms Page, New Products, Card Strip, Partnership Page
 
-> Adjust the leading number (`12-`) to follow whatever your latest prompt file is.
+This prompt covers 5 independent tasks. They touch different files and don't depend on
+each other — do them in any order, and if one runs into trouble, skip it and continue
+with the rest rather than stopping.
 
-This prompt adds **three new sections** to the homepage (`app/page.tsx`) as three new
-components, then wires them into the page. It does **not** touch product-page content,
-the navbar, the hero, or the footer.
-
-**Why these three:** the homepage currently shows *what* products exist but never says
-*why* a visitor should choose this broker, *how* working together actually works, or
-*who* Dimitrios is. These sections fill that gap — they do the trust-building work a
-broker homepage needs.
+Read `REPO-STRUCTURE.md` at the repo root first if you haven't already, for the current
+file layout and conventions (inline styles only, `var(--font-ubuntu-sans), sans-serif`,
+brand blue `#1E439A`, deep navy `#0F2660`, lucide-react icons).
 
 ---
 
-## Hard rules (from `CLAUDE.md` — do not break)
+## 1. Footer — social icons (no links yet)
 
-- **Inline styles only.** No Tailwind utility classes, no CSS modules.
-- **All user-facing copy stays in Greek, exactly as written below.** Do not translate,
-  paraphrase, or "improve" the Greek text.
-- **Do not invent or alter any insurance product claims.** These sections describe the
-  broker's service, process, and credentials — not insurance products — so no partner
-  research is involved. Just reproduce the copy as given.
-- Icons: `lucide-react`. Animations: `framer-motion`. Font: `var(--font-ubuntu-sans), sans-serif`.
-- Match the existing design tokens (listed below). These sections must look native to
-  the site, not bolted on.
+**File:** `app/components/Footer.tsx`
 
-## Design tokens to reuse (already used elsewhere in the repo)
+Add two icon links — Facebook and LinkedIn — near the existing contact info in the first
+footer column (below the phone/email/address block, or wherever fits the existing layout
+best). Use the `Facebook` and `Linkedin` icons from `lucide-react`, styled consistently
+with the existing contact icons in that column (same size/stroke conventions already used
+for the Phone/Mail/MapPin icons there).
 
-| Token | Value |
-|---|---|
-| Brand blue | `#1E439A` |
-| Deep navy (headings) | `#0F2660` |
-| Light tints (section backgrounds) | `#F5F7FB`, `#f7f8fc` |
-| Chip / ring tint | `#EEF2FF` |
-| Icon-circle background | `#e8eef8` |
-| Body text | `#555` |
-| Card radius | `24px` (feature cards), `20px` (step cards) |
-| Pill radius | `999px` |
-| Soft card shadow | `0 12px 40px rgba(18,35,85,0.08)` |
-| Font const | `const UBUNTU = "var(--font-ubuntu-sans), sans-serif";` |
+Do **not** invent real URLs. Use these exact placeholder hrefs so they're easy to find and
+swap later:
 
-If any `lucide-react` icon name below throws an "not exported" error, swap it for the
-closest available icon and leave a `// TODO: icon swapped` comment — do not remove the icon.
+```
+href="REPLACE_WITH_FACEBOOK_URL"
+href="REPLACE_WITH_LINKEDIN_URL"
+```
 
----
+(This matches the existing `REPLACE_WITH_DIMITRIOS_EMAIL` placeholder convention already
+used elsewhere in the project — grep for it if you want to see the pattern.)
 
-## 1. Create `app/components/WhyBroker.tsx`
+Also add the business hours to the same column, using a `Clock` icon in the same style as
+the other contact rows. Exact text:
 
-```tsx
-"use client";
-
-import { motion, type Variants } from "framer-motion";
-import { Compass, Handshake, LifeBuoy, Wallet } from "lucide-react";
-
-const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
-};
-
-const REASONS = [
-  {
-    icon: Compass,
-    title: "Ανεξάρτητη καθοδήγηση",
-    text: "Δεν δεσμευόμαστε από μία εταιρεία. Συγκρίνουμε προϊόντα από κορυφαίες ασφαλιστικές και προτείνουμε ό,τι ταιριάζει πραγματικά σε εσάς.",
-  },
-  {
-    icon: Handshake,
-    title: "Ένας συνεργάτης για όλα",
-    text: "Υγεία, κατοικία, όχημα, επιχείρηση — όλες οι ασφαλίσεις σας από έναν έμπιστο άνθρωπο, χωρίς περιττά τηλεφωνικά κέντρα.",
-  },
-  {
-    icon: LifeBuoy,
-    title: "Στο πλευρό σας στην αποζημίωση",
-    text: "Όταν συμβεί το απρόοπτο, είμαστε εκεί. Αναλαμβάνουμε τη διαδικασία μαζί σας και φροντίζουμε να λάβετε ό,τι δικαιούστε.",
-  },
-  {
-    icon: Wallet,
-    title: "Χωρίς επιπλέον κόστος",
-    text: "Η καθοδήγηση και η υποστήριξή μας δεν επιβαρύνουν το ασφάλιστρό σας. Κερδίζετε έναν σύμβουλο, χωρίς κρυφές χρεώσεις.",
-  },
-];
-
-export default function WhyBroker() {
-  return (
-    <section style={{ background: "#F5F7FB", padding: "72px 64px" }}>
-      <motion.p
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-60px" }}
-        style={{ color: "#1E439A", fontSize: "13px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 12px" }}
-      >
-        Γιατί εμείς
-      </motion.p>
-
-      <motion.h2
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-60px" }}
-        style={{ fontFamily: UBUNTU, fontSize: "28px", fontWeight: 700, color: "#0F2660", margin: "0 0 12px", maxWidth: "620px", lineHeight: 1.25 }}
-      >
-        Γιατί να εμπιστευτείτε έναν ασφαλιστικό σύμβουλο
-      </motion.h2>
-
-      <motion.p
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-60px" }}
-        style={{ color: "#555", fontSize: "16px", lineHeight: 1.65, maxWidth: "620px", margin: "0 0 48px" }}
-      >
-        Ένας ανεξάρτητος σύμβουλος δεν πουλά απλώς ασφάλειες — σας βοηθά να επιλέξετε σωστά. Να τι σημαίνει αυτό για εσάς:
-      </motion.p>
-
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-60px" }}
-        style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "24px" }}
-      >
-        {REASONS.map((r) => (
-          <motion.div
-            key={r.title}
-            variants={fadeUp}
-            whileHover={{ y: -6 }}
-            transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            style={{
-              background: "#fff",
-              borderRadius: "24px",
-              padding: "32px 28px",
-              boxShadow: "0 12px 40px rgba(18,35,85,0.08)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-            }}
-          >
-            <div style={{
-              width: "56px",
-              height: "56px",
-              borderRadius: "50%",
-              background: "#e8eef8",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
-              <r.icon size={26} color="#1E439A" strokeWidth={1.75} />
-            </div>
-            <h3 style={{ fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#0F2660", margin: 0, lineHeight: 1.3 }}>
-              {r.title}
-            </h3>
-            <p style={{ color: "#555", fontSize: "14px", lineHeight: 1.65, margin: 0 }}>
-              {r.text}
-            </p>
-          </motion.div>
-        ))}
-      </motion.div>
-    </section>
-  );
-}
+```
+Δευτέρα – Παρασκευή: 9:00 – 21:00
 ```
 
 ---
 
-## 2. Create `app/components/HowItWorks.tsx`
+## 2. New page — Όροι Χρήσης (Terms of Use)
 
-```tsx
-"use client";
+**New file:** `app/oroi-xrisis/page.tsx`
+**Also edit:** `app/components/Footer.tsx`
 
-import { motion, type Variants } from "framer-motion";
-import { MessageCircle, Scale, ShieldCheck } from "lucide-react";
+Create a new page at the route `/oroi-xrisis`. Follow the same overall page pattern used
+by other standalone pages in the app (e.g. `app/emeis/page.tsx`): render `<Navbar />` at
+the top, `<Footer />` at the bottom, and the page content in between as a simple centered
+article — a max-width reading column, generous line-height, headings styled consistently
+with the rest of the site (Ubuntu Sans, brand blue for the H1). No fancy layout needed,
+this is a plain content page.
 
-const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
+There is no shared "legal page" component in the codebase to reuse — just build this page
+directly.
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-};
+Use this exact Greek copy, reproduced as-is (don't translate, paraphrase, or shorten it).
+Keep the bracketed placeholder exactly as written — it's intentional, for Dimitrios to
+fill in later, not a mistake to "complete":
 
-const stagger: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.14, delayChildren: 0.1 } },
-};
-
-const STEPS = [
-  {
-    num: "01",
-    icon: MessageCircle,
-    title: "Μιλήστε μαζί μας",
-    text: "Μας λέτε τις ανάγκες και τις ανησυχίες σας. Ακούμε προσεκτικά και κατανοούμε τι θέλετε να προστατέψετε.",
-  },
-  {
-    num: "02",
-    icon: Scale,
-    title: "Συγκρίνουμε για εσάς",
-    text: "Αναζητούμε και συγκρίνουμε προσφορές από τις συνεργαζόμενες εταιρείες, για να βρούμε τη σωστή κάλυψη στη σωστή τιμή.",
-  },
-  {
-    num: "03",
-    icon: ShieldCheck,
-    title: "Σας στηρίζουμε διαρκώς",
-    text: "Αναλαμβάνουμε τα πάντα — από τη σύναψη του συμβολαίου μέχρι την υποστήριξη σε κάθε αποζημίωση.",
-  },
-];
-
-export default function HowItWorks() {
-  return (
-    <section style={{ background: "#fff", padding: "72px 64px" }}>
-      <motion.p
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-60px" }}
-        style={{ color: "#1E439A", fontSize: "13px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 12px" }}
-      >
-        Η διαδικασία
-      </motion.p>
-
-      <motion.h2
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-60px" }}
-        style={{ fontFamily: UBUNTU, fontSize: "28px", fontWeight: 700, color: "#0F2660", margin: "0 0 48px", maxWidth: "620px", lineHeight: 1.25 }}
-      >
-        Απλά βήματα προς τη σωστή ασφάλιση
-      </motion.h2>
-
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-60px" }}
-        style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "32px" }}
-      >
-        {STEPS.map((step) => (
-          <motion.div
-            key={step.num}
-            variants={fadeUp}
-            style={{
-              position: "relative",
-              overflow: "hidden",
-              background: "#f7f8fc",
-              borderRadius: "20px",
-              padding: "40px 28px 28px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-            }}
-          >
-            {/* Big watermark number */}
-            <span style={{
-              position: "absolute",
-              top: "8px",
-              right: "20px",
-              fontFamily: UBUNTU,
-              fontSize: "72px",
-              fontWeight: 800,
-              color: "#e4ebfb",
-              lineHeight: 1,
-              zIndex: 0,
-              pointerEvents: "none",
-            }}>
-              {step.num}
-            </span>
-
-            {/* Icon circle */}
-            <div style={{
-              position: "relative",
-              zIndex: 1,
-              width: "56px",
-              height: "56px",
-              borderRadius: "50%",
-              background: "#e8eef8",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
-              <step.icon size={26} color="#1E439A" strokeWidth={1.75} />
-            </div>
-
-            <h3 style={{ position: "relative", zIndex: 1, fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#0F2660", margin: 0, lineHeight: 1.3 }}>
-              {step.title}
-            </h3>
-            <p style={{ position: "relative", zIndex: 1, color: "#555", fontSize: "14px", lineHeight: 1.65, margin: 0 }}>
-              {step.text}
-            </p>
-          </motion.div>
-        ))}
-      </motion.div>
-    </section>
-  );
-}
 ```
+Όροι Χρήσης
+
+Καλωσορίσατε στην ιστοσελίδα του Δημήτριου Πλουμάκη (dploumakis.gr). Η χρήση της
+ιστοσελίδας συνεπάγεται την αποδοχή των παρακάτω όρων.
+
+1. Σκοπός της ιστοσελίδας
+Η παρούσα ιστοσελίδα έχει ενημερωτικό χαρακτήρα. Παρουσιάζει ασφαλιστικά προϊόντα και
+υπηρεσίες, χωρίς να αποτελεί πρόταση ασφάλισης, ούτε να καταρτίζεται οποιαδήποτε
+ασφαλιστική σύμβαση μέσω αυτής. Οι όροι, οι καλύψεις και το κόστος κάθε ασφαλιστικού
+προγράμματος καθορίζονται αποκλειστικά από την εκάστοτε ασφαλιστική εταιρεία και
+οριστικοποιούνται κατόπιν προσωπικής επικοινωνίας.
+
+2. Πνευματική ιδιοκτησία
+Το περιεχόμενο της ιστοσελίδας (κείμενα, εικόνες, λογότυπο) προστατεύεται από τη
+νομοθεσία περί πνευματικής ιδιοκτησίας. Απαγορεύεται η αναπαραγωγή ή διανομή του χωρίς
+προηγούμενη έγγραφη άδεια.
+
+3. Ακρίβεια περιεχομένου
+Καταβάλλεται κάθε δυνατή προσπάθεια ώστε οι πληροφορίες να είναι ακριβείς και
+ενημερωμένες. Ωστόσο, δεδομένου ότι οι όροι των ασφαλιστικών προγραμμάτων ενδέχεται να
+μεταβάλλονται, δεν παρέχεται εγγύηση πληρότητας ή επικαιρότητας του περιεχομένου. Για
+δεσμευτικές πληροφορίες, ο επισκέπτης παραπέμπεται στα επίσημα έγγραφα κάθε ασφαλιστικής
+εταιρείας ή σε προσωπική επικοινωνία.
+
+4. Περιορισμός ευθύνης
+Ο ιδιοκτήτης της ιστοσελίδας δεν φέρει ευθύνη για τυχόν ζημία που προκύψει από τη χρήση ή
+την αδυναμία χρήσης της ιστοσελίδας, ή από απόφαση που βασίστηκε αποκλειστικά στο
+περιεχόμενό της χωρίς προηγούμενη προσωπική διαβούλευση.
+
+5. Σύνδεσμοι προς τρίτους ιστότοπους
+Η ιστοσελίδα ενδέχεται να περιλαμβάνει συνδέσμους προς ιστότοπους τρίτων (π.χ.
+ασφαλιστικές εταιρείες). Δεν φέρουμε ευθύνη για το περιεχόμενο ή τις πρακτικές αυτών των
+ιστότοπων.
+
+6. Εφαρμοστέο δίκαιο
+Οι παρόντες όροι διέπονται από το Ελληνικό δίκαιο. Για κάθε διαφορά που τυχόν προκύψει,
+αρμόδια είναι τα Δικαστήρια Ηρακλείου.
+
+7. Στοιχεία επικοινωνίας
+Δημήτριος Πλουμάκης
+[ΣΥΜΠΛΗΡΩΣΤΕ: αριθμός μητρώου ασφαλιστικού διαμεσολαβητή / εποπτεύουσα αρχή]
+Κυδωνίας 8 & Ανδρεαδάκη, 71202 Ηράκλειο
+2810 326 400
+
+8. Τροποποιήσεις
+Οι παρόντες όροι ενδέχεται να αναθεωρούνται περιοδικά. Η τελευταία ενημέρωση αναγράφεται
+παρακάτω.
+
+Τελευταία ενημέρωση: [ημερομηνία]
+```
+
+Add a short, visually distinct note near the top of the page (a styled callout box, not
+just plain text) saying this content should be reviewed by a qualified legal professional
+and the bracketed placeholders completed before the site goes live — same idea as the
+review notice already used on other legal-adjacent content in this project, if you can
+find that pattern to match its style.
+
+**Footer link wiring:** update the "Όροι Χρήσης" link in `Footer.tsx` to point to
+`/oroi-xrisis` instead of `#`. Leave the "Πολιτική Απορρήτου" link as `#` for now — that
+page isn't part of this prompt.
 
 ---
 
-## 3. Create `app/components/MeetDimitrios.tsx`
+## 3. Two new products — Σκάφη (Boats) and Ταξίδι (Travel)
 
-Credential figures below are pulled from the existing `app/emeis/page.tsx` (LIMRA 2012 &
-2013, national awards 2000–2013, Loyalty Award 2025). Do not change them.
+**File:** `app/components/products.ts`
 
-```tsx
-"use client";
+Add two new entries to the `IDIWTES_PRODUCTS` array (append at the end), following the
+exact same object shape as the existing entries (icon, title, slug, color, image, intro,
+description, covers, needs). Import `Sailboat` and `Plane` from `lucide-react` for the
+icons. Use `color: "#0ea5e9"` for Σκάφη and `color: "#f59e0b"` for Ταξίδι — both unused so
+far in this file. Use slugs `"skafi"` and `"taxidi"`, and image paths
+`/products/skafi.jpg` and `/products/taxidi.jpg` (these image files don't exist yet — that's
+expected, they'll be added later; don't let a missing image block anything).
 
-import Link from "next/link";
-import { motion, type Variants } from "framer-motion";
-import { Award, TrendingUp, BadgeCheck, ArrowRight } from "lucide-react";
+No new route file is needed — the existing `app/idiotes/[slug]/page.tsx` dynamic route
+picks up any product added to `IDIWTES_PRODUCTS` automatically, including its own detail
+page and its quote-request page.
 
-const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
+Use this exact Greek copy:
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
-};
-
-const CREDENTIALS = [
-  { icon: Award, label: "Πιστοποιήσεις LIMRA · 2012 & 2013" },
-  { icon: TrendingUp, label: "13 χρόνια εθνικών διακρίσεων" },
-  { icon: BadgeCheck, label: "Loyalty Award 2025" },
-];
-
-export default function MeetDimitrios() {
-  return (
-    <section style={{ background: "#F5F7FB", padding: "72px 64px" }}>
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "56px",
-        alignItems: "center",
-        maxWidth: "1100px",
-        margin: "0 auto",
-      }}>
-        {/* Photo — opposite-corner pill curve, echoing the split sections */}
-        <motion.div
-          initial={{ opacity: 0, x: -32 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            overflow: "hidden",
-            borderTopLeftRadius: "160px",
-            borderBottomRightRadius: "160px",
-            borderTopRightRadius: "24px",
-            borderBottomLeftRadius: "24px",
-            minHeight: "440px",
-          }}
-        >
-          <img
-            src="/dimitrios.jpg"
-            alt="Δημήτριος Πλουμάκης"
-            style={{ width: "100%", height: "100%", minHeight: "440px", objectFit: "cover", objectPosition: "center top", display: "block" }}
-          />
-        </motion.div>
-
-        {/* Content */}
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
-          style={{ display: "flex", flexDirection: "column", gap: "18px" }}
-        >
-          <motion.p
-            variants={fadeUp}
-            style={{ color: "#1E439A", fontSize: "13px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", margin: 0 }}
-          >
-            Ο άνθρωπος πίσω από την ασφάλιση
-          </motion.p>
-
-          <motion.h2
-            variants={fadeUp}
-            style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#0F2660", margin: 0, lineHeight: 1.2 }}
-          >
-            Δημήτριος Πλουμάκης
-          </motion.h2>
-
-          <motion.p
-            variants={fadeUp}
-            style={{ color: "#555", fontSize: "16px", lineHeight: 1.7, margin: 0, maxWidth: "480px" }}
-          >
-            Με περισσότερα από 25 χρόνια εμπειρίας στον ασφαλιστικό κλάδο, ο Δημήτριος συνδυάζει διεθνείς πιστοποιήσεις με βαθιά γνώση της αγοράς — και μια σταθερή αρχή: το συμφέρον του πελάτη πάνω απ' όλα.
-          </motion.p>
-
-          <motion.div
-            variants={fadeUp}
-            style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "4px" }}
-          >
-            {CREDENTIALS.map((c) => (
-              <div
-                key={c.label}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  background: "#EEF2FF",
-                  color: "#1E439A",
-                  borderRadius: "999px",
-                  padding: "8px 16px",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                }}
-              >
-                <c.icon size={15} strokeWidth={2} />
-                {c.label}
-              </div>
-            ))}
-          </motion.div>
-
-          <motion.div variants={fadeUp} style={{ marginTop: "8px" }}>
-            <Link
-              href="/emeis"
-              style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#1E439A", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}
-            >
-              Γνωρίστε τον Δημήτριο
-              <ArrowRight size={16} strokeWidth={2} />
-            </Link>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
+**Σκάφη**
 ```
+intro: Η υποχρεωτική Αστική Ευθύνη σκάφους, και πολλά περισσότερα, για να απολαμβάνετε τη
+θάλασσα με ασφάλεια.
+
+description: Η ασφάλιση σκάφους αναψυχής καλύπτει, πρώτα απ' όλα, την Αστική Ευθύνη προς
+τρίτους και επιβαίνοντες, που είναι υποχρεωτική από τον νόμο (Ν.4926/2022) για όλα τα
+ταχύπλοα ιδιωτικά και επαγγελματικά σκάφη αναψυχής. Πέρα από αυτήν, προγράμματα με
+διαβαθμισμένα επίπεδα κάλυψης προσφέρουν επιπλέον προστασία — από νομική υποστήριξη και
+ιατρική βοήθεια για τους επιβαίνοντες, έως κάλυψη ιδίων ζημιών του σκάφους.
+
+covers:
+- Αστική ευθύνη προς τρίτους και επιβαίνοντες (υποχρεωτική κάλυψη βάσει Ν.4926/2022)
+- Νομική προστασία για υποθέσεις σχετικές με το σκάφος
+- Άμεση ιατρική βοήθεια για τους επιβαίνοντες, 24 ώρες το 24ωρο
+- Προαιρετική κάλυψη ιδίων ζημιών: πυρκαγιά, έκρηξη, κλοπή, κακόβουλες πράξεις
+- Κίνδυνοι της θάλασσας και ζημιές κατά την οδική μεταφορά του σκάφους
+- Διαβάθμιση κάλυψης ανάλογα με τις ανάγκες σας (ιδιωτική ή επαγγελματική χρήση)
+
+needs:
+- Στοιχεία σκάφους (τύπος, μήκος, ιπποδύναμη)
+- Χρήση: ιδιωτική ή επαγγελματική
+- Επιθυμητό επίπεδο κάλυψης πέρα από την υποχρεωτική Αστική Ευθύνη
+```
+
+**Ταξίδι**
+```
+intro: Ηρεμία σε κάθε ταξίδι, στην Ελλάδα και στο εξωτερικό — από μια καθυστερημένη
+πτήση έως ένα απρόοπτο ιατρικό περιστατικό.
+
+description: Η ταξιδιωτική ασφάλιση αναλαμβάνει τα απρόοπτα που μπορεί να προκύψουν πριν
+ή κατά τη διάρκεια ενός ταξιδιού: από ένα επείγον ιατρικό περιστατικό στο εξωτερικό, μέχρι
+καθυστέρηση πτήσης ή απώλεια αποσκευών. Τα προγράμματα προσαρμόζονται στον προορισμό, τη
+διάρκεια και τον σκοπό του ταξιδιού σας, είτε πρόκειται για διακοπές, επαγγελματική
+μετακίνηση ή ταξίδι που απαιτεί θεώρηση Schengen.
+
+covers:
+- Επείγοντα ιατρικά έξοδα στο εξωτερικό, με 24ωρη τηλεφωνική υποστήριξη
+- Καθυστέρηση ή απώλεια αποσκευών
+- Ακύρωση ή διακοπή ταξιδιού λόγω ασθένειας, ατυχήματος ή έκτακτου περιστατικού
+- Απώλεια ή κλοπή ταξιδιωτικών εγγράφων
+- Κάλυψη που πληροί τις προϋποθέσεις για έκδοση θεώρησης Schengen
+- Προγράμματα προσαρμοσμένα σε ατομικά, οικογενειακά ή επαγγελματικά ταξίδια
+
+needs:
+- Προορισμός και διάρκεια ταξιδιού
+- Αριθμός και ηλικίες ταξιδιωτών
+- Σκοπός ταξιδιού (διακοπές, επαγγελματικό, σπουδές)
+```
+
+**Also in this file — move Οικογένεια, don't delete it:**
+
+Find the existing "Οικογένεια" product object inside `IDIWTES_PRODUCTS` (title:
+"Οικογένεια", slug: "oikogeneia"). Cut it out of `IDIWTES_PRODUCTS` and paste it, unchanged,
+into the `EXTRA_IDIWTES_PAGES` array instead. This removes it from the dropdown menu while
+keeping its detail page alive at `/idiotes/oikogeneia` (that array exists specifically for
+products with a page but no dropdown entry — see the comment already above
+`EXTRA_IDIWTES_PAGES` in this file explaining that pattern; the "Αποταμίευση" entry already
+works this way).
+
+**Also in this file — update `PRODUCT_CARDS`** (the homepage's 6-card strip):
+- Remove the "Οικογένεια" entry entirely.
+- Add a new "Ταξίδι" entry, `href: "/idiotes/taxidi"`, using the same icon/color you gave
+  it above.
+- Reorder the array so "Υγεία" is first.
+
+End result should be 6 cards, in this order: Υγεία, Κατοικία, Οχήματα, Επιχείρηση,
+Αποταμίευση, Ταξίδι. (I'm assuming that relative order for the untouched four cards is
+fine — flag it to Ploum if a different order was intended.)
 
 ---
 
-## 4. Wire the three components into `app/page.tsx`
+## 4. New nav item — Συνεργάσου μαζί μας
 
-### 4a. Add imports
+**File:** `app/components/Navbar.tsx`
 
-At the top of `app/page.tsx`, alongside the existing component imports, add:
+Add a fourth item to the centered nav list, after "Καριέρα". Follow the exact same pattern
+already used for the "Καριέρα" link — a plain `motion` link, no dropdown, same hover/tap
+animation, same font size and spacing as the other three items. Link it to a new route,
+`/synergasia`. Label text: `Συνεργάσου μαζί μας`.
 
-```tsx
-import WhyBroker from "./components/WhyBroker";
-import HowItWorks from "./components/HowItWorks";
-import MeetDimitrios from "./components/MeetDimitrios";
-```
-
-### 4b. Insert `<WhyBroker />` after the intro block
-
-Find the end of the intro `<div>` (the one that contains the heading
-`Με δύναμη, εξειδίκευση και ειλικρίνεια στο πλευρό σας`). It closes right before the
-comment `{/* ── SPLIT: Family ── */}`. Insert `<WhyBroker />` **between** them:
-
-```tsx
-      </div>
-
-      {/* === WHY A BROKER === */}
-      <WhyBroker />
-
-      {/* ── SPLIT: Family ── */}
-```
-
-### 4c. Insert `<HowItWorks />` and `<MeetDimitrios />` after the Figurines split
-
-Find the closing `</div>` of the Figurines split block (the one whose image is
-`/figurines.jpg`). It sits right before the comment `{/* ==== PARTNERS MARQUEE ==== */}`.
-Insert both new sections **between** them, in this order:
-
-```tsx
-      </div>
-
-      {/* === HOW IT WORKS === */}
-      <HowItWorks />
-
-      {/* === MEET DIMITRIOS === */}
-      <MeetDimitrios />
-
-      {/* ==== PARTNERS MARQUEE ==== */}
-```
-
-**Resulting page order:** Navbar → Hero → ProductCardStrip → intro → **WhyBroker** →
-Family split → Figurines split → **HowItWorks** → **MeetDimitrios** → PartnersMarquee → Footer.
-
-This alternates section backgrounds (white → tint → white → tint → white → tint) so no two
-adjacent sections share the same colour.
+Check that four items still fit comfortably in the centered nav area at the current font
+size — if it looks cramped, use your judgment on minor spacing adjustments, but don't
+change the 3-zone grid layout of the navbar itself.
 
 ---
 
+## 5. New page — Συνεργάσου μαζί μας (Partnership)
 
-## Verification checklist
+**New file:** `app/synergasia/page.tsx`
 
+Same page pattern as the Terms of Use page in section 2 — `<Navbar />`, centered content,
+`<Footer />`. This is a short, simple page, not a long article.
 
-2. Homepage shows, in order: intro → **Why a broker (4 cards)** → Family split → Figurines
-   split → **How it works (3 numbered steps)** → **Meet Dimitrios (photo + chips + link)** →
-   partners → footer.
-3. All Greek text renders correctly (no boxes/tofu). If Greek looks broken, the font
-   subset is the cause — not this prompt.
-4. Hovering a "Why a broker" card lifts it slightly; scrolling into each section triggers
-   the fade-up animation.
-5. The "Γνωρίστε τον Δημήτριο" link navigates to `/emeis`.
-6. `/dimitrios.jpg` loads inside the Meet Dimitrios photo frame (it already exists in
-   `/public`).
-7. No `lucide-react` import errors. If one occurred, confirm the `// TODO: icon swapped`
-   comment is present.
+Use this exact Greek copy:
 
+```
+Συνεργαστείτε μαζί μας
+
+Αν είστε επαγγελματίας στον χώρο της ασφάλισης και αναζητάτε ένα δίκτυο συνεργασίας με
+τεχνογνωσία, υποστήριξη και σταθερές βάσεις, ο Δημήτριος Πλουμάκης σας καλωσορίζει να
+συζητήσετε μια συνεργασία. Με πάνω από 25 χρόνια εμπειρίας στον ασφαλιστικό κλάδο,
+προσφέρουμε στους συνεργάτες μας τεχνική υποστήριξη, πρόσβαση σε κορυφαίες ασφαλιστικές
+εταιρείες και ένα σταθερό πλαίσιο ανάπτυξης.
+```
+
+Below that, a single CTA button linking to `/epikoinonia`, styled like the other primary
+CTA buttons already used across the site (brand blue background, white text, pill shape).
+Button text: `Επικοινωνήστε μαζί μας`.
+
+This is a first draft of the copy — it's deliberately generic since the exact partnership
+terms weren't specified. Dimitrios should review and adjust the specifics before launch.
+
+---
+
+## Constraints (apply to all 5 sections)
+
+- Inline styles only — no Tailwind, no CSS modules.
+- Reproduce all Greek copy exactly as given above — no translating, paraphrasing, or
+  "improving" it.
+- Don't touch the Privacy Policy, the English-language question, the homepage's main
+  image, or the mislabeled "Καριέρα → /emeis" link — none of those are part of this prompt.
+- Match existing design tokens: `var(--font-ubuntu-sans), sans-serif`, brand blue
+  `#1E439A`, deep navy `#0F2660`, lucide-react icons at `strokeWidth={1.75}` where
+  consistent with existing usage.
+- Run `npm run dev` afterward and check: the footer (socials + hours), `/oroi-xrisis`,
+  `/synergasia`, the navbar with 4 items, the homepage card strip (6 cards, new order),
+  and the two new product pages `/idiotes/skafi` and `/idiotes/taxidi` — plus confirm
+  `/idiotes/oikogeneia` still loads even though it's no longer in the dropdown or the
+  homepage strip.

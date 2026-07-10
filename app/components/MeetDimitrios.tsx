@@ -109,7 +109,7 @@ export default function MeetDimitrios() {
               href="/emeis"
               style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#1E439A", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}
             >
-              Γνωρίστε με
+              Μάθετε περισσότερα
               <ArrowRight size={16} strokeWidth={2} />
             </Link>
           </motion.div>
