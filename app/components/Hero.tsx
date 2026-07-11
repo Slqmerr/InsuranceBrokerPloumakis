@@ -32,41 +32,19 @@ function CountUpStat({ value, suffix, label }: { value: number; suffix: string; 
 export default function Hero() {
   return (
     <section style={{
-      position: "relative",
+      display: "flex",
       height: "640px",
       overflow: "hidden",
     }}>
-      {/* Background photo */}
-      <img
-        src="/dimitrios.jpg"
-        alt="Δημήτριος Πλουμάκης"
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: "center 20%",
-        }}
-      />
-
-      {/* Red gradient overlay — solid near the text, fading out toward the photo */}
+      {/* Left — solid red panel with the text */}
       <div style={{
-        position: "absolute",
-        inset: 0,
-
-      }} />
-
-      {/* Text content */}
-      <div style={{
+        flex: "0 0 46%",
+        background: "#a30000",
         position: "relative",
-        zIndex: 2,
-        height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        padding: "0 64px",
-        maxWidth: "560px",
+        padding: "0 64px 60px",
       }}>
         <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", marginBottom: "12px" }}>
           Αξία έχει ό,τι είναι σημαντικό για σένα
@@ -86,7 +64,7 @@ export default function Hero() {
         </p>
         <Link href="/epikoinonia" style={{
           background: "#fff",
-          color: "#ffffff",
+          color: "#a30000",
           fontWeight: 700,
           fontFamily: "var(--font-ubuntu-sans), sans-serif",
           padding: "14px 32px",
@@ -98,29 +76,44 @@ export default function Hero() {
         }}>
           Κλείσε Ραντεβού
         </Link>
+
+        {/* Stats row — bottom of the panel, lifted above the overlapping product card strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+          style={{
+            position: "absolute",
+            bottom: "96px",
+            left: "64px",
+            display: "flex",
+            gap: "40px",
+          }}
+        >
+          {HERO_STATS.map((stat, i) => (
+            <React.Fragment key={stat.label}>
+              {i > 0 && <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />}
+              <CountUpStat value={stat.value} suffix={stat.suffix} label={stat.label} />
+            </React.Fragment>
+          ))}
+        </motion.div>
       </div>
 
-      {/* Stats row — bottom-left, lifted above the overlapping product card strip */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-        style={{
-          position: "absolute",
-          bottom: "96px",
-          left: "64px",
-          zIndex: 2,
-          display: "flex",
-          gap: "40px",
-        }}
-      >
-        {HERO_STATS.map((stat, i) => (
-          <React.Fragment key={stat.label}>
-            {i > 0 && <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />}
-            <CountUpStat value={stat.value} suffix={stat.suffix} label={stat.label} />
-          </React.Fragment>
-        ))}
-      </motion.div>
+      {/* Right — photo, full color, no overlay */}
+      <div style={{ flex: 1, position: "relative" }}>
+        <img
+          src="/dimitrios.jpg"
+          alt="Δημήτριος Πλουμάκης"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center 20%",
+          }}
+        />
+      </div>
     </section>
   );
 }

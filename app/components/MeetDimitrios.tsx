@@ -24,7 +24,7 @@ const CREDENTIALS = [
 
 export default function MeetDimitrios() {
   return (
-    <section style={{ background: "#fdf6f6", padding: "72px 64px" }}>
+    <section style={{ background: "#fbf5f5", padding: "72px 64px" }}>
       <div style={{
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
@@ -67,7 +67,7 @@ export default function MeetDimitrios() {
 
           <motion.h2
             variants={fadeUp}
-            style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#7a1519", margin: 0, lineHeight: 1.2 }}
+            style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#5e0000", margin: 0, lineHeight: 1.2 }}
           >
             Δημήτριος Πλουμάκης
           </motion.h2>
@@ -90,8 +90,8 @@ export default function MeetDimitrios() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "8px",
-                  background: "#fdeeef",
-                  color: "#c1272d",
+                  background: "#f9efef",
+                  color: "#a30000",
                   borderRadius: "999px",
                   padding: "8px 16px",
                   fontSize: "13px",
@@ -107,7 +107,7 @@ export default function MeetDimitrios() {
           <motion.div variants={fadeUp} style={{ marginTop: "8px" }}>
             <Link
               href="/emeis"
-              style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#c1272d", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#a30000", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}
             >
               Γνωρίστε με
               <ArrowRight size={16} strokeWidth={2} />

@@ -40,14 +40,14 @@ const REASONS = [
 
 export default function WhyBroker() {
   return (
-    <section style={{ background: "#fdf6f6", padding: "72px 64px" }}>
+    <section style={{ background: "#fbf5f5", padding: "72px 64px" }}>
       
       <motion.h2
         variants={fadeUp}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "-60px" }}
-        style={{ fontFamily: UBUNTU, fontSize: "28px", fontWeight: 700, color: "#7a1519", margin: "0 0 12px", maxWidth: "620px", lineHeight: 1.25 }}
+        style={{ fontFamily: UBUNTU, fontSize: "28px", fontWeight: 700, color: "#5e0000", margin: "0 0 12px", maxWidth: "620px", lineHeight: 1.25 }}
       >
         Γιατί να με εμπιστευτείτε;
       </motion.h2>
@@ -89,14 +89,14 @@ export default function WhyBroker() {
               width: "56px",
               height: "56px",
               borderRadius: "50%",
-              background: "#fbe9ea",
+              background: "#f7e8e8",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}>
-              <r.icon size={26} color="#c1272d" strokeWidth={1.75} />
+              <r.icon size={26} color="#a30000" strokeWidth={1.75} />
             </div>
-            <h3 style={{ fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#7a1519", margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#5e0000", margin: 0, lineHeight: 1.3 }}>
               {r.title}
             </h3>
             <p style={{ color: "#555", fontSize: "14px", lineHeight: 1.65, margin: 0 }}>

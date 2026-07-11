@@ -110,7 +110,7 @@ export default function EmeisPage() {
         display: "flex",
         flexDirection: "row",
         minHeight: "480px",
-        background: "#c1272d",
+        background: "#a30000",
         overflow: "hidden",
       }}>
         {/* Left: bio content — staggered entrance */}
@@ -210,7 +210,7 @@ export default function EmeisPage() {
             style={{
               position: "absolute",
               inset: 0,
-              background: "linear-gradient(to right, rgba(193,39,45,0.5) 0%, transparent 40%)",
+              background: "linear-gradient(to right, rgba(163, 0, 0,0.5) 0%, transparent 40%)",
             }}
           />
         </div>
@@ -230,7 +230,7 @@ export default function EmeisPage() {
             fontFamily: UBUNTU,
             fontSize: "28px",
             fontWeight: 700,
-            color: "#7a1519",
+            color: "#5e0000",
             marginBottom: "40px",
           }}
         >
@@ -272,7 +272,7 @@ export default function EmeisPage() {
                   <div style={{ color: "#888", fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "2px" }}>
                     {item.month}
                   </div>
-                  <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#c1272d", lineHeight: 1.1 }}>
+                  <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#a30000", lineHeight: 1.1 }}>
                     {item.year}
                   </div>
                 </motion.div>
@@ -286,9 +286,9 @@ export default function EmeisPage() {
                       width: "9px",
                       height: "9px",
                       borderRadius: "50%",
-                      border: "2px solid #c1272d",
+                      border: "2px solid #a30000",
                       background: "#fff",
-                      boxShadow: "0 0 0 5px #fdeeef",
+                      boxShadow: "0 0 0 5px #f9efef",
                       marginTop: "8px",
                       flexShrink: 0,
                     }}
@@ -301,8 +301,8 @@ export default function EmeisPage() {
                       marginTop: "10px",
                       transformOrigin: "top",
                       background: isLast
-                        ? "linear-gradient(to bottom, #f0c9cb 0%, transparent 90%)"
-                        : "linear-gradient(to bottom, #f0c9cb 0%, #f0c9cb 70%, rgba(240,201,203,0.35) 100%)",
+                        ? "linear-gradient(to bottom, #e8c0c0 0%, transparent 90%)"
+                        : "linear-gradient(to bottom, #e8c0c0 0%, #e8c0c0 70%, rgba(232, 192, 192,0.35) 100%)",
                     }}
                   />
                 </div>
@@ -314,10 +314,10 @@ export default function EmeisPage() {
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   style={{ paddingBottom: isLast ? "8px" : "56px", paddingTop: "4px" }}
                 >
-                  <div style={{ color: "#c1272d", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
+                  <div style={{ color: "#a30000", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
                     {item.org}
                   </div>
-                  <h3 style={{ fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#7a1519", margin: "0 0 8px" }}>
+                  <h3 style={{ fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#5e0000", margin: "0 0 8px" }}>
                     {item.title}
                   </h3>
                   <p style={{ color: "#555", fontSize: "14px", lineHeight: 1.65, margin: "0 0 10px", maxWidth: "560px" }}>
@@ -334,7 +334,7 @@ export default function EmeisPage() {
 
       {/* === AWARDS === */}
       <section style={{
-        background: "#fdf6f6",
+        background: "#fbf5f5",
         padding: "64px 64px",
       }}>
 
@@ -347,7 +347,7 @@ export default function EmeisPage() {
             fontFamily: UBUNTU,
             fontSize: "28px",
             fontWeight: 700,
-            color: "#7a1519",
+            color: "#5e0000",
             marginBottom: "12px",
           }}
         >
@@ -385,7 +385,7 @@ export default function EmeisPage() {
                       {entry.month}
                     </div>
                   )}
-                  <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#c1272d", lineHeight: 1.1 }}>
+                  <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#a30000", lineHeight: 1.1 }}>
                     {entry.year}
                   </div>
                 </motion.div>
@@ -399,9 +399,9 @@ export default function EmeisPage() {
                       width: "9px",
                       height: "9px",
                       borderRadius: "50%",
-                      border: "2px solid #c1272d",
+                      border: "2px solid #a30000",
                       background: "#fff",
-                      boxShadow: "0 0 0 5px #fdeeef",
+                      boxShadow: "0 0 0 5px #f9efef",
                       marginTop: "12px",
                       flexShrink: 0,
                     }}
@@ -414,8 +414,8 @@ export default function EmeisPage() {
                       marginTop: "10px",
                       transformOrigin: "top",
                       background: isLast
-                        ? "linear-gradient(to bottom, #f0c9cb 0%, transparent 90%)"
-                        : "linear-gradient(to bottom, #f0c9cb 0%, #f0c9cb 70%, rgba(240,201,203,0.35) 100%)",
+                        ? "linear-gradient(to bottom, #e8c0c0 0%, transparent 90%)"
+                        : "linear-gradient(to bottom, #e8c0c0 0%, #e8c0c0 70%, rgba(232, 192, 192,0.35) 100%)",
                     }}
                   />
                 </div>
@@ -427,16 +427,16 @@ export default function EmeisPage() {
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   style={{ paddingBottom: isLast ? "8px" : "40px", paddingTop: "6px" }}
                 >
-                  <div style={{ color: "#c1272d", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
+                  <div style={{ color: "#a30000", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
                     {entry.event}
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                     {entry.awards.map((award) => (
                       <div key={award.rank + award.category} style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                        <span style={{ color: "#c1272d", fontWeight: 700, fontSize: "13px", whiteSpace: "nowrap" }}>
+                        <span style={{ color: "#a30000", fontWeight: 700, fontSize: "13px", whiteSpace: "nowrap" }}>
                           {award.rank}
                         </span>
-                        <span style={{ fontFamily: UBUNTU, fontWeight: 600, fontSize: "16px", color: "#7a1519" }}>
+                        <span style={{ fontFamily: UBUNTU, fontWeight: 600, fontSize: "16px", color: "#5e0000" }}>
                           {award.category}
                         </span>
                       </div>
@@ -468,19 +468,19 @@ export default function EmeisPage() {
             width: "48px",
             height: "48px",
             borderRadius: "14px",
-            background: "#fbe9ea",
+            background: "#f7e8e8",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             marginBottom: "18px",
           }}>
-            <Trophy size={24} color="#c1272d" strokeWidth={1.75} />
+            <Trophy size={24} color="#a30000" strokeWidth={1.75} />
           </div>
 
-          <div style={{ fontFamily: UBUNTU, fontSize: "42px", fontWeight: 700, color: "#c1272d", lineHeight: 1 }}>
+          <div style={{ fontFamily: UBUNTU, fontSize: "42px", fontWeight: 700, color: "#a30000", lineHeight: 1 }}>
             <StatValue value={TOTAL_AWARDS} />
           </div>
-          <div style={{ fontSize: "14px", fontWeight: 600, color: "#7a1519", margin: "6px 0 2px" }}>
+          <div style={{ fontSize: "14px", fontWeight: 600, color: "#5e0000", margin: "6px 0 2px" }}>
             διακρίσεις συνολικά
           </div>
           <div style={{ fontSize: "12px", color: "#888", marginBottom: "22px" }}>
@@ -493,7 +493,7 @@ export default function EmeisPage() {
             {AWARD_CATEGORY_COUNTS.map(([category, count]) => (
               <div key={category} style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px" }}>
                 <span style={{ fontSize: "13px", color: "#555" }}>{category}</span>
-                <span style={{ fontFamily: UBUNTU, fontSize: "15px", fontWeight: 700, color: "#c1272d" }}>{count}</span>
+                <span style={{ fontFamily: UBUNTU, fontSize: "15px", fontWeight: 700, color: "#a30000" }}>{count}</span>
               </div>
             ))}
           </div>

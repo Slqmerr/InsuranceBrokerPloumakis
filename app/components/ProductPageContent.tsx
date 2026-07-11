@@ -25,7 +25,7 @@ export default function ProductPageContent({
       <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "460px" }}>
         {/* Left: red panel */}
         <div style={{
-          background: "#c1272d",
+          background: "#a30000",
           padding: "64px",
           display: "flex",
           flexDirection: "column",
@@ -114,7 +114,7 @@ export default function ProductPageContent({
         <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px", display: "grid", gap: "12px" }}>
           {product.covers.map((item) => (
             <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: "12px", fontSize: "15px", color: "#333", lineHeight: 1.5 }}>
-              <Check size={18} color="#c1272d" strokeWidth={2.5} style={{ flexShrink: 0, marginTop: "2px" }} />
+              <Check size={18} color="#a30000" strokeWidth={2.5} style={{ flexShrink: 0, marginTop: "2px" }} />
               {item}
             </li>
           ))}
@@ -125,7 +125,7 @@ export default function ProductPageContent({
         </p>
  {/* LINK */ }
         <Link href={`/prosfora/${product.slug}`} style={{
-          background: "#c1272d",
+          background: "#a30000",
           color: "#fff",
           fontWeight: 700,
           fontFamily: UBUNTU,
@@ -148,7 +148,7 @@ export default function ProductPageContent({
           boxShadow: "0 12px 40px rgba(122,21,25,0.12)",
           padding: "32px 28px",
         }}>
-          <h3 style={{ fontFamily: UBUNTU, fontSize: "17px", fontWeight: 700, color: "#7a1519", margin: "0 0 20px" }}>
+          <h3 style={{ fontFamily: UBUNTU, fontSize: "17px", fontWeight: 700, color: "#5e0000", margin: "0 0 20px" }}>
             Τι θα χρειαστείτε
           </h3>
 
@@ -159,13 +159,13 @@ export default function ProductPageContent({
                   width: "36px",
                   height: "36px",
                   borderRadius: "10px",
-                  background: "#fbe9ea",
+                  background: "#f7e8e8",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0,
                 }}>
-                  <FileText size={17} color="#c1272d" strokeWidth={1.75} />
+                  <FileText size={17} color="#a30000" strokeWidth={1.75} />
                 </div>
                 <span style={{ fontSize: "14px", color: "#333", fontWeight: 600, lineHeight: 1.45, alignSelf: "center" }}>{item}</span>
               </div>
@@ -180,7 +180,7 @@ export default function ProductPageContent({
 
           <div style={{ display: "grid", gap: "10px" }}>
             <Link href={`/prosfora/${product.slug}`} style={{
-              background: "#c1272d",
+              background: "#a30000",
               color: "#fff",
               fontWeight: 700,
               fontFamily: UBUNTU,
@@ -194,8 +194,8 @@ export default function ProductPageContent({
             </Link>
             <Link href="/epikoinonia" style={{
               background: "transparent",
-              color: "#c1272d",
-              border: "1.5px solid #c1272d",
+              color: "#a30000",
+              border: "1.5px solid #a30000",
               fontWeight: 700,
               fontFamily: UBUNTU,
               padding: "12px 24px",
@@ -219,7 +219,7 @@ export default function ProductPageContent({
             fontSize: "14px",
             fontWeight: 600,
           }}>
-            <Phone size={15} color="#c1272d" strokeWidth={1.75} />
+            <Phone size={15} color="#a30000" strokeWidth={1.75} />
             2810 326 400
           </a>
         </aside>

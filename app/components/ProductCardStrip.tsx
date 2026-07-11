@@ -93,16 +93,16 @@ export default function ProductCardStrip() {
               width: "48px",
               height: "48px",
               borderRadius: "50%",
-              background: "#fbe9ea",
+              background: "#f7e8e8",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}>
-              <card.icon size={22} color="#c1272d" strokeWidth={1.75} />
+              <card.icon size={22} color="#a30000" strokeWidth={1.75} />
             </div>
             <div style={{
               textAlign: "center",
-              color: "#c1272d",
+              color: "#a30000",
               fontSize: "15px",
               fontWeight: 600,
               fontFamily: "var(--font-ubuntu-sans), sans-serif",

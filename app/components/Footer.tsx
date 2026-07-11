@@ -9,7 +9,7 @@ const MAP_EMBED_SRC = `https://maps.google.com/maps?q=${encodeURIComponent("Κυ
 export default function Footer() {
   return (
     <footer style={{
-      background: "#c1272d",
+      background: "#a30000",
       color: "#fff",
       padding: "64px 64px 32px",
       fontFamily: "var(--font-ubuntu-sans), sans-serif",
