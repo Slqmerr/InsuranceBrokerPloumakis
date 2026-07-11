@@ -54,7 +54,7 @@ export default function Hero() {
       <div style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(100deg, rgba(193,39,45,0.93) 0%, rgba(193,39,45,0.75) 35%, rgba(193,39,45,0.35) 70%, rgba(193,39,45,0.15) 100%)",
+
       }} />
 
       {/* Text content */}
@@ -86,7 +86,7 @@ export default function Hero() {
         </p>
         <Link href="/epikoinonia" style={{
           background: "#fff",
-          color: "#c1272d",
+          color: "#ffffff",
           fontWeight: 700,
           fontFamily: "var(--font-ubuntu-sans), sans-serif",
           padding: "14px 32px",
