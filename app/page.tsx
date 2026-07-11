@@ -40,8 +40,9 @@ export default function Home() {
       {/* === WHY A BROKER === */}
       <WhyBroker />
 
-      {/* ── SPLIT: Family — photo cut by the left edge, its curve carving into the colored band that fills the rest ── */}
-      <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch", marginBottom: "128px" }}>
+      {/* ── SPLIT: Family — photo cut by the left edge, its curve carving into the colored band that fills the rest.
+          No margin below: it butts against the mirrored Figurines split so the two bands read as one S-curve. ── */}
+      <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
         {/* Colored band runs under the photo's curve all the way to the right edge */}
         <div aria-hidden style={{ position: "absolute", inset: "0 0 0 30%", background: "#f9efef" }} />
         <img
@@ -49,7 +50,7 @@ export default function Home() {
           alt="Οικογένεια"
           style={{
             position: "relative",
-            width: "100%", height: "480px", objectFit: "cover", display: "block",
+            width: "100%", height: "480px", objectFit: "cover", objectPosition: "center 70%", display: "block",
             borderRadius: "0 240px 240px 0",
           }}
         />
@@ -78,7 +79,7 @@ export default function Home() {
       </section>
 
       {/* ── SPLIT: Figurines — colored band fills up to the photo's curve, photo cut by the right edge ── */}
-      <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch", marginBottom: "128px" }}>
+      <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
         {/* Colored band runs from the left edge under the photo's curve */}
         <div aria-hidden style={{ position: "absolute", inset: "0 30% 0 0", background: "#f9efef" }} />
         <div style={{
@@ -120,7 +121,7 @@ export default function Home() {
       {/* === MEET DIMITRIOS === */}
       <MeetDimitrios />
 
-      {/* ==== PARTNERS MARQUEE ==== */}
+      {/* === PARTNERS === */}
       <PartnersMarquee />
 
       {/* ==== FOOTER =====*/}

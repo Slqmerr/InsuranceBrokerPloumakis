@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Phone } from "lucide-react";
+import { ChevronDown, Phone, MapPin } from "lucide-react";
 import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS } from "./products";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
@@ -11,6 +11,25 @@ const MotionLink = motion.create(Link);
 
 export default function Navbar() {
   const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
+  const navRef = React.useRef<HTMLElement>(null);
+  const [panelTop, setPanelTop] = React.useState(88);
+
+  // The top address strip scrolls away while the nav is sticky, so the
+  // dropdown's anchor point moves — track the nav's real bottom edge.
+  React.useEffect(() => {
+    if (!activeMenu) return;
+    const update = () => {
+      const rect = navRef.current?.getBoundingClientRect();
+      if (rect) setPanelTop(rect.bottom);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [activeMenu]);
 
   const closeMenu = () => setActiveMenu(null);
   const toggleMenu = (name: string) => setActiveMenu(prev => prev === name ? null : name);
@@ -23,7 +42,36 @@ export default function Navbar() {
 
   return (
     <>
-      <nav style={{
+      {/* Top strip — address, very top right */}
+      <div style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        background: "#a30000",
+        padding: "8px 36px",
+        borderBottom: "1px solid rgba(255,255,255,0.14)",
+        fontFamily: UBUNTU,
+      }}>
+        <a
+          href="https://maps.google.com/?q=Κυδωνίας 8 %26 Ανδρεαδάκη, 71202 Ηράκλειο"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            color: "rgba(255,255,255,0.65)",
+            textDecoration: "none",
+            fontSize: "12.5px",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <MapPin size={13} strokeWidth={1.75} />
+          Κυδωνίας 8 &amp; Ανδρεαδάκη, 71202 Ηράκλειο
+        </a>
+      </div>
+
+      <nav ref={navRef} style={{
         display: "grid",
         gridTemplateColumns: "auto 1fr auto",
         alignItems: "center",
@@ -136,7 +184,29 @@ export default function Navbar() {
                 display: "inline-block",
               }}
             >
-              Καριέρα
+              Σχετικά
+            </MotionLink>
+          </li>
+
+          {/* Συνεργάσου μαζί μας — plain link, no dropdown */}
+          <li>
+            <MotionLink
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.15 }}
+              href="/synergasia"
+              onClick={closeMenu}
+              style={{
+                color: "rgba(255,255,255,0.80)",
+                textDecoration: "none",
+                fontSize: "17px",
+                padding: "6px 12px",
+                borderRadius: "4px",
+                display: "inline-block",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Συνεργάσου μαζί μας
             </MotionLink>
           </li>
 
@@ -193,7 +263,7 @@ export default function Navbar() {
               style={{
                 position: "fixed",
                 inset: 0,
-                top: "88px",
+                top: panelTop,
                 background: "rgba(0,0,0,0.45)",
                 backdropFilter: "blur(4px)",
                 zIndex: 90,
@@ -207,7 +277,7 @@ export default function Navbar() {
               transition={{ duration: 0.2, ease: "easeOut" }}
               style={{
                 position: "fixed",
-                top: "88px",
+                top: panelTop,
                 left: 0,
                 right: 0,
                 zIndex: 95,
@@ -234,25 +304,24 @@ export default function Navbar() {
                 {/* LEFT — product grid (existing content, keep all of it) */}
                 <div style={{ flex: "0 0 70%", paddingRight: "48px" }}>
                   {/* Header */}
-                  <div style={{ marginBottom: "36px" }}>
-                    <p style={{ fontSize: "12px", color: "#888", marginBottom: "4px", letterSpacing: "0.5px", textTransform: "uppercase" }}>
-                      Τα προγράμματά μας για
-                    </p>
-                    <h2 style={{
-                      fontFamily: UBUNTU,
-                      fontSize: "26px",
-                      fontWeight: 700,
-                      color: "#1a1a1a",
-                      margin: 0,
+                  <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
+                    <span style={{
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      letterSpacing: "0.05em",
+                      textTransform: "none",
+                      color: "#a30000",
+                      whiteSpace: "nowrap",
                     }}>
-                      {activeMenu === "idiwtes" ? "ΙΔΙΩΤΕΣ" : "ΕΠΙΧΕΙΡΗΣΕΙΣ"}
-                    </h2>
+                      Προγράμματα για {activeMenu === "idiwtes" ? "ιδιώτες" : "επιχειρήσεις"}
+                    </span>
+                    <div style={{ flex: 1, height: "1px", background: "#e8eaef" }} />
                   </div>
 
                   {/* Product Grid */}
                   <div style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gridTemplateColumns: activeMenu === "idiwtes" ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
                     gap: "4px",
                   }}>
                     {(activeMenu === "idiwtes" ? IDIWTES_PRODUCTS : EPIXEIRISI_PRODUCTS).map((product) => (
@@ -313,16 +382,7 @@ export default function Navbar() {
                 }}>
                   {activeMenu === "idiwtes" && (
                     <>
-                      <p style={{
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        color: "#a30000",
-                        margin: 0,
-                      }}>
-                        Δεν ξέρεις από πού να ξεκινήσεις;
-                      </p>
+                     
                       <h3 style={{
                         fontSize: "22px",
                         fontWeight: 700,
@@ -331,7 +391,7 @@ export default function Navbar() {
                         lineHeight: 1.3,
                         fontFamily: "var(--font-ubuntu-sans), sans-serif",
                       }}>
-                      Βρες την κατάλληλη ασφάλεια για σένα
+                       Δεν βρίσκεις αυτό που ψάχνεις;
                       </h3>
                       <p style={{
                         fontSize: "14px",
@@ -341,7 +401,7 @@ export default function Navbar() {
                       }}>
                         Μας λες τι χρειάζεσαι, εμείς συγκρίνουμε τις καλύτερες προσφορές από 15+ εταιρείες.
                       </p>
-                      <Link href="/epikoinonia" onClick={closeMenu} style={{
+                      <Link href="/asfaleies" onClick={closeMenu} style={{
                         marginTop: "8px",
                         background: "#a30000",
                         color: "#fff",
@@ -354,23 +414,14 @@ export default function Navbar() {
                         fontSize: "13px",
                         width: "fit-content",
                       }}>
-                        Κλείσε ραντεβού
+                        Δείτε όλα τα προγράμματα
                       </Link>
                     </>
                   )}
 
                   {activeMenu === "epixeirisi" && (
                     <>
-                      <p style={{
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        color: "#a30000",
-                        margin: 0,
-                      }}>
-                        Ασφάλεια για επιχειρήσεις
-                      </p>
+                      
                       <h3 style={{
                         fontSize: "22px",
                         fontWeight: 700,
@@ -389,7 +440,7 @@ export default function Navbar() {
                       }}>
                         Εξατομικευμένες λύσεις για μικρές,μεσαίες και μεγάλες επιχειρήσεις χωρίς περιττές καλύψεις.
                       </p>
-                      <Link href="/epikoinonia" onClick={closeMenu} style={{
+                      <Link href="/asfaleies" onClick={closeMenu} style={{
                         marginTop: "8px",
                         background: "#a30000",
                         color: "#fff",
@@ -402,7 +453,7 @@ export default function Navbar() {
                         fontSize: "13px",
                         width: "fit-content",
                       }}>
-                        Κλείσε ραντεβού
+                        Δείτε όλα τα προγράμματα
                       </Link>
                     </>
                   )}

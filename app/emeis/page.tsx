@@ -2,10 +2,16 @@
 
 import React from "react";
 import { motion, animate, useInView, type Variants } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { Trophy } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PartnersMarquee from "../components/PartnersMarquee";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
 /* ── Shared animation variants ── */
@@ -99,6 +105,88 @@ const AWARD_CATEGORY_COUNTS = Object.entries(
 ).sort((a, b) => b[1] - a[1]);
 
 export default function EmeisPage() {
+  const awardsRef = React.useRef<HTMLDivElement>(null);
+
+  const { contextSafe } = useGSAP(() => {
+    const root = awardsRef.current;
+    if (!root) return;
+    const spine = root.querySelector<HTMLElement>(".awards-spine");
+    const line = root.querySelector<HTMLElement>(".awards-progress");
+    const head = root.querySelector<HTMLElement>(".awards-head");
+    const rows = gsap.utils.toArray<HTMLElement>(".award-row", root);
+
+    const mm = gsap.matchMedia();
+
+    // Reduced motion: no tweens are created, so rows render in place;
+    // just show the full spine (it starts at scaleY(0) inline, head at opacity 0).
+    mm.add("(prefers-reduced-motion: reduce)", () => {
+      gsap.set(line, { scaleY: 1 });
+    });
+
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      // Comet spine: the line draws down while the glowing head rides its tip,
+      // both scrubbed to scroll. start/end both use the 70% viewport mark so the
+      // head crosses each dot at the same moment that row's own trigger fires.
+      const spineTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: root,
+          start: "top 70%",
+          end: "bottom 70%",
+          scrub: 0.5,
+          invalidateOnRefresh: true,
+        },
+      });
+      spineTl
+        .fromTo(line, { scaleY: 0 }, { scaleY: 1, duration: 1, ease: "none" }, 0)
+        .fromTo(head, { y: 0 }, { y: () => (spine ? spine.offsetHeight - 14 : 0), duration: 1, ease: "none" }, 0)
+        .fromTo(head, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.02, ease: "none" }, 0)
+        .to(head, { autoAlpha: 0, duration: 0.02, ease: "none" }, 0.98);
+
+      rows.forEach((row) => {
+        const date = row.querySelector(".award-date");
+        const content = row.querySelector(".award-content");
+        const items = row.querySelectorAll(".award-item");
+        const dot = row.querySelector(".award-dot");
+        const ring = row.querySelector(".award-ring");
+
+        // Reveal is scrubbed, not one-shot: it plays forward and backward with
+        // the scroll, finishing right as the comet head reaches the row.
+        gsap.timeline({
+          scrollTrigger: { trigger: row, start: "top 95%", end: "top 70%", scrub: 0.4 },
+        })
+          .from(date, { x: -48, autoAlpha: 0, duration: 1, ease: "power2.out", immediateRender: true }, 0)
+          .from(content, { x: 48, autoAlpha: 0, duration: 1, ease: "power2.out", immediateRender: true }, 0)
+          .from(items, { y: 18, autoAlpha: 0, duration: 0.6, stagger: 0.2, ease: "power1.out", immediateRender: true }, 0.3);
+
+        // Dot lights up as the comet passes; reverses when scrolling back up.
+        gsap.to(dot, {
+          backgroundColor: "#a30000",
+          scale: 1.35,
+          boxShadow: "0 0 0 5px rgba(163, 0, 0,0.18)",
+          duration: 0.35,
+          ease: "back.out(3)",
+          scrollTrigger: { trigger: row, start: "top 70%", toggleActions: "play none none reverse" },
+        });
+
+        // One-shot ripple every time the comet enters the row going down.
+        ScrollTrigger.create({
+          trigger: row,
+          start: "top 70%",
+          onEnter: () => {
+            gsap.fromTo(ring,
+              { scale: 1, autoAlpha: 0.55 },
+              { scale: 3.6, autoAlpha: 0, duration: 0.7, ease: "power1.out", overwrite: true },
+            );
+          },
+        });
+      });
+    });
+  }, { scope: awardsRef });
+
+  const nudgeContent = contextSafe((el: HTMLElement, x: number) => {
+    gsap.to(el, { x, duration: 0.4, ease: "power3.out", overwrite: "auto" });
+  });
+
   return (
     <main style={{ fontFamily: UBUNTU, background: "#fff", color: "#1a1a1a", width: "100%" }}>
 
@@ -202,7 +290,7 @@ export default function EmeisPage() {
               objectPosition: "center top",
             }}
           />
-          {/* subtle dark gradient on the left edge to blend with red bg */}
+          {/* subtle dark gradient on the left edge to blend with blue bg */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -245,7 +333,7 @@ export default function EmeisPage() {
               year: "2012",
               org: "LIMRA · Windsor, Connecticut, U.S.A.",
               title: "Management Skills Seminar",
-              description: "Διεθνές σεμινάριο διοίκησης πωλήσεων ασφαλιστικής, παρεχόμενο από τον παγκόσμιο οργανισμό LIMRA — έναν από τους πιο έγκυρους φορείς επαγγελματικής κατάρτισης στον ασφαλιστικό κλάδο ανά τον κόσμο.",
+              description: "Διεθνές σεμινάριο διοίκησης πωλήσεων ασφαλιστικής, παρεχόμενο από τον παγκόσμιο οργανισμό LIMRA. Έναν από τους πιο έγκυρους φορείς επαγγελματικής κατάρτισης στον ασφαλιστικό κλάδο ανά τον κόσμο.",
               note: "International Life, Ελλάδα",
             },
             {
@@ -253,7 +341,7 @@ export default function EmeisPage() {
               year: "2013",
               org: "LIMRA · EIAS (Ελληνικό Ινστιτούτο Ασφαλιστικών Σπουδών)",
               title: "Creating Clients: Moving from Sales to Market Development",
-              description: "Εξειδικευμένο πρόγραμμα ανάπτυξης αγοράς και στρατηγικής απόκτησης πελατών, σε συνεργασία με το EIAS — τον επίσημο εκπαιδευτικό φορέα του ασφαλιστικού κλάδου στην Ελλάδα.",
+              description: "Εξειδικευμένο πρόγραμμα ανάπτυξης αγοράς και στρατηγικής απόκτησης πελατών, σε συνεργασία με το EIAS. Τον επίσημο εκπαιδευτικό φορέα του ασφαλιστικού κλάδου στην Ελλάδα.",
               note: "EIAS, Ελλάδα",
             },
           ].map((item, i, arr) => {
@@ -366,20 +454,64 @@ export default function EmeisPage() {
         {/* Minimal timeline — year first, then event; multiple awards grouped per year.
             Sticky summary card fills the right column. */}
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 860px) 300px", gap: "64px", alignItems: "start" }}>
-        <div>
+        <div ref={awardsRef} style={{ position: "relative" }}>
+          {/* Scroll-scrubbed spine — a line draws down over the faint track lines while a
+              glowing comet head rides its tip. Centered on the 56px divider column (150px + 28px). */}
+          <div
+            className="awards-spine"
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: "170px",
+              top: "14px",
+              bottom: "48px",
+              width: "16px",
+              zIndex: 0,
+              pointerEvents: "none",
+            }}
+          >
+            <div
+              className="awards-progress"
+              style={{
+                position: "absolute",
+                left: "50%",
+                marginLeft: "-1.5px",
+                top: 0,
+                bottom: 0,
+                width: "3px",
+                borderRadius: "3px",
+                background: "linear-gradient(to bottom, #a30000 0%, #d90f0e 100%)",
+                transformOrigin: "top",
+                transform: "scaleY(0)",
+              }}
+            />
+            <div
+              className="awards-head"
+              style={{
+                position: "absolute",
+                left: "1px",
+                top: 0,
+                width: "14px",
+                height: "14px",
+                borderRadius: "50%",
+                background: "#a30000",
+                border: "3px solid #fff",
+                boxShadow: "0 0 0 1px rgba(163, 0, 0,0.35), 0 0 18px 5px rgba(163, 0, 0,0.45)",
+                opacity: 0,
+              }}
+            />
+          </div>
           {AWARD_ENTRIES.map((entry, i, arr) => {
             const isLast = i === arr.length - 1;
             return (
-              <motion.div
+              <div
                 key={entry.year + entry.event}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, margin: "-60px" }}
+                className="award-row"
                 style={{ display: "grid", gridTemplateColumns: "150px 56px 1fr" }}
               >
 
                 {/* Date — slides in from the left */}
-                <motion.div variants={dateSlide} style={{ textAlign: "right", paddingTop: "2px" }}>
+                <div className="award-date" style={{ textAlign: "right", paddingTop: "2px" }}>
                   {entry.month && (
                     <div style={{ color: "#888", fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "2px" }}>
                       {entry.month}
@@ -388,13 +520,12 @@ export default function EmeisPage() {
                   <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#a30000", lineHeight: 1.1 }}>
                     {entry.year}
                   </div>
-                </motion.div>
+                </div>
 
-                {/* Divider — dot pops, line grows downward */}
+                {/* Divider — dot lights up as the comet passes, faint track line underneath */}
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <motion.div
-                    variants={dotPop}
-                    whileHover={{ scale: 1.5 }}
+                  <div
+                    className="award-dot"
                     style={{
                       width: "9px",
                       height: "9px",
@@ -404,15 +535,27 @@ export default function EmeisPage() {
                       boxShadow: "0 0 0 5px #f9efef",
                       marginTop: "12px",
                       flexShrink: 0,
+                      position: "relative",
+                      zIndex: 1,
                     }}
-                  />
-                  <motion.div
-                    variants={lineGrow}
+                  >
+                    <div
+                      className="award-ring"
+                      aria-hidden
+                      style={{
+                        position: "absolute",
+                        inset: "-3px",
+                        borderRadius: "50%",
+                        background: "rgba(163, 0, 0,0.3)",
+                        opacity: 0,
+                      }}
+                    />
+                  </div>
+                  <div
                     style={{
                       width: "1px",
                       flex: 1,
                       marginTop: "10px",
-                      transformOrigin: "top",
                       background: isLast
                         ? "linear-gradient(to bottom, #e8c0c0 0%, transparent 90%)"
                         : "linear-gradient(to bottom, #e8c0c0 0%, #e8c0c0 70%, rgba(232, 192, 192,0.35) 100%)",
@@ -420,31 +563,35 @@ export default function EmeisPage() {
                   />
                 </div>
 
-                {/* Content — slides in from the right */}
-                <motion.div
-                  variants={contentSlide}
-                  whileHover={{ x: 6 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                {/* Content — scrub-slides in from the right; hover nudge lives on an inner
+                    wrapper so it never fights the scrubbed x tween on the outer div */}
+                <div
+                  className="award-content"
                   style={{ paddingBottom: isLast ? "8px" : "40px", paddingTop: "6px" }}
                 >
-                  <div style={{ color: "#a30000", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
-                    {entry.event}
+                  <div
+                    onMouseEnter={(e) => nudgeContent(e.currentTarget, 6)}
+                    onMouseLeave={(e) => nudgeContent(e.currentTarget, 0)}
+                  >
+                    <div style={{ color: "#a30000", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
+                      {entry.event}
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      {entry.awards.map((award) => (
+                        <div key={award.rank + award.category} className="award-item" style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+                          <span style={{ color: "#a30000", fontWeight: 700, fontSize: "13px", whiteSpace: "nowrap" }}>
+                            {award.rank}
+                          </span>
+                          <span style={{ fontFamily: UBUNTU, fontWeight: 600, fontSize: "16px", color: "#5e0000" }}>
+                            {award.category}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    {entry.awards.map((award) => (
-                      <div key={award.rank + award.category} style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                        <span style={{ color: "#a30000", fontWeight: 700, fontSize: "13px", whiteSpace: "nowrap" }}>
-                          {award.rank}
-                        </span>
-                        <span style={{ fontFamily: UBUNTU, fontWeight: 600, fontSize: "16px", color: "#5e0000" }}>
-                          {award.category}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
+                </div>
 
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -460,7 +607,7 @@ export default function EmeisPage() {
             top: "112px",
             background: "#fff",
             borderRadius: "24px",
-            boxShadow: "0 12px 40px rgba(122,21,25,0.12)",
+            boxShadow: "0 12px 40px rgba(94, 0, 0,0.12)",
             padding: "32px 28px",
           }}
         >

@@ -79,7 +79,7 @@ export default function WhyBroker() {
               background: "#fff",
               borderRadius: "24px",
               padding: "32px 28px",
-              boxShadow: "0 12px 40px rgba(122,21,25,0.08)",
+              boxShadow: "0 12px 40px rgba(94, 0, 0,0.08)",
               display: "flex",
               flexDirection: "column",
               gap: "16px",

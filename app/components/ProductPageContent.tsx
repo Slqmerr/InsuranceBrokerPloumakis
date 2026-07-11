@@ -1,14 +1,33 @@
 import Link from "next/link";
-import { Check, ChevronRight, FileText, Home, Phone } from "lucide-react";
+import { Check, ChevronRight, Home, Phone } from "lucide-react";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 import HeroCtaButtons from "./HeroCtaButtons";
 import type { Product } from "./products";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
+/** Sidebar "Πώς λειτουργεί" steps, phrased around the current product. */
+function processSteps(product: Product): { title: string; text: string }[] {
+  return [
+    {
+      title: "Επικοινωνία",
+      text: `Μας καλείτε ή ζητάτε προσφορά για «${product.title}» online, χωρίς καμία δέσμευση.`,
+    },
+    {
+      title: "Σύγκριση",
+      text: `Εξετάζουμε τα προγράμματα «${product.title}» των συνεργαζόμενων εταιρειών για εσάς.`,
+    },
+    {
+      title: "Απόφαση",
+      text: "Επιλέγετε το πρόγραμμα που ταιριάζει σε εσάς — τα υπόλοιπα τα αναλαμβάνουμε εμείς.",
+    },
+  ];
+}
+
 /**
  * Shared layout for every product detail page.
- * Hero = red text panel (left half) + product photo (right half).
+ * Hero = blue text panel (left half) + product photo (right half).
  */
 export default function ProductPageContent({
   product,
@@ -21,9 +40,9 @@ export default function ProductPageContent({
     <main style={{ fontFamily: UBUNTU, background: "#fff", color: "#1a1a1a", width: "100%", minHeight: "100vh" }}>
       <Navbar />
 
-      {/* Hero — red copy half + photo half */}
+      {/* Hero — blue copy half + photo half */}
       <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "460px" }}>
-        {/* Left: red panel */}
+        {/* Left: blue panel */}
         <div style={{
           background: "#a30000",
           padding: "64px",
@@ -85,7 +104,7 @@ export default function ProductPageContent({
         </div>
 
         {/* Right: product photo — absolutely positioned so its intrinsic size
-            can't inflate the grid row; the red panel alone sets the hero height */}
+            can't inflate the grid row; the blue panel alone sets the hero height */}
         <div style={{ position: "relative", minHeight: "460px" }}>
           <img
             src={product.image}
@@ -120,23 +139,9 @@ export default function ProductPageContent({
           ))}
         </ul>
 
-        <p style={{ fontSize: "14px", color: "#777", lineHeight: 1.7, margin: "0 0 32px" }}>
+        <p style={{ fontSize: "14px", color: "#777", lineHeight: 1.7, margin: 0 }}>
           Συνεργαζόμαστε με κορυφαίες ασφαλιστικές εταιρείες, ώστε να βρούμε μαζί το πρόγραμμα που ταιριάζει στις ανάγκες σας. Επικοινωνήστε μαζί μας για μια εξατομικευμένη προσφορά.
         </p>
- {/* LINK */ }
-        <Link href={`/prosfora/${product.slug}`} style={{
-          background: "#a30000",
-          color: "#fff",
-          fontWeight: 700,
-          fontFamily: UBUNTU,
-          padding: "13px 30px",
-          borderRadius: "999px",
-          textDecoration: "none",
-          fontSize: "14px",
-          display: "inline-block",
-        }}>
-          Ζητήστε Προσφορά
-        </Link>
         </div>
 
         {/* Sticky sidebar — trust points + CTAs follow the reader */}
@@ -145,36 +150,39 @@ export default function ProductPageContent({
           top: "112px",
           background: "#fff",
           borderRadius: "24px",
-          boxShadow: "0 12px 40px rgba(122,21,25,0.12)",
+          boxShadow: "0 12px 40px rgba(94, 0, 0,0.12)",
           padding: "32px 28px",
         }}>
           <h3 style={{ fontFamily: UBUNTU, fontSize: "17px", fontWeight: 700, color: "#5e0000", margin: "0 0 20px" }}>
-            Τι θα χρειαστείτε
+            Πώς λειτουργεί
           </h3>
 
-          <div style={{ display: "grid", gap: "14px", marginBottom: "20px" }}>
-            {product.needs.map((item) => (
-              <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+          <div style={{ display: "grid", gap: "18px", marginBottom: "24px" }}>
+            {processSteps(product).map((step, i) => (
+              <div key={step.title} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
                 <div style={{
-                  width: "36px",
-                  height: "36px",
-                  borderRadius: "10px",
-                  background: "#f7e8e8",
+                  width: "28px",
+                  height: "28px",
+                  borderRadius: "999px",
+                  background: "#a30000",
+                  color: "#fff",
+                  fontFamily: UBUNTU,
+                  fontSize: "13px",
+                  fontWeight: 700,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0,
                 }}>
-                  <FileText size={17} color="#a30000" strokeWidth={1.75} />
+                  {i + 1}
                 </div>
-                <span style={{ fontSize: "14px", color: "#333", fontWeight: 600, lineHeight: 1.45, alignSelf: "center" }}>{item}</span>
+                <div>
+                  <span style={{ display: "block", fontSize: "14px", color: "#5e0000", fontWeight: 700, lineHeight: 1.45 }}>{step.title}</span>
+                  <span style={{ display: "block", fontSize: "13px", color: "#777", lineHeight: 1.5, marginTop: "2px" }}>{step.text}</span>
+                </div>
               </div>
             ))}
           </div>
-
-          <p style={{ fontSize: "13px", color: "#777", lineHeight: 1.5, margin: "0 0 24px" }}>
-            Τα υπόλοιπα τα αναλαμβάνουμε εμείς.
-          </p>
 
           <div style={{ height: "1px", background: "#eef0f4", margin: "0 0 24px" }} />
 
@@ -224,6 +232,8 @@ export default function ProductPageContent({
           </a>
         </aside>
       </section>
+
+      <Footer />
     </main>
   );
 }

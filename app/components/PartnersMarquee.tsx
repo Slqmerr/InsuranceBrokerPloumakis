@@ -18,6 +18,7 @@ const PARTNERS = [
   { name: "NN", src: "/partners/nn.svg" },
   { name: "Υδρόγειος", src: "/partners/ydrogios.png" },
   { name: "Interlife", src: "/partners/interlife.png" },
+  { name: "Εθνική Ασφαλιστική", src: "/partners/ethniki.svg" },
 ];
 
 // gap between logos — applied as a right margin so translateX(-50%) stays seamless
@@ -28,7 +29,7 @@ export default function PartnersMarquee() {
   const loop = [...PARTNERS, ...PARTNERS];
 
   return (
-    <section style={{ background: "#F5F7FB", padding: "56px 0 64px" }}>
+    <section style={{ background: "#fbf5f5", padding: "56px 0 64px" }}>
       <h2
         style={{
           textAlign: "center",

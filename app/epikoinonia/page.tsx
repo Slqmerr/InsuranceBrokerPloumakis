@@ -12,7 +12,7 @@ export default function EpikoinoniaPage() {
     <main style={{ fontFamily: UBUNTU, background: "#fff", color: "#1a1a1a", width: "100%", minHeight: "100vh" }}>
       <Navbar />
 
-      {/* Red header band — breadcrumb + heading, matching the product hero style */}
+      {/* Blue header band — breadcrumb + heading, matching the product hero style */}
       <section style={{ background: "#a30000", padding: "24px 64px 88px" }}>
         <nav
           aria-label="breadcrumb"

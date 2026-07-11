@@ -105,7 +105,7 @@ label:hover .consent-box {
 
 /* the real (invisible) input sits right before the box */
 input:focus-visible + .consent-box {
-  box-shadow: 0 0 0 3px rgba(163, 0, 0,0.3);
+  box-shadow: 0 0 0 3px rgba(163, 0, 0, 0.3);
 }
 
 .consent-box.checked {
