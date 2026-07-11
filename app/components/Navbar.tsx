@@ -86,9 +86,9 @@ export default function Navbar() {
         {/* Logo — left */}
         <Link href="/" onClick={closeMenu} style={{ justifySelf: "start", display: "inline-flex" }}>
           <img
-            src="/logo.png"
+            src="/logo_white-2.png"
             alt="Δημήτριος Πλουμάκης"
-            style={{ height: "60px", objectFit: "contain",backgroundColor:"#ffffff" }}
+            style={{ height: "70px", objectFit: "contain" }}
           />
         </Link>
 
@@ -184,7 +184,7 @@ export default function Navbar() {
                 display: "inline-block",
               }}
             >
-              Σχετικά
+              Επαγγελματικό Προφίλ
             </MotionLink>
           </li>
 

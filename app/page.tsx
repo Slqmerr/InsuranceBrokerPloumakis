@@ -22,21 +22,7 @@ export default function Home() {
       {/* === PRODUCT CARD STRIP ===*/}
       <ProductCardStrip />
 
-      {/* == INTRO == */}
-      <div style={{ padding: "112px 64px 96px", textAlign: "center" }}>
-        
-        <h2 style={{
-          fontFamily: "var(--font-ubuntu-sans), sans-serif",
-          fontSize: "34px", fontWeight: 600, color: "#1a1a1a",
-          maxWidth: "620px", lineHeight: 1.25, margin: "0 auto 16px",
-        }}>
-          Με δύναμη, εξειδίκευση και ειλικρίνεια στο πλευρό σας
-        </h2>
-        <p style={{ fontSize: "16px", color: "#666", lineHeight: 1.65, maxWidth: "540px", margin: "0 auto" }}>
-          Φροντίζω ώστε η προστασία αυτών που αγαπάτε να είναι μια επένδυση που αποδίδει σε κάθε φάση της ζωής σας.
-        </p>
-      </div>
-
+     
       {/* === WHY A BROKER === */}
       <WhyBroker />
 
@@ -120,9 +106,6 @@ export default function Home() {
 
       {/* === MEET DIMITRIOS === */}
       <MeetDimitrios />
-
-      {/* === PARTNERS === */}
-      <PartnersMarquee />
 
       {/* ==== FOOTER =====*/}
       <Footer />

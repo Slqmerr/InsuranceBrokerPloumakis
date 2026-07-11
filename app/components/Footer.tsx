@@ -44,7 +44,7 @@ export default function Footer() {
         {/* Column 1 — Logo + tagline */}
         <div>
           <img
-            src="/logo.png"
+            src="/logo_white-2.png"
             alt="Δημήτριος Πλουμάκης"
             style={{
               height: "56px",

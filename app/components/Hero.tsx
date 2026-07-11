@@ -1,52 +1,60 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { animate, motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
-const HERO_STATS = [
-  { value: 25, suffix: "+", label: "Χρόνια εμπειρίας" },
-  { value: 3000, suffix: "+", label: "Ικανοποιημένοι πελάτες" },
-  { value: 15, suffix: "+", label: "Ασφαλιστικές εταιρείες" },
+// height compensates for each file's padding/aspect so the marks look the same size
+const PARTNER_LOGOS = [
+  { src: "/partners/interamerican.png", alt: "Interamerican", height: 22 },
+  { src: "/partners/eurolife.png", alt: "Eurolife FFH", height: 56 },
+  { src: "/partners/allianz.png", alt: "Allianz", height: 26 },
+  { src: "/partners/generali.svg", alt: "Generali", height: 36 },
+  { src: "/partners/ergo.png", alt: "ERGO", height: 24 },
+  { src: "/partners/aig.png", alt: "AIG", height: 30 },
+  { src: "/partners/interlife.png", alt: "Interlife", height: 28 },
+  { src: "/partners/ethniki.svg", alt: "Εθνική Ασφαλιστική", height: 32 },
 ];
-
-function CountUpStat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
-  const count = useMotionValue(0);
-  const display = useTransform(count, (v) => `${Math.round(v)}${suffix}`);
-
-  React.useEffect(() => {
-    const controls = animate(count, value, { duration: 1.6, ease: "easeOut", delay: 0.4 });
-    return () => controls.stop();
-  }, [count, value]);
-
-  return (
-    <div>
-      <motion.div style={{ color: "#fff", fontSize: "26px", fontWeight: 600, fontFamily: "var(--font-ubuntu-sans), sans-serif" }}>
-        {display}
-      </motion.div>
-      <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px" }}>{label}</div>
-    </div>
-  );
-}
 
 export default function Hero() {
   return (
     <section style={{
-      display: "flex",
+      position: "relative",
       height: "640px",
       overflow: "hidden",
     }}>
-      {/* Left — solid red panel with the text */}
+      {/* Background photo — full bleed */}
+      <img
+        src="/dimitrios.jpg"
+        alt="Δημήτριος Πλουμάκης"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center 20%",
+        }}
+      />
+
+      {/* Red gradient overlay — solid near the text, fading out toward the photo */}
       <div style={{
-        flex: "0 0 46%",
-        background: "#a30000",
+        position: "absolute",
+        inset: 0,
+        background: "linear-gradient(100deg, rgba(163, 0, 0, 0.37) 0%, rgba(163, 0, 0, 0.31) 35%, rgba(163,0,0,0.35) 70%, rgba(163,0,0,0.15) 100%)",
+      }} />
+{/* KANE ZOOM TO IMAGE KAI POSITION DEKSIA*/}
+      {/* Text content */}
+      <div style={{
         position: "relative",
+        zIndex: 2,
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        padding: "0 64px 60px",
+        padding: "0 64px",
+        maxWidth: "560px",
       }}>
-        <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", marginBottom: "12px" }}>
+        <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", fontWeight: 700, marginBottom: "12px" }}>
           Αξία έχει ό,τι είναι σημαντικό για σένα
         </p>
         <h1 style={{
@@ -59,7 +67,7 @@ export default function Hero() {
         }}>
           Προστατεύουμε ό,τι αγαπάτε περισσότερο
         </h1>
-        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "15px", lineHeight: 1.6, marginBottom: "32px" }}>
+        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "15px", fontWeight: 700, lineHeight: 1.6, marginBottom: "32px" }}>
           Εξατομικευμένες ασφαλιστικές λύσεις για εσάς, την οικογένεια και την επιχείρησή σας.
         </p>
         <Link href="/epikoinonia" style={{
@@ -76,44 +84,44 @@ export default function Hero() {
         }}>
           Κλείσε Ραντεβού
         </Link>
+      </div>
 
-        {/* Stats row — bottom of the panel, lifted above the overlapping product card strip */}
+      {/* Partner logo marquee — full-width, brand colors, lifted above the product card strip */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+        style={{
+          position: "absolute",
+          bottom: "96px",
+          left: 0,
+          right: 0,
+          zIndex: 2,
+          overflow: "hidden",
+          maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+        }}
+      >
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-          style={{
-            position: "absolute",
-            bottom: "96px",
-            left: "64px",
-            display: "flex",
-            gap: "40px",
-          }}
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ repeat: Infinity, ease: "linear", duration: 40 }}
+          style={{ display: "flex", alignItems: "center", gap: "72px", width: "max-content", paddingRight: "72px" }}
         >
-          {HERO_STATS.map((stat, i) => (
-            <React.Fragment key={stat.label}>
-              {i > 0 && <div style={{ width: "1px", background: "rgba(255,255,255,0.2)" }} />}
-              <CountUpStat value={stat.value} suffix={stat.suffix} label={stat.label} />
-            </React.Fragment>
+          {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((logo, i) => (
+            <img
+              key={`${logo.alt}-${i}`}
+              src={logo.src}
+              alt={i < PARTNER_LOGOS.length ? logo.alt : ""}
+              aria-hidden={i >= PARTNER_LOGOS.length}
+              style={{
+                height: `${logo.height}px`,
+                width: "auto",
+                objectFit: "contain",
+              }}
+            />
           ))}
         </motion.div>
-      </div>
-
-      {/* Right — photo, full color, no overlay */}
-      <div style={{ flex: 1, position: "relative" }}>
-        <img
-          src="/dimitrios.jpg"
-          alt="Δημήτριος Πλουμάκης"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center 20%",
-          }}
-        />
-      </div>
+      </motion.div>
     </section>
   );
 }
