@@ -382,16 +382,7 @@ export default function Navbar() {
                 }}>
                   {activeMenu === "idiwtes" && (
                     <>
-                      <p style={{
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        color: "#1E439A",
-                        margin: 0,
-                      }}>
-                        Δεν ξέρεις από πού να ξεκινήσεις;
-                      </p>
+                     
                       <h3 style={{
                         fontSize: "22px",
                         fontWeight: 700,
@@ -400,7 +391,7 @@ export default function Navbar() {
                         lineHeight: 1.3,
                         fontFamily: "var(--font-ubuntu-sans), sans-serif",
                       }}>
-                      Βρες την κατάλληλη ασφάλεια για σένα
+                       Δεν βρίσκεις αυτό που ψάχνεις;
                       </h3>
                       <p style={{
                         fontSize: "14px",
@@ -410,7 +401,7 @@ export default function Navbar() {
                       }}>
                         Μας λες τι χρειάζεσαι, εμείς συγκρίνουμε τις καλύτερες προσφορές από 15+ εταιρείες.
                       </p>
-                      <Link href="/epikoinonia" onClick={closeMenu} style={{
+                      <Link href="/asfaleies" onClick={closeMenu} style={{
                         marginTop: "8px",
                         background: "#1E439A",
                         color: "#fff",
@@ -423,23 +414,14 @@ export default function Navbar() {
                         fontSize: "13px",
                         width: "fit-content",
                       }}>
-                        Κλείσε ραντεβού
+                        Δείτε όλα τα προγράμματα
                       </Link>
                     </>
                   )}
 
                   {activeMenu === "epixeirisi" && (
                     <>
-                      <p style={{
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        color: "#1E439A",
-                        margin: 0,
-                      }}>
-                        Ασφάλεια για επιχειρήσεις
-                      </p>
+                      
                       <h3 style={{
                         fontSize: "22px",
                         fontWeight: 700,
@@ -458,7 +440,7 @@ export default function Navbar() {
                       }}>
                         Εξατομικευμένες λύσεις για μικρές,μεσαίες και μεγάλες επιχειρήσεις χωρίς περιττές καλύψεις.
                       </p>
-                      <Link href="/epikoinonia" onClick={closeMenu} style={{
+                      <Link href="/asfaleies" onClick={closeMenu} style={{
                         marginTop: "8px",
                         background: "#1E439A",
                         color: "#fff",
@@ -471,7 +453,7 @@ export default function Navbar() {
                         fontSize: "13px",
                         width: "fit-content",
                       }}>
-                        Κλείσε ραντεβού
+                        Δείτε όλα τα προγράμματα
                       </Link>
                     </>
                   )}

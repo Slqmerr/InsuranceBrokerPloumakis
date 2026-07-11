@@ -12,6 +12,7 @@ const PARTNER_LOGOS = [
   { src: "/partners/ergo.png", alt: "ERGO", height: 24 },
   { src: "/partners/aig.png", alt: "AIG", height: 30 },
   { src: "/partners/interlife.png", alt: "Interlife", height: 28 },
+  { src: "/partners/ethniki.svg", alt: "Εθνική Ασφαλιστική", height: 32 },
 ];
 
 export default function Hero() {

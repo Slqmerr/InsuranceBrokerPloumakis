@@ -79,7 +79,7 @@ export default function Home() {
       </section>
 
       {/* ── SPLIT: Figurines — colored band fills up to the photo's curve, photo cut by the right edge ── */}
-      <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch", marginBottom: "128px" }}>
+      <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
         {/* Colored band runs from the left edge under the photo's curve */}
         <div aria-hidden style={{ position: "absolute", inset: "0 30% 0 0", background: "#EEF3FC" }} />
         <div style={{

@@ -18,6 +18,7 @@ const PARTNERS = [
   { name: "NN", src: "/partners/nn.svg" },
   { name: "Υδρόγειος", src: "/partners/ydrogios.png" },
   { name: "Interlife", src: "/partners/interlife.png" },
+  { name: "Εθνική Ασφαλιστική", src: "/partners/ethniki.svg" },
 ];
 
 // gap between logos — applied as a right margin so translateX(-50%) stays seamless
