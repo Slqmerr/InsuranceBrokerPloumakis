@@ -88,7 +88,7 @@ export default function Navbar() {
           <img
             src="/logo.png"
             alt="Δημήτριος Πλουμάκης"
-            style={{ height: "60px", objectFit: "contain" }}
+            style={{ height: "60px", objectFit: "contain",backgroundColor:"#ffffff" }}
           />
         </Link>
 
