@@ -285,8 +285,7 @@ input:focus-visible + .consent-box {
     display: none !important; /* lives in the drawer instead */
   }
   .nav-strip {
-    justify-content: center !important;
-    padding: 6px 12px !important;
+    display: none !important;
   }
 
   /* Hero */

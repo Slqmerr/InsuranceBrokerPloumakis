@@ -3,8 +3,12 @@
 import React from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ChevronDown, Phone, MapPin, Menu, X } from "lucide-react";
 import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS } from "./products";
+
+gsap.registerPlugin(useGSAP);
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 const MotionLink = motion.create(Link);
@@ -15,7 +19,40 @@ export default function Navbar() {
   // which accordion section is expanded inside the mobile drawer
   const [mobileSection, setMobileSection] = React.useState<string | null>(null);
   const navRef = React.useRef<HTMLElement>(null);
+  const drawerRef = React.useRef<HTMLDivElement>(null);
+  const drawerBackdropRef = React.useRef<HTMLDivElement>(null);
   const [panelTop, setPanelTop] = React.useState(88);
+
+  // Mobile drawer stays mounted; GSAP slides it in from the right edge and
+  // fades the backdrop. visibility is toggled so the closed drawer can't be
+  // tabbed into or clicked.
+  useGSAP(() => {
+    const drawer = drawerRef.current;
+    const backdrop = drawerBackdropRef.current;
+    if (!drawer || !backdrop) return;
+
+    if (mobileOpen) {
+      gsap.set([drawer, backdrop], { visibility: "visible" });
+      gsap.to(backdrop, { opacity: 1, duration: 0.3, ease: "power1.out", overwrite: "auto" });
+      gsap.fromTo(drawer,
+        { xPercent: 100 },
+        { xPercent: 0, duration: 0.5, ease: "power3.out", overwrite: "auto" },
+      );
+      gsap.fromTo(".drawer-item",
+        { x: 40, autoAlpha: 0 },
+        { x: 0, autoAlpha: 1, duration: 0.4, stagger: 0.06, delay: 0.12, ease: "power2.out", overwrite: "auto" },
+      );
+    } else {
+      gsap.to(backdrop, { opacity: 0, duration: 0.25, ease: "power1.in", overwrite: "auto" });
+      gsap.to(drawer, {
+        xPercent: 100,
+        duration: 0.38,
+        ease: "power3.in",
+        overwrite: "auto",
+        onComplete: () => gsap.set([drawer, backdrop], { visibility: "hidden" }),
+      });
+    }
+  }, { dependencies: [mobileOpen], scope: drawerRef });
 
   // The top address strip scrolls away while the nav is sticky, so the
   // dropdown's anchor point moves — track the nav's real bottom edge.
@@ -503,30 +540,43 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Mobile drawer — full-screen panel under the nav */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            key="mobile-drawer"
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            style={{
-              position: "fixed",
-              top: panelTop,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              zIndex: 95,
-              background: "#fff",
-              overflowY: "auto",
-              WebkitOverflowScrolling: "touch",
-              fontFamily: UBUNTU,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+      {/* Mobile drawer — stays mounted; GSAP slides the panel in from the
+          right edge (see the useGSAP block above) */}
+      <div
+        ref={drawerBackdropRef}
+        onClick={closeMenu}
+        aria-hidden
+        style={{
+          position: "fixed",
+          inset: 0,
+          top: panelTop,
+          background: "rgba(0,0,0,0.45)",
+          backdropFilter: "blur(4px)",
+          zIndex: 94,
+          opacity: 0,
+          visibility: "hidden",
+        }}
+      />
+      <div
+        ref={drawerRef}
+        aria-hidden={!mobileOpen}
+        style={{
+          position: "fixed",
+          top: panelTop,
+          right: 0,
+          bottom: 0,
+          width: "min(84vw, 360px)",
+          zIndex: 95,
+          background: "#fff",
+          boxShadow: "-16px 0 48px rgba(0,0,0,0.18)",
+          overflowY: "auto",
+          WebkitOverflowScrolling: "touch",
+          fontFamily: UBUNTU,
+          display: "flex",
+          flexDirection: "column",
+          visibility: "hidden",
+        }}
+      >
             <div style={{ padding: "12px 20px 32px", display: "flex", flexDirection: "column" }}>
 
               {/* Accordion sections — Ιδιώτες / Επιχειρήσεις */}
@@ -534,7 +584,7 @@ export default function Navbar() {
                 { key: "idiwtes", label: "Ιδιώτες", products: IDIWTES_PRODUCTS, base: "idiotes" },
                 { key: "epixeirisi", label: "Επιχειρήσεις", products: EPIXEIRISI_PRODUCTS, base: "epixeirisi" },
               ] as const).map((section) => (
-                <div key={section.key} style={{ borderBottom: "1px solid #f0e3e3" }}>
+                <div key={section.key} className="drawer-item" style={{ borderBottom: "1px solid #f0e3e3" }}>
                   <button
                     onClick={() => toggleMobileSection(section.key)}
                     aria-expanded={mobileSection === section.key}
@@ -613,7 +663,7 @@ export default function Navbar() {
               ))}
 
               {/* Plain links */}
-              <Link href="/emeis" onClick={closeMenu} style={{
+              <Link href="/emeis" onClick={closeMenu} className="drawer-item" style={{
                 display: "block",
                 padding: "18px 4px",
                 borderBottom: "1px solid #f0e3e3",
@@ -624,7 +674,7 @@ export default function Navbar() {
               }}>
                 Επαγγελματικό Προφίλ
               </Link>
-              <Link href="/synergasia" onClick={closeMenu} style={{
+              <Link href="/synergasia" onClick={closeMenu} className="drawer-item" style={{
                 display: "block",
                 padding: "18px 4px",
                 borderBottom: "1px solid #f0e3e3",
@@ -637,7 +687,7 @@ export default function Navbar() {
               </Link>
 
               {/* Contact + CTA */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "24px" }}>
+              <div className="drawer-item" style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "24px" }}>
                 <a href="tel:+302810326400" style={{
                   display: "flex",
                   alignItems: "center",
@@ -664,9 +714,7 @@ export default function Navbar() {
                 </Link>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </div>
     </>
   );
 }
