@@ -71,6 +71,7 @@ export default function OroiXrisisPage() {
         }}
       >
         <h1
+          className="page-title"
           style={{
             fontFamily: UBUNTU,
             fontSize: "36px",

@@ -40,7 +40,7 @@ const REASONS = [
 
 export default function WhyBroker() {
   return (
-    <section style={{ background: "#fbf5f5", padding: "72px 64px" }}>
+    <section className="section-pad" style={{ background: "#fbf5f5", padding: "72px 64px" }}>
       
       <motion.h2
         variants={fadeUp}
@@ -63,6 +63,7 @@ export default function WhyBroker() {
       </motion.p>
 
       <motion.div
+        className="why-grid"
         variants={stagger}
         initial="hidden"
         whileInView="show"

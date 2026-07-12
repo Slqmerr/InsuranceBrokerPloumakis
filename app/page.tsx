@@ -28,19 +28,20 @@ export default function Home() {
 
       {/* ── SPLIT: Family — photo cut by the left edge, its curve carving into the colored band that fills the rest.
           No margin below: it butts against the mirrored Figurines split so the two bands read as one S-curve. ── */}
-      <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
+      <section className="split-section" style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
         {/* Colored band runs under the photo's curve all the way to the right edge */}
-        <div aria-hidden style={{ position: "absolute", inset: "0 0 0 30%", background: "#f9efef" }} />
+        <div aria-hidden className="split-band" style={{ position: "absolute", inset: "0 0 0 30%", background: "#f9efef" }} />
         <img
           src="/family.jpg"
           alt="Οικογένεια"
+          className="split-img split-img-left"
           style={{
             position: "relative",
             width: "100%", height: "480px", objectFit: "cover", objectPosition: "center 70%", display: "block",
             borderRadius: "0 240px 240px 0",
           }}
         />
-        <div style={{
+        <div className="split-content" style={{
           position: "relative",
           minHeight: "480px",
           display: "flex", flexDirection: "column", justifyContent: "center",
@@ -65,10 +66,10 @@ export default function Home() {
       </section>
 
       {/* ── SPLIT: Figurines — colored band fills up to the photo's curve, photo cut by the right edge ── */}
-      <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
+      <section className="split-section split-reverse" style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
         {/* Colored band runs from the left edge under the photo's curve */}
-        <div aria-hidden style={{ position: "absolute", inset: "0 30% 0 0", background: "#f9efef" }} />
-        <div style={{
+        <div aria-hidden className="split-band" style={{ position: "absolute", inset: "0 30% 0 0", background: "#f9efef" }} />
+        <div className="split-content" style={{
           position: "relative",
           minHeight: "480px",
           display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end",
@@ -93,6 +94,7 @@ export default function Home() {
         <img
           src="/figurines.jpg"
           alt="Περιουσία"
+          className="split-img split-img-right"
           style={{
             position: "relative",
             width: "100%", height: "480px", objectFit: "cover", display: "block",

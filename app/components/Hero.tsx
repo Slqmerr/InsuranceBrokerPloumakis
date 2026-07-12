@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-// height compensates for each file's padding/aspect so the marks look the same size
+// height compensates for each file's padding/aspect so the marks look the same size.
+// Source PNGs/SVGs are tightly cropped, so height maps directly to the mark's cap height.
 const PARTNER_LOGOS = [
-  { src: "/partners/interamerican.png", alt: "Interamerican", height: 22 },
-  { src: "/partners/eurolife.png", alt: "Eurolife FFH", height: 56 },
+  { src: "/partners/interamerican.png", alt: "Interamerican", height: 25 },
+  { src: "/partners/eurolife.png", alt: "Eurolife FFH", height: 26 },
   { src: "/partners/allianz.png", alt: "Allianz", height: 26 },
   { src: "/partners/generali.svg", alt: "Generali", height: 36 },
   { src: "/partners/ergo.png", alt: "ERGO", height: 24 },
@@ -17,7 +18,7 @@ const PARTNER_LOGOS = [
 
 export default function Hero() {
   return (
-    <section style={{
+    <section className="hero-section" style={{
       position: "relative",
       height: "640px",
       overflow: "hidden",
@@ -44,7 +45,7 @@ export default function Hero() {
       }} />
 {/* KANE ZOOM TO IMAGE KAI POSITION DEKSIA*/}
       {/* Text content */}
-      <div style={{
+      <div className="hero-content" style={{
         position: "relative",
         zIndex: 2,
         height: "100%",
@@ -57,7 +58,7 @@ export default function Hero() {
         <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", fontWeight: 700, marginBottom: "12px" }}>
           Αξία έχει ό,τι είναι σημαντικό για σένα
         </p>
-        <h1 style={{
+        <h1 className="hero-title" style={{
           color: "#fff",
           fontFamily: "var(--font-ubuntu-sans), sans-serif",
           fontSize: "42px",
@@ -88,6 +89,7 @@ export default function Hero() {
 
       {/* Partner logo marquee — full-width, brand colors, lifted above the product card strip */}
       <motion.div
+        className="hero-marquee"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}

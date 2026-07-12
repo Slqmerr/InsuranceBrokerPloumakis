@@ -13,7 +13,7 @@ export default function EpikoinoniaPage() {
       <Navbar />
 
       {/* Blue header band — breadcrumb + heading, matching the product hero style */}
-      <section style={{ background: "#a30000", padding: "24px 64px 88px" }}>
+      <section className="band-header" style={{ background: "#a30000", padding: "24px 64px 88px" }}>
         <nav
           aria-label="breadcrumb"
           className="fade-up"

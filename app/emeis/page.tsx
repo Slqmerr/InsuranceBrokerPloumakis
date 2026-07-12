@@ -194,7 +194,7 @@ export default function EmeisPage() {
       <Navbar />
 
       {/* === HERO: split layout === */}
-      <section style={{
+      <section className="emeis-hero" style={{
         display: "flex",
         flexDirection: "row",
         minHeight: "480px",
@@ -203,6 +203,7 @@ export default function EmeisPage() {
       }}>
         {/* Left: bio content — staggered entrance */}
         <motion.div
+          className="emeis-hero-bio"
           variants={stagger}
           initial="hidden"
           animate="show"
@@ -245,7 +246,7 @@ export default function EmeisPage() {
           </motion.p>
 
           {/* Stats — count up when they enter view */}
-          <motion.div variants={fadeUp} style={{ display: "flex", gap: "32px", marginTop: "40px" }}>
+          <motion.div className="emeis-stats" variants={fadeUp} style={{ display: "flex", gap: "32px", marginTop: "40px" }}>
             {[
               { value: 25, suffix: "+", label: "Χρόνια εμπειρίας" },
               { value: 12, suffix: "+", label: "Διακρίσεις" },
@@ -272,7 +273,7 @@ export default function EmeisPage() {
         </motion.div>
 
         {/* Right column: 40% width — photo of Dimitrios, slides in */}
-        <div style={{
+        <div className="emeis-hero-photo" style={{
           flex: "0 0 40%",
           overflow: "hidden",
           position: "relative",
@@ -305,7 +306,7 @@ export default function EmeisPage() {
       </section>
 
       {/* === CREDENTIALS STRIP === */}
-      <section style={{
+      <section className="section-pad" style={{
         background: "#fff",
         padding: "64px 64px",
       }}>
@@ -352,6 +353,7 @@ export default function EmeisPage() {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true, margin: "-80px" }}
+                className="timeline-row"
                 style={{ display: "grid", gridTemplateColumns: "150px 56px 1fr" }}
               >
 
@@ -360,7 +362,7 @@ export default function EmeisPage() {
                   <div style={{ color: "#888", fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "2px" }}>
                     {item.month}
                   </div>
-                  <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#a30000", lineHeight: 1.1 }}>
+                  <div className="timeline-year" style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#a30000", lineHeight: 1.1 }}>
                     {item.year}
                   </div>
                 </motion.div>
@@ -421,7 +423,7 @@ export default function EmeisPage() {
       </section>
 
       {/* === AWARDS === */}
-      <section style={{
+      <section className="section-pad" style={{
         background: "#fbf5f5",
         padding: "64px 64px",
       }}>
@@ -453,7 +455,7 @@ export default function EmeisPage() {
 
         {/* Minimal timeline — year first, then event; multiple awards grouped per year.
             Sticky summary card fills the right column. */}
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 860px) 300px", gap: "64px", alignItems: "start" }}>
+        <div className="awards-layout" style={{ display: "grid", gridTemplateColumns: "minmax(0, 860px) 300px", gap: "64px", alignItems: "start" }}>
         <div ref={awardsRef} style={{ position: "relative" }}>
           {/* Scroll-scrubbed spine — a line draws down over the faint track lines while a
               glowing comet head rides its tip. Centered on the 56px divider column (150px + 28px). */}
@@ -506,7 +508,7 @@ export default function EmeisPage() {
             return (
               <div
                 key={entry.year + entry.event}
-                className="award-row"
+                className="award-row timeline-row"
                 style={{ display: "grid", gridTemplateColumns: "150px 56px 1fr" }}
               >
 
@@ -517,7 +519,7 @@ export default function EmeisPage() {
                       {entry.month}
                     </div>
                   )}
-                  <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#a30000", lineHeight: 1.1 }}>
+                  <div className="timeline-year" style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#a30000", lineHeight: 1.1 }}>
                     {entry.year}
                   </div>
                 </div>
@@ -598,6 +600,7 @@ export default function EmeisPage() {
 
         {/* Sticky summary card — totals computed from AWARD_ENTRIES */}
         <motion.aside
+          className="awards-aside"
           variants={fadeUp}
           initial="hidden"
           whileInView="show"

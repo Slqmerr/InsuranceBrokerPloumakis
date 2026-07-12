@@ -18,6 +18,7 @@ export default function SynergasiaPage() {
         }}
       >
         <h1
+          className="page-title"
           style={{
             fontFamily: UBUNTU,
             fontSize: "36px",

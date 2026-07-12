@@ -24,8 +24,8 @@ const CREDENTIALS = [
 
 export default function MeetDimitrios() {
   return (
-    <section style={{ background: "#fbf5f5", padding: "72px 64px" }}>
-      <div style={{
+    <section className="section-pad" style={{ background: "#fbf5f5", padding: "72px 64px" }}>
+      <div className="meet-grid" style={{
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
         gap: "56px",
@@ -35,6 +35,7 @@ export default function MeetDimitrios() {
       }}>
         {/* Photo — opposite-corner pill curve, echoing the split sections */}
         <motion.div
+          className="meet-photo"
           initial={{ opacity: 0, x: -32 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}

@@ -25,7 +25,7 @@ const MAP_EMBED_SRC = `https://maps.google.com/maps?q=${encodeURIComponent("Κυ
 
 export default function Footer() {
   return (
-    <footer style={{
+    <footer className="footer" style={{
       background: "#a30000",
       color: "#fff",
       padding: "64px 64px 32px",
@@ -33,7 +33,7 @@ export default function Footer() {
     }}>
 
       {/* ── Top grid: contact column + location minimap ── */}
-      <div style={{
+      <div className="footer-grid" style={{
         display: "grid",
         gridTemplateColumns: "1fr 1.2fr",
         gap: "64px",

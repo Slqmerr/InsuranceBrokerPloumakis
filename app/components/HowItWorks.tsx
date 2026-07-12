@@ -38,7 +38,7 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section style={{ background: "#fff", padding: "72px 64px" }}>
+    <section className="section-pad" style={{ background: "#fff", padding: "72px 64px" }}>
       
 
       <motion.h2
@@ -52,6 +52,7 @@ export default function HowItWorks() {
       </motion.h2>
 
       <motion.div
+        className="steps-grid"
         variants={stagger}
         initial="hidden"
         whileInView="show"

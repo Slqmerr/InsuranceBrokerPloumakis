@@ -41,9 +41,9 @@ export default function ProductPageContent({
       <Navbar />
 
       {/* Hero — blue copy half + photo half */}
-      <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "460px" }}>
+      <section className="pp-hero" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "460px" }}>
         {/* Left: blue panel */}
-        <div style={{
+        <div className="pp-hero-panel" style={{
           background: "#a30000",
           padding: "64px",
           display: "flex",
@@ -55,6 +55,7 @@ export default function ProductPageContent({
               pinned to the top of the panel so the centered copy is untouched */}
           <nav
             aria-label="breadcrumb"
+            className="pp-crumbs"
             style={{
               position: "absolute",
               top: "24px",
@@ -90,7 +91,7 @@ export default function ProductPageContent({
             }}>
               <product.icon size={28} color="#fff" strokeWidth={1.75} />
             </div>
-            <h1 style={{ color: "#fff", fontFamily: UBUNTU, fontSize: "34px", fontWeight: 700, margin: 0, lineHeight: 1.15 }}>
+            <h1 className="pp-title" style={{ color: "#fff", fontFamily: UBUNTU, fontSize: "34px", fontWeight: 700, margin: 0, lineHeight: 1.15 }}>
               {product.title}
             </h1>
           </div>
@@ -105,7 +106,7 @@ export default function ProductPageContent({
 
         {/* Right: product photo — absolutely positioned so its intrinsic size
             can't inflate the grid row; the blue panel alone sets the hero height */}
-        <div style={{ position: "relative", minHeight: "460px" }}>
+        <div className="pp-hero-photo" style={{ position: "relative", minHeight: "460px" }}>
           <img
             src={product.image}
             alt={product.title}
@@ -115,7 +116,7 @@ export default function ProductPageContent({
       </section>
 
       {/* Body — description + what it covers, with a sticky CTA sidebar */}
-      <section style={{
+      <section className="pp-body" style={{
         padding: "64px",
         display: "grid",
         gridTemplateColumns: "minmax(0, 720px) 320px",
@@ -145,7 +146,7 @@ export default function ProductPageContent({
         </div>
 
         {/* Sticky sidebar — trust points + CTAs follow the reader */}
-        <aside style={{
+        <aside className="pp-aside" style={{
           position: "sticky",
           top: "112px",
           background: "#fff",

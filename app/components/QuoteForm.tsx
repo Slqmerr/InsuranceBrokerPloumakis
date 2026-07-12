@@ -137,7 +137,7 @@ export default function QuoteForm({
 
   if (submitted) {
     return (
-      <div className="fade-up" style={{ ...CARD, padding: "80px 40px", textAlign: "center" }}>
+      <div className="fade-up quote-card" style={{ ...CARD, padding: "80px 40px", textAlign: "center" }}>
         <CheckCircle2 size={56} color="#a30000" strokeWidth={1.75} style={{ marginBottom: "20px" }} />
         <h2 style={{ fontSize: "28px", fontWeight: 700, margin: "0 0 12px" }}>Ευχαριστούμε!</h2>
         <p style={{ fontSize: "16px", color: "#4b5563", lineHeight: 1.6, margin: 0 }}>
@@ -252,12 +252,13 @@ export default function QuoteForm({
 
   return (
     <form
+      className="quote-card"
       onSubmit={(e) => e.preventDefault()}
       style={{ ...CARD, display: "grid", gap: "18px" }}
     >
       {/* Προσωπικά Στοιχεία — first & last name side by side */}
       <SectionTitle>Προσωπικά Στοιχεία</SectionTitle>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", alignItems: "start" }}>
+      <div className="form-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", alignItems: "start" }}>
         {personalFields.map(renderFieldBlock)}
       </div>
 
@@ -269,7 +270,7 @@ export default function QuoteForm({
       {productFields.length > 0 && (
         <>
           <SectionTitle>Στοιχεία Αιτήματος</SectionTitle>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px 24px", alignItems: "start" }}>
+          <div className="form-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px 24px", alignItems: "start" }}>
             {productFields.map(renderFieldBlock)}
           </div>
         </>

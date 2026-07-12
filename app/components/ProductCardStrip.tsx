@@ -35,6 +35,7 @@ export default function ProductCardStrip() {
 
   return (
     <div
+      className="product-strip"
       onMouseLeave={deactivate}
       style={{
         background: "#fff",
@@ -52,6 +53,7 @@ export default function ProductCardStrip() {
     >
       {/* Shared sliding highlight */}
       <motion.div
+        className="product-strip-highlight"
         aria-hidden
         initial={{ opacity: 0 }}
         animate={controls}
@@ -72,6 +74,7 @@ export default function ProductCardStrip() {
         // motion.div stays the grid item, the whole tile navigates.
         <Link key={card.title} href={card.href} style={{ textDecoration: "none", display: "contents" }}>
           <motion.div
+            className="product-strip-tile"
             onMouseEnter={(e) => {
               const r = e.currentTarget.getBoundingClientRect();
               activate(i, e.clientX - r.left < r.width / 2);

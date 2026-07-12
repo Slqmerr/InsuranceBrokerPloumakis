@@ -219,14 +219,14 @@ export default function AsfaleiesPage() {
     <>
       <Navbar />
       <main style={{ background: "#f7f9fc", flex: 1 }}>
-        <div style={{ maxWidth: "1140px", margin: "0 auto", padding: "64px 36px 40px" }}>
+        <div className="page-shell" style={{ maxWidth: "1140px", margin: "0 auto", padding: "64px 36px 40px" }}>
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
             style={{ marginBottom: "56px" }}
           >
-            <h1 style={{
+            <h1 className="page-title" style={{
               fontFamily: UBUNTU,
               fontSize: "36px",
               fontWeight: 700,
