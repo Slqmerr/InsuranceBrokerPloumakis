@@ -41,7 +41,7 @@ export default function Hero() {
       <div style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(100deg, rgba(154, 30, 30, 0.93) 0%, rgba(154, 30, 30, 0.75) 35%, rgba(154, 30, 30, 0.35) 70%, rgba(154, 30, 30, 0.15) 100%)",
+        background: "linear-gradient(100deg, rgba(30,67,154,0.93) 0%, rgba(30,67,154,0.75) 35%, rgba(30,67,154,0.35) 70%, rgba(30,67,154,0.15) 100%)",
       }} />
 
       {/* Text content */}
