@@ -100,17 +100,17 @@ body {
 }
 
 label:hover .consent-box {
-  border-color: #1e439a;
+  border-color: #a30000;
 }
 
 /* the real (invisible) input sits right before the box */
 input:focus-visible + .consent-box {
-  box-shadow: 0 0 0 3px rgba(30, 67, 154, 0.3);
+  box-shadow: 0 0 0 3px rgba(163, 0, 0, 0.3);
 }
 
 .consent-box.checked {
-  background: #1e439a;
-  border-color: #1e439a;
+  background: #a30000;
+  border-color: #a30000;
   animation: checkbox-pop 0.35s ease;
 }
 
@@ -141,6 +141,259 @@ input:focus-visible + .consent-box {
 @keyframes check-draw {
   to {
     stroke-dashoffset: 0;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Mobile / responsive layer
+   Components carry their desktop look as inline styles, so every
+   override below needs !important to win. Keep them all here.
+   ════════════════════════════════════════════════════════════════ */
+
+/* Hide the burger on desktop; the component ships display:none inline
+   and the media query below flips it on. */
+
+/* ── ≤1199px — nav collapses to burger (the full link row won't fit) ── */
+@media (max-width: 1199px) {
+  .nav-links {
+    display: none !important;
+  }
+  .nav-burger {
+    display: flex !important;
+  }
+  .nav-bar {
+    grid-template-columns: auto auto !important;
+    justify-content: space-between !important;
+  }
+}
+
+/* ── ≤1024px — grids tighten ── */
+@media (max-width: 1024px) {
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .product-strip {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  /* the sliding highlight assumes a single row — off once the grid wraps */
+  .product-strip-highlight {
+    display: none !important;
+  }
+
+  /* Product page: body copy over sidebar */
+  .pp-body {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  .pp-aside {
+    position: static !important;
+  }
+
+  /* Emeis: awards timeline over summary card */
+  .awards-layout {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  .awards-aside {
+    position: static !important;
+  }
+}
+
+/* ── ≤900px — two-column layouts stack ── */
+@media (max-width: 900px) {
+  .steps-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .meet-grid {
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
+  }
+  .meet-photo {
+    border-top-left-radius: 100px !important;
+    border-bottom-right-radius: 100px !important;
+    min-height: 0 !important;
+  }
+  .meet-photo img {
+    min-height: 0 !important;
+    height: 340px !important;
+  }
+
+  /* Split sections: photo on top, text on the tinted band below */
+  .split-section {
+    grid-template-columns: 1fr !important;
+  }
+  .split-band {
+    display: none !important;
+  }
+  .split-content {
+    background: #f9efef;
+    min-height: 0 !important;
+    padding: 36px 24px 48px !important;
+    align-items: flex-start !important;
+  }
+  .split-img {
+    height: 300px !important;
+  }
+  .split-img-left {
+    border-radius: 0 0 140px 0 !important;
+  }
+  .split-img-right {
+    order: -1;
+    border-radius: 0 0 0 140px !important;
+  }
+
+  /* Product page hero: red panel over photo */
+  .pp-hero {
+    grid-template-columns: 1fr !important;
+  }
+  .pp-hero-photo {
+    min-height: 260px !important;
+  }
+
+  /* Emeis hero: bio over photo */
+  .emeis-hero {
+    flex-direction: column !important;
+  }
+  .emeis-hero-bio {
+    flex: none !important;
+  }
+  .emeis-hero-photo {
+    flex: none !important;
+    height: 320px;
+  }
+}
+
+/* ── ≤768px — main mobile layout ── */
+@media (max-width: 768px) {
+  body {
+    overflow-x: clip;
+  }
+
+  /* Navbar */
+  .nav-bar {
+    height: 64px !important;
+    padding: 0 16px !important;
+  }
+  .nav-logo-img {
+    height: 48px !important;
+  }
+  .nav-right {
+    gap: 8px !important;
+  }
+  .nav-cta {
+    display: none !important; /* lives in the drawer instead */
+  }
+  .nav-strip {
+    display: none !important;
+  }
+
+  /* Hero */
+  .hero-section {
+    height: auto !important;
+  }
+  .hero-content {
+    height: auto !important;
+    max-width: 100% !important;
+    padding: 64px 24px 200px !important;
+  }
+  .hero-title {
+    font-size: 30px !important;
+  }
+
+  /* Product card strip */
+  .product-strip {
+    grid-template-columns: repeat(2, 1fr) !important;
+    margin: -40px 16px 0 !important;
+    border-radius: 20px !important;
+  }
+  .product-strip-tile {
+    padding: 28px 8px !important;
+  }
+
+  /* Section shells */
+  .section-pad {
+    padding: 56px 20px !important;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 48px 20px 28px !important;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  /* Inner pages */
+  .page-shell {
+    padding: 40px 20px 32px !important;
+  }
+  .page-title {
+    font-size: 28px !important;
+  }
+  .band-header {
+    padding: 20px 20px 72px !important;
+  }
+  .band-header h1 {
+    font-size: 26px !important;
+  }
+
+  /* Product detail page */
+  .pp-hero-panel {
+    padding: 72px 24px 48px !important;
+  }
+  .pp-crumbs {
+    left: 24px !important;
+  }
+  .pp-title {
+    font-size: 26px !important;
+  }
+  .pp-body {
+    padding: 48px 20px !important;
+  }
+
+  /* Emeis page */
+  .emeis-hero-bio {
+    padding: 48px 24px !important;
+  }
+  .emeis-stats {
+    flex-wrap: wrap !important;
+    row-gap: 16px !important;
+  }
+
+  /* Timelines (credentials + awards): narrower date column, smaller year */
+  .timeline-row {
+    grid-template-columns: 80px 44px 1fr !important;
+  }
+  .timeline-year {
+    font-size: 22px !important;
+  }
+  /* spine center follows the narrower columns: 80px + 22px − 8px */
+  .awards-spine {
+    left: 94px !important;
+  }
+}
+
+/* ── ≤640px — single-column card grids, small-screen trims ── */
+@media (max-width: 640px) {
+  .why-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .form-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .quote-card {
+    margin: -40px 16px 60px !important;
+    padding: 28px 20px 32px !important;
+  }
+}
+
+/* ── ≤420px — the phone number leaves the bar (still in the drawer) ── */
+@media (max-width: 420px) {
+  .nav-phone {
+    display: none !important;
   }
 }
 

@@ -71,11 +71,12 @@ export default function OroiXrisisPage() {
         }}
       >
         <h1
+          className="page-title"
           style={{
             fontFamily: UBUNTU,
             fontSize: "36px",
             fontWeight: 700,
-            color: "#1E439A",
+            color: "#a30000",
             margin: "0 0 28px",
           }}
         >
@@ -112,7 +113,7 @@ export default function OroiXrisisPage() {
                 fontFamily: UBUNTU,
                 fontSize: "20px",
                 fontWeight: 700,
-                color: "#0F2660",
+                color: "#5e0000",
                 margin: "0 0 12px",
               }}
             >

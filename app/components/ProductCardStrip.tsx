@@ -35,10 +35,11 @@ export default function ProductCardStrip() {
 
   return (
     <div
+      className="product-strip"
       onMouseLeave={deactivate}
       style={{
         background: "#fff",
-        boxShadow: "0 12px 40px rgba(18,35,85,0.12)",
+        boxShadow: "0 12px 40px rgba(94, 0, 0,0.12)",
         borderRadius: "24px",
         margin: "-48px 52px 0",
         position: "relative",
@@ -52,6 +53,7 @@ export default function ProductCardStrip() {
     >
       {/* Shared sliding highlight */}
       <motion.div
+        className="product-strip-highlight"
         aria-hidden
         initial={{ opacity: 0 }}
         animate={controls}
@@ -72,6 +74,7 @@ export default function ProductCardStrip() {
         // motion.div stays the grid item, the whole tile navigates.
         <Link key={card.title} href={card.href} style={{ textDecoration: "none", display: "contents" }}>
           <motion.div
+            className="product-strip-tile"
             onMouseEnter={(e) => {
               const r = e.currentTarget.getBoundingClientRect();
               activate(i, e.clientX - r.left < r.width / 2);
@@ -93,16 +96,16 @@ export default function ProductCardStrip() {
               width: "48px",
               height: "48px",
               borderRadius: "50%",
-              background: "#e8eef8",
+              background: "#f7e8e8",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}>
-              <card.icon size={22} color="#1E439A" strokeWidth={1.75} />
+              <card.icon size={22} color="#a30000" strokeWidth={1.75} />
             </div>
             <div style={{
               textAlign: "center",
-              color: "#1E439A",
+              color: "#a30000",
               fontSize: "15px",
               fontWeight: 600,
               fontFamily: "var(--font-ubuntu-sans), sans-serif",

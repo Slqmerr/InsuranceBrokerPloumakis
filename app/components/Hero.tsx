@@ -1,13 +1,13 @@
 "use client";
 
-
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-// height compensates for each file's padding/aspect so the marks look the same size
+// height compensates for each file's padding/aspect so the marks look the same size.
+// Source PNGs/SVGs are tightly cropped, so height maps directly to the mark's cap height.
 const PARTNER_LOGOS = [
-  { src: "/partners/interamerican.png", alt: "Interamerican", height: 22 },
-  { src: "/partners/eurolife.png", alt: "Eurolife FFH", height: 56 },
+  { src: "/partners/interamerican.png", alt: "Interamerican", height: 25 },
+  { src: "/partners/eurolife.png", alt: "Eurolife FFH", height: 26 },
   { src: "/partners/allianz.png", alt: "Allianz", height: 26 },
   { src: "/partners/generali.svg", alt: "Generali", height: 36 },
   { src: "/partners/ergo.png", alt: "ERGO", height: 24 },
@@ -18,12 +18,12 @@ const PARTNER_LOGOS = [
 
 export default function Hero() {
   return (
-    <section style={{
+    <section className="hero-section" style={{
       position: "relative",
       height: "640px",
       overflow: "hidden",
     }}>
-      {/* Background photo */}
+      {/* Background photo — full bleed */}
       <img
         src="/dimitrios.jpg"
         alt="Δημήτριος Πλουμάκης"
@@ -37,15 +37,15 @@ export default function Hero() {
         }}
       />
 
-      {/* Blue gradient overlay — solid near the text, fading out toward the photo */}
+      {/* Red gradient overlay — solid near the text, fading out toward the photo */}
       <div style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(100deg, rgba(30,67,154,0.93) 0%, rgba(30,67,154,0.75) 35%, rgba(30,67,154,0.35) 70%, rgba(30,67,154,0.15) 100%)",
+        background: "linear-gradient(100deg, rgba(163, 0, 0, 0.37) 0%, rgba(163, 0, 0, 0.31) 35%, rgba(163,0,0,0.35) 70%, rgba(163,0,0,0.15) 100%)",
       }} />
-
+{/* KANE ZOOM TO IMAGE KAI POSITION DEKSIA*/}
       {/* Text content */}
-      <div style={{
+      <div className="hero-content" style={{
         position: "relative",
         zIndex: 2,
         height: "100%",
@@ -55,10 +55,10 @@ export default function Hero() {
         padding: "0 64px",
         maxWidth: "560px",
       }}>
-        <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", marginBottom: "12px" }}>
+        <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", fontWeight: 700, marginBottom: "12px" }}>
           Αξία έχει ό,τι είναι σημαντικό για σένα
         </p>
-        <h1 style={{
+        <h1 className="hero-title" style={{
           color: "#fff",
           fontFamily: "var(--font-ubuntu-sans), sans-serif",
           fontSize: "42px",
@@ -68,12 +68,12 @@ export default function Hero() {
         }}>
           Προστατεύουμε ό,τι αγαπάτε περισσότερο
         </h1>
-        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "15px", lineHeight: 1.6, marginBottom: "32px" }}>
+        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "15px", fontWeight: 700, lineHeight: 1.6, marginBottom: "32px" }}>
           Εξατομικευμένες ασφαλιστικές λύσεις για εσάς, την οικογένεια και την επιχείρησή σας.
         </p>
         <Link href="/epikoinonia" style={{
           background: "#fff",
-          color: "#1E439A",
+          color: "#a30000",
           fontWeight: 700,
           fontFamily: "var(--font-ubuntu-sans), sans-serif",
           padding: "14px 32px",
@@ -87,8 +87,9 @@ export default function Hero() {
         </Link>
       </div>
 
-      {/* Partner logo marquee — full-width, lifted above the overlapping product card strip */}
+      {/* Partner logo marquee — full-width, brand colors, lifted above the product card strip */}
       <motion.div
+        className="hero-marquee"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
@@ -118,8 +119,6 @@ export default function Hero() {
                 height: `${logo.height}px`,
                 width: "auto",
                 objectFit: "contain",
-                filter: "brightness(0) invert(1)",
-                opacity: 0.75,
               }}
             />
           ))}

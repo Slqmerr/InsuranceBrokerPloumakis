@@ -29,7 +29,7 @@ export default function PartnersMarquee() {
   const loop = [...PARTNERS, ...PARTNERS];
 
   return (
-    <section style={{ background: "#F5F7FB", padding: "56px 0 64px" }}>
+    <section style={{ background: "#fbf5f5", padding: "56px 0 64px" }}>
       <h2
         style={{
           textAlign: "center",

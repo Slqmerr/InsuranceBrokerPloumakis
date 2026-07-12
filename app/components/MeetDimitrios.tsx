@@ -24,8 +24,8 @@ const CREDENTIALS = [
 
 export default function MeetDimitrios() {
   return (
-    <section style={{ background: "#F5F7FB", padding: "72px 64px" }}>
-      <div style={{
+    <section className="section-pad" style={{ background: "#fbf5f5", padding: "72px 64px" }}>
+      <div className="meet-grid" style={{
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
         gap: "56px",
@@ -35,6 +35,7 @@ export default function MeetDimitrios() {
       }}>
         {/* Photo — opposite-corner pill curve, echoing the split sections */}
         <motion.div
+          className="meet-photo"
           initial={{ opacity: 0, x: -32 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}
@@ -67,7 +68,7 @@ export default function MeetDimitrios() {
 
           <motion.h2
             variants={fadeUp}
-            style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#0F2660", margin: 0, lineHeight: 1.2 }}
+            style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#5e0000", margin: 0, lineHeight: 1.2 }}
           >
             Δημήτριος Πλουμάκης
           </motion.h2>
@@ -90,8 +91,8 @@ export default function MeetDimitrios() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "8px",
-                  background: "#EEF2FF",
-                  color: "#1E439A",
+                  background: "#f9efef",
+                  color: "#a30000",
                   borderRadius: "999px",
                   padding: "8px 16px",
                   fontSize: "13px",
@@ -107,7 +108,7 @@ export default function MeetDimitrios() {
           <motion.div variants={fadeUp} style={{ marginTop: "8px" }}>
             <Link
               href="/emeis"
-              style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#1E439A", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#a30000", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}
             >
               Μάθετε περισσότερα
               <ArrowRight size={16} strokeWidth={2} />

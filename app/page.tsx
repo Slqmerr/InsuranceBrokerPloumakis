@@ -22,39 +22,26 @@ export default function Home() {
       {/* === PRODUCT CARD STRIP ===*/}
       <ProductCardStrip />
 
-      {/* == INTRO == */}
-      <div style={{ padding: "112px 64px 96px", textAlign: "center" }}>
-        
-        <h2 style={{
-          fontFamily: "var(--font-ubuntu-sans), sans-serif",
-          fontSize: "34px", fontWeight: 600, color: "#1a1a1a",
-          maxWidth: "620px", lineHeight: 1.25, margin: "0 auto 16px",
-        }}>
-          Με δύναμη, εξειδίκευση και ειλικρίνεια στο πλευρό σας
-        </h2>
-        <p style={{ fontSize: "16px", color: "#666", lineHeight: 1.65, maxWidth: "540px", margin: "0 auto" }}>
-          Φροντίζω ώστε η προστασία αυτών που αγαπάτε να είναι μια επένδυση που αποδίδει σε κάθε φάση της ζωής σας.
-        </p>
-      </div>
-
+     
       {/* === WHY A BROKER === */}
       <WhyBroker />
 
       {/* ── SPLIT: Family — photo cut by the left edge, its curve carving into the colored band that fills the rest.
           No margin below: it butts against the mirrored Figurines split so the two bands read as one S-curve. ── */}
-      <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
+      <section className="split-section" style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
         {/* Colored band runs under the photo's curve all the way to the right edge */}
-        <div aria-hidden style={{ position: "absolute", inset: "0 0 0 30%", background: "#EEF3FC" }} />
+        <div aria-hidden className="split-band" style={{ position: "absolute", inset: "0 0 0 30%", background: "#f9efef" }} />
         <img
           src="/family.jpg"
           alt="Οικογένεια"
+          className="split-img split-img-left"
           style={{
             position: "relative",
             width: "100%", height: "480px", objectFit: "cover", objectPosition: "center 70%", display: "block",
             borderRadius: "0 240px 240px 0",
           }}
         />
-        <div style={{
+        <div className="split-content" style={{
           position: "relative",
           minHeight: "480px",
           display: "flex", flexDirection: "column", justifyContent: "center",
@@ -64,14 +51,14 @@ export default function Home() {
             
             <h3 style={{
               fontFamily: "var(--font-ubuntu-sans), sans-serif",
-              fontSize: "30px", fontWeight: 600, color: "#1E439A", lineHeight: 1.25, marginBottom: "16px",
+              fontSize: "30px", fontWeight: 600, color: "#a30000", lineHeight: 1.25, marginBottom: "16px",
             }}>
               Η οικογένειά σας αξίζει την καλύτερη κάλυψη
             </h3>
             <p style={{ fontSize: "15px", color: "#4a5568", lineHeight: 1.7, marginBottom: "24px" }}>
               Ζωή, υγεία, εισοδηματική προστασία.Σχεδιάζω ολοκληρωμένα πακέτα που φροντίζουν για κάθε μέλος της οικογένειάς σας, σε κάθε στιγμή.
             </p>
-            <a href="/idiotes/oikogeneia" style={{ color: "#1E439A", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
+            <a href="/idiotes/oikogeneia" style={{ color: "#a30000", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
               Δείτε τα προϊόντα Οικογένειας →
             </a>
           </div>
@@ -79,10 +66,10 @@ export default function Home() {
       </section>
 
       {/* ── SPLIT: Figurines — colored band fills up to the photo's curve, photo cut by the right edge ── */}
-      <section style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
+      <section className="split-section split-reverse" style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
         {/* Colored band runs from the left edge under the photo's curve */}
-        <div aria-hidden style={{ position: "absolute", inset: "0 30% 0 0", background: "#EEF3FC" }} />
-        <div style={{
+        <div aria-hidden className="split-band" style={{ position: "absolute", inset: "0 30% 0 0", background: "#f9efef" }} />
+        <div className="split-content" style={{
           position: "relative",
           minHeight: "480px",
           display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end",
@@ -92,14 +79,14 @@ export default function Home() {
             
             <h3 style={{
               fontFamily: "var(--font-ubuntu-sans), sans-serif",
-              fontSize: "30px", fontWeight: 600, color: "#1E439A", lineHeight: 1.25, marginBottom: "16px",
+              fontSize: "30px", fontWeight: 600, color: "#a30000", lineHeight: 1.25, marginBottom: "16px",
             }}>
               Προστατέψτε αυτό που έχτισατε με κόπο
             </h3>
             <p style={{ fontSize: "15px", color: "#4a5568", lineHeight: 1.7, marginBottom: "24px" }}>
               Από το σπίτι και το αυτοκίνητο μέχρι την επιχείρησή σας.Καλύπτω όλους τους κλάδους με λύσεις που ταιριάζουν στις πραγματικές σας ανάγκες.
             </p>
-            <a href="/idiotes/katoikia" style={{ color: "#1E439A", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
+            <a href="/idiotes/katoikia" style={{ color: "#a30000", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
               Δείτε τα προϊόντα Κατοικίας →
             </a>
           </div>
@@ -107,6 +94,7 @@ export default function Home() {
         <img
           src="/figurines.jpg"
           alt="Περιουσία"
+          className="split-img split-img-right"
           style={{
             position: "relative",
             width: "100%", height: "480px", objectFit: "cover", display: "block",
@@ -120,8 +108,6 @@ export default function Home() {
 
       {/* === MEET DIMITRIOS === */}
       <MeetDimitrios />
-
-      
 
       {/* ==== FOOTER =====*/}
       <Footer />

@@ -45,9 +45,9 @@ function SearchBar({
       borderRadius: "999px",
       padding: "14px 24px",
       maxWidth: "440px",
-      boxShadow: "0 2px 12px rgba(30,67,154,0.06)",
+      boxShadow: "0 2px 12px rgba(163, 0, 0,0.06)",
     }}>
-      <Search size={18} strokeWidth={2} color="#1E439A" style={{ flexShrink: 0 }} />
+      <Search size={18} strokeWidth={2} color="#a30000" style={{ flexShrink: 0 }} />
       <div style={{ position: "relative", flex: 1 }}>
         <input
           type="text"
@@ -91,7 +91,7 @@ function SearchBar({
                     top: 0,
                     lineHeight: "22px",
                     whiteSpace: "nowrap",
-                    color: "#1E439A",
+                    color: "#a30000",
                     fontWeight: 500,
                   }}
                 >
@@ -219,14 +219,14 @@ export default function AsfaleiesPage() {
     <>
       <Navbar />
       <main style={{ background: "#f7f9fc", flex: 1 }}>
-        <div style={{ maxWidth: "1140px", margin: "0 auto", padding: "64px 36px 40px" }}>
+        <div className="page-shell" style={{ maxWidth: "1140px", margin: "0 auto", padding: "64px 36px 40px" }}>
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
             style={{ marginBottom: "56px" }}
           >
-            <h1 style={{
+            <h1 className="page-title" style={{
               fontFamily: UBUNTU,
               fontSize: "36px",
               fontWeight: 700,

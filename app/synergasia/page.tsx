@@ -18,11 +18,12 @@ export default function SynergasiaPage() {
         }}
       >
         <h1
+          className="page-title"
           style={{
             fontFamily: UBUNTU,
             fontSize: "36px",
             fontWeight: 700,
-            color: "#1E439A",
+            color: "#a30000",
             margin: "0 0 28px",
           }}
         >
@@ -41,7 +42,7 @@ export default function SynergasiaPage() {
           href="/epikoinonia"
           style={{
             display: "inline-block",
-            background: "#1E439A",
+            background: "#a30000",
             color: "#fff",
             fontWeight: 700,
             fontFamily: UBUNTU,

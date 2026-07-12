@@ -26,7 +26,7 @@ export default function HeroCtaButtons({ href }: { href: string }) {
         href={href}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = "#fff";
-          e.currentTarget.style.color = "#1E439A";
+          e.currentTarget.style.color = "#a30000";
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.background = "transparent";

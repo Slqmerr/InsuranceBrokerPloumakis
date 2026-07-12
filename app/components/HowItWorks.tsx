@@ -38,7 +38,7 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section style={{ background: "#fff", padding: "72px 64px" }}>
+    <section className="section-pad" style={{ background: "#fff", padding: "72px 64px" }}>
       
 
       <motion.h2
@@ -46,12 +46,13 @@ export default function HowItWorks() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "-60px" }}
-        style={{ fontFamily: UBUNTU, fontSize: "28px", fontWeight: 700, color: "#0F2660", margin: "0 0 48px", maxWidth: "620px", lineHeight: 1.25 }}
+        style={{ fontFamily: UBUNTU, fontSize: "28px", fontWeight: 700, color: "#5e0000", margin: "0 0 48px", maxWidth: "620px", lineHeight: 1.25 }}
       >
         Απλά βήματα προς τη σωστή ασφάλιση
       </motion.h2>
 
       <motion.div
+        className="steps-grid"
         variants={stagger}
         initial="hidden"
         whileInView="show"
@@ -65,7 +66,7 @@ export default function HowItWorks() {
             style={{
               position: "relative",
               overflow: "hidden",
-              background: "#f7f8fc",
+              background: "#fbf5f5",
               borderRadius: "20px",
               padding: "40px 28px 28px",
               display: "flex",
@@ -81,7 +82,7 @@ export default function HowItWorks() {
               fontFamily: UBUNTU,
               fontSize: "72px",
               fontWeight: 800,
-              color: "#e4ebfb",
+              color: "#f2dcdc",
               lineHeight: 1,
               zIndex: 0,
               pointerEvents: "none",
@@ -96,15 +97,15 @@ export default function HowItWorks() {
               width: "56px",
               height: "56px",
               borderRadius: "50%",
-              background: "#e8eef8",
+              background: "#f7e8e8",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}>
-              <step.icon size={26} color="#1E439A" strokeWidth={1.75} />
+              <step.icon size={26} color="#a30000" strokeWidth={1.75} />
             </div>
 
-            <h3 style={{ position: "relative", zIndex: 1, fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#0F2660", margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ position: "relative", zIndex: 1, fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#5e0000", margin: 0, lineHeight: 1.3 }}>
               {step.title}
             </h3>
             <p style={{ position: "relative", zIndex: 1, color: "#555", fontSize: "14px", lineHeight: 1.65, margin: 0 }}>

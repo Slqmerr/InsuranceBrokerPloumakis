@@ -41,10 +41,10 @@ export default function ProductPageContent({
       <Navbar />
 
       {/* Hero — blue copy half + photo half */}
-      <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "460px" }}>
+      <section className="pp-hero" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "460px" }}>
         {/* Left: blue panel */}
-        <div style={{
-          background: "#1E439A",
+        <div className="pp-hero-panel" style={{
+          background: "#a30000",
           padding: "64px",
           display: "flex",
           flexDirection: "column",
@@ -55,6 +55,7 @@ export default function ProductPageContent({
               pinned to the top of the panel so the centered copy is untouched */}
           <nav
             aria-label="breadcrumb"
+            className="pp-crumbs"
             style={{
               position: "absolute",
               top: "24px",
@@ -90,7 +91,7 @@ export default function ProductPageContent({
             }}>
               <product.icon size={28} color="#fff" strokeWidth={1.75} />
             </div>
-            <h1 style={{ color: "#fff", fontFamily: UBUNTU, fontSize: "34px", fontWeight: 700, margin: 0, lineHeight: 1.15 }}>
+            <h1 className="pp-title" style={{ color: "#fff", fontFamily: UBUNTU, fontSize: "34px", fontWeight: 700, margin: 0, lineHeight: 1.15 }}>
               {product.title}
             </h1>
           </div>
@@ -105,7 +106,7 @@ export default function ProductPageContent({
 
         {/* Right: product photo — absolutely positioned so its intrinsic size
             can't inflate the grid row; the blue panel alone sets the hero height */}
-        <div style={{ position: "relative", minHeight: "460px" }}>
+        <div className="pp-hero-photo" style={{ position: "relative", minHeight: "460px" }}>
           <img
             src={product.image}
             alt={product.title}
@@ -115,7 +116,7 @@ export default function ProductPageContent({
       </section>
 
       {/* Body — description + what it covers, with a sticky CTA sidebar */}
-      <section style={{
+      <section className="pp-body" style={{
         padding: "64px",
         display: "grid",
         gridTemplateColumns: "minmax(0, 720px) 320px",
@@ -133,7 +134,7 @@ export default function ProductPageContent({
         <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px", display: "grid", gap: "12px" }}>
           {product.covers.map((item) => (
             <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: "12px", fontSize: "15px", color: "#333", lineHeight: 1.5 }}>
-              <Check size={18} color="#1E439A" strokeWidth={2.5} style={{ flexShrink: 0, marginTop: "2px" }} />
+              <Check size={18} color="#a30000" strokeWidth={2.5} style={{ flexShrink: 0, marginTop: "2px" }} />
               {item}
             </li>
           ))}
@@ -145,15 +146,15 @@ export default function ProductPageContent({
         </div>
 
         {/* Sticky sidebar — trust points + CTAs follow the reader */}
-        <aside style={{
+        <aside className="pp-aside" style={{
           position: "sticky",
           top: "112px",
           background: "#fff",
           borderRadius: "24px",
-          boxShadow: "0 12px 40px rgba(18,35,85,0.12)",
+          boxShadow: "0 12px 40px rgba(94, 0, 0,0.12)",
           padding: "32px 28px",
         }}>
-          <h3 style={{ fontFamily: UBUNTU, fontSize: "17px", fontWeight: 700, color: "#0F2660", margin: "0 0 20px" }}>
+          <h3 style={{ fontFamily: UBUNTU, fontSize: "17px", fontWeight: 700, color: "#5e0000", margin: "0 0 20px" }}>
             Πώς λειτουργεί
           </h3>
 
@@ -164,7 +165,7 @@ export default function ProductPageContent({
                   width: "28px",
                   height: "28px",
                   borderRadius: "999px",
-                  background: "#1E439A",
+                  background: "#a30000",
                   color: "#fff",
                   fontFamily: UBUNTU,
                   fontSize: "13px",
@@ -177,7 +178,7 @@ export default function ProductPageContent({
                   {i + 1}
                 </div>
                 <div>
-                  <span style={{ display: "block", fontSize: "14px", color: "#0F2660", fontWeight: 700, lineHeight: 1.45 }}>{step.title}</span>
+                  <span style={{ display: "block", fontSize: "14px", color: "#5e0000", fontWeight: 700, lineHeight: 1.45 }}>{step.title}</span>
                   <span style={{ display: "block", fontSize: "13px", color: "#777", lineHeight: 1.5, marginTop: "2px" }}>{step.text}</span>
                 </div>
               </div>
@@ -188,7 +189,7 @@ export default function ProductPageContent({
 
           <div style={{ display: "grid", gap: "10px" }}>
             <Link href={`/prosfora/${product.slug}`} style={{
-              background: "#1E439A",
+              background: "#a30000",
               color: "#fff",
               fontWeight: 700,
               fontFamily: UBUNTU,
@@ -202,8 +203,8 @@ export default function ProductPageContent({
             </Link>
             <Link href="/epikoinonia" style={{
               background: "transparent",
-              color: "#1E439A",
-              border: "1.5px solid #1E439A",
+              color: "#a30000",
+              border: "1.5px solid #a30000",
               fontWeight: 700,
               fontFamily: UBUNTU,
               padding: "12px 24px",
@@ -227,7 +228,7 @@ export default function ProductPageContent({
             fontSize: "14px",
             fontWeight: 600,
           }}>
-            <Phone size={15} color="#1E439A" strokeWidth={1.75} />
+            <Phone size={15} color="#a30000" strokeWidth={1.75} />
             2810 326 400
           </a>
         </aside>

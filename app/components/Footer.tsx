@@ -25,15 +25,15 @@ const MAP_EMBED_SRC = `https://maps.google.com/maps?q=${encodeURIComponent("Κυ
 
 export default function Footer() {
   return (
-    <footer style={{
-      background: "#1E439A",
+    <footer className="footer" style={{
+      background: "#a30000",
       color: "#fff",
       padding: "64px 64px 32px",
       fontFamily: "var(--font-ubuntu-sans), sans-serif",
     }}>
 
       {/* ── Top grid: contact column + location minimap ── */}
-      <div style={{
+      <div className="footer-grid" style={{
         display: "grid",
         gridTemplateColumns: "1fr 1.2fr",
         gap: "64px",
@@ -44,7 +44,7 @@ export default function Footer() {
         {/* Column 1 — Logo + tagline */}
         <div>
           <img
-            src="/logo.png"
+            src="/logo_white-2.png"
             alt="Δημήτριος Πλουμάκης"
             style={{
               height: "56px",
@@ -65,20 +65,26 @@ export default function Footer() {
 
           {/* Contact info */}
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            <a
-              href="tel:+302810326400"
+            {/* Both numbers share one row — each stays its own tel: link */}
+            <div
               style={{
                 display: "flex",
                 alignItems: "center",
+                flexWrap: "wrap",
                 gap: "10px",
                 color: "rgba(255,255,255,0.75)",
-                textDecoration: "none",
                 fontSize: "14px",
               }}
             >
-              <Phone size={15} strokeWidth={1.75} />
-              2810 326 400
-            </a>
+              <Phone size={15} strokeWidth={1.75} style={{ flexShrink: 0 }} />
+              <a href="tel:+302810326400" style={{ color: "inherit", textDecoration: "none" }}>
+                2810 326 400
+              </a>
+              <span aria-hidden style={{ opacity: 0.5 }}>·</span>
+              <a href="tel:+306945021091" style={{ color: "inherit", textDecoration: "none" }}>
+                6945 021 091
+              </a>
+            </div>
             <a
               href="mailto:dploumakis@gmail.com"
               style={{

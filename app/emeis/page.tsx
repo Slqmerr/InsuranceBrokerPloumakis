@@ -74,25 +74,25 @@ type AwardEntry = {
 };
 
 const AWARD_ENTRIES: AwardEntry[] = [
-  { month: "Μάρτιος", year: "2000", event: "31ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
-  { month: "Μάρτιος", year: "2002", event: "33ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "3ο βραβείο", category: "Διατηρησιμότητας" }] },
-  { month: "Μάρτιος", year: "2003", event: "Ημερίδα Βραβεύσεων, Αθήνα", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
-  { month: "Μάρτιος", year: "2005", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "4ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
+  { month: "Μάρτιος", year: "2000", event: "31ο Πανελλήνιο Συνέδριο Πωλήσεων Ασφαλιστών", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
+  { month: "Μάρτιος", year: "2002", event: "33ο Πανελλήνιο Συνέδριο Πωλήσεων Ασφαλιστών", awards: [{ rank: "3ο βραβείο", category: "Διατηρησιμότητας" }] },
+  { month: "Μάρτιος", year: "2003", event: "34ο ανελλήνιο Συνέδριο Πωλήσεων Ασφαλιστών, Αθήνα", awards: [{ rank: "5ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
+  { month: "Μάρτιος", year: "2005", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων Ασφαλιστών", awards: [{ rank: "4ο βραβείο", category: "Κανονισμού Πωλήσεων" }] },
   {
-    month: "Σεπτέμβριος", year: "2006", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [
+    month: "Σεπτέμβριος", year: "2006", event: "36ο Πανελλήνιο Συνέδριο Πωλήσεων Ασφαλιστών", awards: [
       { rank: "3ο βραβείο", category: "Παραγωγής Γενικών" },
       { rank: "5ο βραβείο", category: "Παραγωγής Ζωής" },
     ]
   },
   {
-    month: "Μάρτιος", year: "2007", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [
+    month: "Μάρτιος", year: "2007", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων Ασφαλιστών", awards: [
       { rank: "5ο βραβείο", category: "Παραγωγής Γενικών" },
       { rank: "5ο βραβείο", category: "Παραγωγής Ζωής" },
     ]
   },
-  { month: "Μάρτιος", year: "2008", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "6ο βραβείο", category: "Παραγωγής Γενικών" }] },
-  { month: "Μάρτιος", year: "2012", event: "39ο Πανελλήνιο Συνέδριο Πωλήσεων", awards: [{ rank: "4ο βραβείο", category: "Παραγωγής Γενικών" }] },
-  { month: "Μάρτιος", year: "2013", event: "39ο Πανελλήνιο Συνέδριο, Costa Navarino", awards: [{ rank: "2ο βραβείο", category: "Παραγωγής Γενικών" }] },
+  { month: "Μάρτιος", year: "2008", event: "37ο Πανελλήνιο Συνέδριο Πωλήσεων Ασφαλιστών", awards: [{ rank: "6ο βραβείο", category: "Παραγωγής Γενικών" }] },
+  { month: "Μάρτιος", year: "2012", event: "39ο Πανελλήνιο Συνέδριο Πωλήσεων Ασφαλιστών", awards: [{ rank: "4ο βραβείο", category: "Παραγωγής Γενικών" }] },
+  { month: "Μάρτιος", year: "2013", event: "39ο Πανελλήνιο Συνέδριο Πωλήσεων Ασφαλιστών, Costa Navarino", awards: [{ rank: "2ο βραβείο", category: "Παραγωγής Γενικών" }] },
   { year: "2025", event: "NOW Insurance Group", awards: [{ rank: "Loyalty Award", category: "Sales Awards 2025" }] },
 ];
 
@@ -160,9 +160,9 @@ export default function EmeisPage() {
 
         // Dot lights up as the comet passes; reverses when scrolling back up.
         gsap.to(dot, {
-          backgroundColor: "#1E439A",
+          backgroundColor: "#a30000",
           scale: 1.35,
-          boxShadow: "0 0 0 5px rgba(30,67,154,0.18)",
+          boxShadow: "0 0 0 5px rgba(163, 0, 0,0.18)",
           duration: 0.35,
           ease: "back.out(3)",
           scrollTrigger: { trigger: row, start: "top 70%", toggleActions: "play none none reverse" },
@@ -194,15 +194,16 @@ export default function EmeisPage() {
       <Navbar />
 
       {/* === HERO: split layout === */}
-      <section style={{
+      <section className="emeis-hero" style={{
         display: "flex",
         flexDirection: "row",
         minHeight: "480px",
-        background: "#1E439A",
+        background: "#a30000",
         overflow: "hidden",
       }}>
         {/* Left: bio content — staggered entrance */}
         <motion.div
+          className="emeis-hero-bio"
           variants={stagger}
           initial="hidden"
           animate="show"
@@ -245,7 +246,7 @@ export default function EmeisPage() {
           </motion.p>
 
           {/* Stats — count up when they enter view */}
-          <motion.div variants={fadeUp} style={{ display: "flex", gap: "32px", marginTop: "40px" }}>
+          <motion.div className="emeis-stats" variants={fadeUp} style={{ display: "flex", gap: "32px", marginTop: "40px" }}>
             {[
               { value: 25, suffix: "+", label: "Χρόνια εμπειρίας" },
               { value: 12, suffix: "+", label: "Διακρίσεις" },
@@ -272,7 +273,7 @@ export default function EmeisPage() {
         </motion.div>
 
         {/* Right column: 40% width — photo of Dimitrios, slides in */}
-        <div style={{
+        <div className="emeis-hero-photo" style={{
           flex: "0 0 40%",
           overflow: "hidden",
           position: "relative",
@@ -298,14 +299,14 @@ export default function EmeisPage() {
             style={{
               position: "absolute",
               inset: 0,
-              background: "linear-gradient(to right, rgba(30,67,154,0.5) 0%, transparent 40%)",
+              background: "linear-gradient(to right, rgba(163, 0, 0,0.5) 0%, transparent 40%)",
             }}
           />
         </div>
       </section>
 
       {/* === CREDENTIALS STRIP === */}
-      <section style={{
+      <section className="section-pad" style={{
         background: "#fff",
         padding: "64px 64px",
       }}>
@@ -318,7 +319,7 @@ export default function EmeisPage() {
             fontFamily: UBUNTU,
             fontSize: "28px",
             fontWeight: 700,
-            color: "#0F2660",
+            color: "#5e0000",
             marginBottom: "40px",
           }}
         >
@@ -352,6 +353,7 @@ export default function EmeisPage() {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true, margin: "-80px" }}
+                className="timeline-row"
                 style={{ display: "grid", gridTemplateColumns: "150px 56px 1fr" }}
               >
 
@@ -360,7 +362,7 @@ export default function EmeisPage() {
                   <div style={{ color: "#888", fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "2px" }}>
                     {item.month}
                   </div>
-                  <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#1E439A", lineHeight: 1.1 }}>
+                  <div className="timeline-year" style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#a30000", lineHeight: 1.1 }}>
                     {item.year}
                   </div>
                 </motion.div>
@@ -374,9 +376,9 @@ export default function EmeisPage() {
                       width: "9px",
                       height: "9px",
                       borderRadius: "50%",
-                      border: "2px solid #1E439A",
+                      border: "2px solid #a30000",
                       background: "#fff",
-                      boxShadow: "0 0 0 5px #EEF2FF",
+                      boxShadow: "0 0 0 5px #f9efef",
                       marginTop: "8px",
                       flexShrink: 0,
                     }}
@@ -389,8 +391,8 @@ export default function EmeisPage() {
                       marginTop: "10px",
                       transformOrigin: "top",
                       background: isLast
-                        ? "linear-gradient(to bottom, #C9D4EC 0%, transparent 90%)"
-                        : "linear-gradient(to bottom, #C9D4EC 0%, #C9D4EC 70%, rgba(201,212,236,0.35) 100%)",
+                        ? "linear-gradient(to bottom, #e8c0c0 0%, transparent 90%)"
+                        : "linear-gradient(to bottom, #e8c0c0 0%, #e8c0c0 70%, rgba(232, 192, 192,0.35) 100%)",
                     }}
                   />
                 </div>
@@ -402,10 +404,10 @@ export default function EmeisPage() {
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   style={{ paddingBottom: isLast ? "8px" : "56px", paddingTop: "4px" }}
                 >
-                  <div style={{ color: "#1E439A", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
+                  <div style={{ color: "#a30000", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
                     {item.org}
                   </div>
-                  <h3 style={{ fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#0F2660", margin: "0 0 8px" }}>
+                  <h3 style={{ fontFamily: UBUNTU, fontSize: "18px", fontWeight: 700, color: "#5e0000", margin: "0 0 8px" }}>
                     {item.title}
                   </h3>
                   <p style={{ color: "#555", fontSize: "14px", lineHeight: 1.65, margin: "0 0 10px", maxWidth: "560px" }}>
@@ -421,8 +423,8 @@ export default function EmeisPage() {
       </section>
 
       {/* === AWARDS === */}
-      <section style={{
-        background: "#F5F7FB",
+      <section className="section-pad" style={{
+        background: "#fbf5f5",
         padding: "64px 64px",
       }}>
 
@@ -435,7 +437,7 @@ export default function EmeisPage() {
             fontFamily: UBUNTU,
             fontSize: "28px",
             fontWeight: 700,
-            color: "#0F2660",
+            color: "#5e0000",
             marginBottom: "12px",
           }}
         >
@@ -453,7 +455,7 @@ export default function EmeisPage() {
 
         {/* Minimal timeline — year first, then event; multiple awards grouped per year.
             Sticky summary card fills the right column. */}
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 860px) 300px", gap: "64px", alignItems: "start" }}>
+        <div className="awards-layout" style={{ display: "grid", gridTemplateColumns: "minmax(0, 860px) 300px", gap: "64px", alignItems: "start" }}>
         <div ref={awardsRef} style={{ position: "relative" }}>
           {/* Scroll-scrubbed spine — a line draws down over the faint track lines while a
               glowing comet head rides its tip. Centered on the 56px divider column (150px + 28px). */}
@@ -480,7 +482,7 @@ export default function EmeisPage() {
                 bottom: 0,
                 width: "3px",
                 borderRadius: "3px",
-                background: "linear-gradient(to bottom, #1E439A 0%, #3861C4 100%)",
+                background: "linear-gradient(to bottom, #a30000 0%, #d90f0e 100%)",
                 transformOrigin: "top",
                 transform: "scaleY(0)",
               }}
@@ -494,9 +496,9 @@ export default function EmeisPage() {
                 width: "14px",
                 height: "14px",
                 borderRadius: "50%",
-                background: "#1E439A",
+                background: "#a30000",
                 border: "3px solid #fff",
-                boxShadow: "0 0 0 1px rgba(30,67,154,0.35), 0 0 18px 5px rgba(30,67,154,0.45)",
+                boxShadow: "0 0 0 1px rgba(163, 0, 0,0.35), 0 0 18px 5px rgba(163, 0, 0,0.45)",
                 opacity: 0,
               }}
             />
@@ -506,7 +508,7 @@ export default function EmeisPage() {
             return (
               <div
                 key={entry.year + entry.event}
-                className="award-row"
+                className="award-row timeline-row"
                 style={{ display: "grid", gridTemplateColumns: "150px 56px 1fr" }}
               >
 
@@ -517,7 +519,7 @@ export default function EmeisPage() {
                       {entry.month}
                     </div>
                   )}
-                  <div style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#1E439A", lineHeight: 1.1 }}>
+                  <div className="timeline-year" style={{ fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, color: "#a30000", lineHeight: 1.1 }}>
                     {entry.year}
                   </div>
                 </div>
@@ -530,9 +532,9 @@ export default function EmeisPage() {
                       width: "9px",
                       height: "9px",
                       borderRadius: "50%",
-                      border: "2px solid #1E439A",
+                      border: "2px solid #a30000",
                       background: "#fff",
-                      boxShadow: "0 0 0 5px #EEF2FF",
+                      boxShadow: "0 0 0 5px #f9efef",
                       marginTop: "12px",
                       flexShrink: 0,
                       position: "relative",
@@ -546,7 +548,7 @@ export default function EmeisPage() {
                         position: "absolute",
                         inset: "-3px",
                         borderRadius: "50%",
-                        background: "rgba(30,67,154,0.3)",
+                        background: "rgba(163, 0, 0,0.3)",
                         opacity: 0,
                       }}
                     />
@@ -557,8 +559,8 @@ export default function EmeisPage() {
                       flex: 1,
                       marginTop: "10px",
                       background: isLast
-                        ? "linear-gradient(to bottom, #C9D4EC 0%, transparent 90%)"
-                        : "linear-gradient(to bottom, #C9D4EC 0%, #C9D4EC 70%, rgba(201,212,236,0.35) 100%)",
+                        ? "linear-gradient(to bottom, #e8c0c0 0%, transparent 90%)"
+                        : "linear-gradient(to bottom, #e8c0c0 0%, #e8c0c0 70%, rgba(232, 192, 192,0.35) 100%)",
                     }}
                   />
                 </div>
@@ -573,16 +575,16 @@ export default function EmeisPage() {
                     onMouseEnter={(e) => nudgeContent(e.currentTarget, 6)}
                     onMouseLeave={(e) => nudgeContent(e.currentTarget, 0)}
                   >
-                    <div style={{ color: "#1E439A", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
+                    <div style={{ color: "#a30000", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
                       {entry.event}
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                       {entry.awards.map((award) => (
                         <div key={award.rank + award.category} className="award-item" style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                          <span style={{ color: "#1E439A", fontWeight: 700, fontSize: "13px", whiteSpace: "nowrap" }}>
+                          <span style={{ color: "#a30000", fontWeight: 700, fontSize: "13px", whiteSpace: "nowrap" }}>
                             {award.rank}
                           </span>
-                          <span style={{ fontFamily: UBUNTU, fontWeight: 600, fontSize: "16px", color: "#0F2660" }}>
+                          <span style={{ fontFamily: UBUNTU, fontWeight: 600, fontSize: "16px", color: "#5e0000" }}>
                             {award.category}
                           </span>
                         </div>
@@ -598,6 +600,7 @@ export default function EmeisPage() {
 
         {/* Sticky summary card — totals computed from AWARD_ENTRIES */}
         <motion.aside
+          className="awards-aside"
           variants={fadeUp}
           initial="hidden"
           whileInView="show"
@@ -607,7 +610,7 @@ export default function EmeisPage() {
             top: "112px",
             background: "#fff",
             borderRadius: "24px",
-            boxShadow: "0 12px 40px rgba(18,35,85,0.12)",
+            boxShadow: "0 12px 40px rgba(94, 0, 0,0.12)",
             padding: "32px 28px",
           }}
         >
@@ -615,19 +618,19 @@ export default function EmeisPage() {
             width: "48px",
             height: "48px",
             borderRadius: "14px",
-            background: "#e8eef8",
+            background: "#f7e8e8",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             marginBottom: "18px",
           }}>
-            <Trophy size={24} color="#1E439A" strokeWidth={1.75} />
+            <Trophy size={24} color="#a30000" strokeWidth={1.75} />
           </div>
 
-          <div style={{ fontFamily: UBUNTU, fontSize: "42px", fontWeight: 700, color: "#1E439A", lineHeight: 1 }}>
+          <div style={{ fontFamily: UBUNTU, fontSize: "42px", fontWeight: 700, color: "#a30000", lineHeight: 1 }}>
             <StatValue value={TOTAL_AWARDS} />
           </div>
-          <div style={{ fontSize: "14px", fontWeight: 600, color: "#0F2660", margin: "6px 0 2px" }}>
+          <div style={{ fontSize: "14px", fontWeight: 600, color: "#5e0000", margin: "6px 0 2px" }}>
             διακρίσεις συνολικά
           </div>
           <div style={{ fontSize: "12px", color: "#888", marginBottom: "22px" }}>
@@ -640,7 +643,7 @@ export default function EmeisPage() {
             {AWARD_CATEGORY_COUNTS.map(([category, count]) => (
               <div key={category} style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px" }}>
                 <span style={{ fontSize: "13px", color: "#555" }}>{category}</span>
-                <span style={{ fontFamily: UBUNTU, fontSize: "15px", fontWeight: 700, color: "#1E439A" }}>{count}</span>
+                <span style={{ fontFamily: UBUNTU, fontSize: "15px", fontWeight: 700, color: "#a30000" }}>{count}</span>
               </div>
             ))}
           </div>
