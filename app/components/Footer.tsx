@@ -65,20 +65,26 @@ export default function Footer() {
 
           {/* Contact info */}
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            <a
-              href="tel:+302810326400"
+            {/* Both numbers share one row — each stays its own tel: link */}
+            <div
               style={{
                 display: "flex",
                 alignItems: "center",
+                flexWrap: "wrap",
                 gap: "10px",
                 color: "rgba(255,255,255,0.75)",
-                textDecoration: "none",
                 fontSize: "14px",
               }}
             >
-              <Phone size={15} strokeWidth={1.75} />
-              2810 326 400
-            </a>
+              <Phone size={15} strokeWidth={1.75} style={{ flexShrink: 0 }} />
+              <a href="tel:+302810326400" style={{ color: "inherit", textDecoration: "none" }}>
+                2810 326 400
+              </a>
+              <span aria-hidden style={{ opacity: 0.5 }}>·</span>
+              <a href="tel:+306945021091" style={{ color: "inherit", textDecoration: "none" }}>
+                6945 021 091
+              </a>
+            </div>
             <a
               href="mailto:dploumakis@gmail.com"
               style={{
