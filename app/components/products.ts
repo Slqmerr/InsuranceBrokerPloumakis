@@ -61,6 +61,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
       "Αν υπάρχει στεγαστικό δάνειο",
     ],
   },
+
   {
     icon: Car, title: "Όχημα", slug: "oxima", color: "#ea580c",
     image: "/products/oxima.jpg",
