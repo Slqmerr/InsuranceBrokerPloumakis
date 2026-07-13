@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ChevronDown, Phone, MapPin, Menu, X } from "lucide-react";
+import { ChevronDown, Phone, MapPin, Menu, X, ArrowRight } from "lucide-react";
 import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS } from "./products";
 
 gsap.registerPlugin(useGSAP);
@@ -661,6 +661,23 @@ export default function Navbar() {
                   </AnimatePresence>
                 </div>
               ))}
+
+              {/* See-all — jumps straight to the full programs listing */}
+              <Link href="/asfaleies" onClick={closeMenu} className="drawer-item" style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "12px",
+                padding: "18px 4px",
+                borderBottom: "1px solid #f0e3e3",
+                fontSize: "18px",
+                fontWeight: 700,
+                color: "#a30000",
+                textDecoration: "none",
+              }}>
+                Δείτε όλα τα προγράμματα μας
+                <ArrowRight size={18} strokeWidth={2.25} style={{ flexShrink: 0 }} />
+              </Link>
 
               {/* Plain links */}
               <Link href="/emeis" onClick={closeMenu} className="drawer-item" style={{

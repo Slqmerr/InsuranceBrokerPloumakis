@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search } from "lucide-react";
+import { Search, Plus, Minus } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS, EXTRA_IDIWTES_PAGES, type Product } from "../components/products";
@@ -10,6 +10,9 @@ import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS, EXTRA_IDIWTES_PAGES, type Produc
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
 const ALL_IDIWTES = [...IDIWTES_PRODUCTS, ...EXTRA_IDIWTES_PAGES];
+
+// How many cards each category shows before the «Δείτε περισσότερα» tile
+const INITIAL_VISIBLE = 5;
 
 // Accent-insensitive, case-insensitive matching so "υγεια" finds «Υγεία»
 function normalize(text: string) {
@@ -106,7 +109,15 @@ function SearchBar({
   );
 }
 
-function ProductGrid({ products, basePath }: { products: Product[]; basePath: string }) {
+function ProductGrid({
+  products,
+  basePath,
+  showMore,
+}: {
+  products: Product[];
+  basePath: string;
+  showMore?: { expanded: boolean; remaining: number; onClick: () => void };
+}) {
   if (products.length === 0) {
     return (
       <p style={{ color: "#9aa3b5", fontSize: "15px", padding: "24px 0" }}>
@@ -166,6 +177,59 @@ function ProductGrid({ products, basePath }: { products: Product[]; basePath: st
           </div>
         </motion.a>
       ))}
+
+      {/* Toggle tile — same card shell; expands to the full list or collapses back */}
+      {showMore && (
+        <motion.button
+          type="button"
+          layout
+          onClick={showMore.onClick}
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          whileHover={{ y: -3 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+            background: "#fff",
+            border: "1px dashed #d6b4b4",
+            borderRadius: "14px",
+            padding: "18px 20px",
+            cursor: "pointer",
+            textAlign: "left",
+            fontFamily: UBUNTU,
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#a30000"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#d6b4b4"; }}
+        >
+          <div style={{
+            width: "46px",
+            height: "46px",
+            borderRadius: "10px",
+            background: "#f7e8e8",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+            color: "#a30000",
+          }}>
+            {showMore.expanded
+              ? <Minus size={21} color="currentColor" strokeWidth={2} />
+              : <Plus size={21} color="currentColor" strokeWidth={2} />}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+            <span style={{ fontSize: "16px", fontWeight: 600, color: "#a30000" }}>
+              {showMore.expanded ? "Δείτε λιγότερα" : "Δείτε περισσότερα"}
+            </span>
+            {!showMore.expanded && (
+              <span style={{ fontSize: "13px", fontWeight: 500, color: "#9aa3b5" }}>
+                +{showMore.remaining} ακόμη
+              </span>
+            )}
+          </div>
+        </motion.button>
+      )}
     </div>
   );
 }
@@ -180,7 +244,14 @@ function CategorySection({
   basePath: string;
 }) {
   const [query, setQuery] = React.useState("");
+  const [expanded, setExpanded] = React.useState(false);
   const filtered = products.filter((p) => normalize(p.title).includes(normalize(query)));
+
+  // While searching, show every match with no tile. Otherwise, once a category
+  // has more than INITIAL_VISIBLE items, the tile toggles the full list open/shut.
+  const searching = query.trim() !== "";
+  const collapsible = !searching && filtered.length > INITIAL_VISIBLE;
+  const visible = collapsible && !expanded ? filtered.slice(0, INITIAL_VISIBLE) : filtered;
 
   return (
     <section style={{ marginBottom: "72px" }}>
@@ -209,7 +280,15 @@ function CategorySection({
           <SearchBar products={products} value={query} onChange={setQuery} />
         </div>
       </div>
-      <ProductGrid products={filtered} basePath={basePath} />
+      <ProductGrid
+        products={visible}
+        basePath={basePath}
+        showMore={collapsible ? {
+          expanded,
+          remaining: filtered.length - INITIAL_VISIBLE,
+          onClick: () => setExpanded((v) => !v),
+        } : undefined}
+      />
     </section>
   );
 }
