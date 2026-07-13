@@ -252,6 +252,36 @@ export const PROFILES: Record<string, QuoteProfile> = {
       },
     ],
   },
+  // Recruitment page (/synergasia) — people who want to join the network as
+  // insurance advisors, not a product quote
+  SYNERGASIA: {
+    fields: [
+      {
+        name: "profileStatus",
+        label: "Η τρέχουσα κατάστασή σας",
+        type: "select",
+        required: true,
+        options: [
+          "Χωρίς εμπειρία στην ασφάλιση",
+          "Με εμπειρία σε πωλήσεις / εξυπηρέτηση",
+          "Ήδη στον ασφαλιστικό κλάδο",
+          "Πιστοποιημένος/-η ασφαλιστικός διαμεσολαβητής",
+        ],
+      },
+      {
+        name: "availability",
+        label: "Διαθεσιμότητα",
+        type: "select",
+        options: [
+          "Πλήρης απασχόληση",
+          "Μερική απασχόληση",
+          "Ως δεύτερη δραστηριότητα",
+          "Δεν είμαι σίγουρος/-η ακόμη",
+        ],
+      },
+      { name: "motivation", label: "Τι σας ενδιαφέρει στη συνεργασία;", type: "text" },
+    ],
+  },
 };
 
 export const SLUG_TO_PROFILE: Record<string, keyof typeof PROFILES> = {
@@ -260,7 +290,8 @@ export const SLUG_TO_PROFILE: Record<string, keyof typeof PROFILES> = {
   oikogeneia: "LIFE_FAMILY",
   katoikia: "HOME",
   "astiki-efthyni": "LIABILITY",
-  oxima: "AUTO",
+  motosikleta: "AUTO",
+  aftokinito: "AUTO",
   ependysi: "SAVINGS_INVEST",
   cyber: "CYBER",
   katoikidio: "PET",
@@ -270,6 +301,7 @@ export const SLUG_TO_PROFILE: Record<string, keyof typeof PROFILES> = {
   "omadiki-asfalisi": "GROUP",
   "metafora-emporeumaton": "CARGO",
   epikoinonia: "CONTACT",
+  synergasia: "SYNERGASIA",
 };
 
 const profileFor = (slug: string): QuoteProfile | undefined => PROFILES[SLUG_TO_PROFILE[slug]];

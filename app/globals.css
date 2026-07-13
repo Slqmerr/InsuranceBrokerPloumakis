@@ -219,6 +219,19 @@ input:focus-visible + .consent-box {
     height: 340px !important;
   }
 
+  /* Partnership CTA: text on top, image below */
+  .partner-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  .partner-photo {
+    min-height: 0 !important;
+  }
+  .partner-photo img {
+    min-height: 0 !important;
+    height: 320px !important;
+  }
+
   /* Split sections: photo on top, text on the tinted band below */
   .split-section {
     grid-template-columns: 1fr !important;

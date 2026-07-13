@@ -1,7 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+
+// Link that accepts motion props, so the CTA keeps client-side navigation
+const MotionLink = motion.create(Link);
+
+/* Hero CTA — rises in, lifts + glows on hover; the "hover" label propagates
+   to the arrow so it slides on button hover */
+const ctaBtn: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut", delay: 0.2 } },
+  hover: { scale: 1.045, y: -2, boxShadow: "0 14px 30px rgba(0,0,0,0.22)" },
+};
+
+const arrowSlide: Variants = {
+  hover: { x: 5, transition: { type: "spring", stiffness: 400, damping: 18 } },
+};
 
 // height compensates for each file's padding/aspect so the marks look the same size.
 // Source PNGs/SVGs are tightly cropped, so height maps directly to the mark's cap height.
@@ -71,20 +87,35 @@ export default function Hero() {
         <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "15px", fontWeight: 700, lineHeight: 1.6, marginBottom: "32px" }}>
           Εξατομικευμένες ασφαλιστικές λύσεις για εσάς, την οικογένεια και την επιχείρησή σας.
         </p>
-        <Link href="/epikoinonia" style={{
-          background: "#fff",
-          color: "#a30000",
-          fontWeight: 700,
-          fontFamily: "var(--font-ubuntu-sans), sans-serif",
-          padding: "14px 32px",
-          borderRadius: "999px",
-          textDecoration: "none",
-          cursor: "pointer",
-          width: "fit-content",
-          fontSize: "14px",
-        }}>
+        <MotionLink
+          href="/epikoinonia"
+          variants={ctaBtn}
+          initial="hidden"
+          animate="show"
+          whileHover="hover"
+          whileTap={{ scale: 0.96 }}
+          style={{
+            background: "#fff",
+            color: "#a30000",
+            fontWeight: 700,
+            fontFamily: "var(--font-ubuntu-sans), sans-serif",
+            padding: "14px 32px",
+            borderRadius: "999px",
+            textDecoration: "none",
+            cursor: "pointer",
+            width: "fit-content",
+            fontSize: "14px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            willChange: "transform",
+          }}
+        >
           Κλείσε Ραντεβού
-        </Link>
+          <motion.span variants={arrowSlide} style={{ display: "inline-flex" }}>
+            <ArrowRight size={16} strokeWidth={2.2} />
+          </motion.span>
+        </MotionLink>
       </div>
 
       {/* Partner logo marquee — full-width, brand colors, lifted above the product card strip */}
