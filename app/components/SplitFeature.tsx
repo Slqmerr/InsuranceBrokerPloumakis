@@ -34,7 +34,7 @@ type Props = {
   imageSrc: string;
   imageAlt: string;
   imagePosition?: string;
-  eyebrow: string;
+  
   title: string;
   body: string;
   ctaLabel: string;
@@ -46,7 +46,6 @@ export default function SplitFeature({
   imageSrc,
   imageAlt,
   imagePosition = "center",
-  eyebrow,
   title,
   body,
   ctaLabel,
@@ -70,8 +69,11 @@ export default function SplitFeature({
         objectPosition: imagePosition,
         display: "block",
         borderRadius: reverse ? "240px 0 0 240px" : "0 240px 240px 0",
-        // Theme-color shadow — drop-shadow hugs the rounded curve
-        filter: "drop-shadow(0 22px 36px rgba(163,0,0,0.26))",
+        // Theme-color shadow — drop-shadow hugs the rounded curve.
+        // Kept tight (no vertical offset) so it fades out before the section's
+        // own edge — a taller/offset shadow bleeds into the next stacked
+        // section and gets hard-clipped there, showing up as a seam line.
+        filter: "drop-shadow(0 0 22px rgba(163,0,0,0.22))",
       }}
     />
   );
@@ -96,13 +98,7 @@ export default function SplitFeature({
         viewport={{ once: true, margin: "-80px" }}
         style={{ maxWidth: "480px", display: "flex", flexDirection: "column", gap: "20px" }}
       >
-        <motion.span
-          variants={fadeUp}
-          style={{ color: "#a30000", fontSize: "13px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase" }}
-        >
-          {eyebrow}
-        </motion.span>
-
+        
         <motion.h3
           variants={fadeUp}
           style={{
@@ -158,7 +154,13 @@ export default function SplitFeature({
   return (
     <section
       className={`split-section${reverse ? " split-reverse" : ""}`}
-      style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}
+      style={{
+        position: "relative",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        alignItems: "stretch",
+        overflow: "hidden",
+      }}
     >
       {/* Colored band runs under the photo's curve to the far edge */}
       <div

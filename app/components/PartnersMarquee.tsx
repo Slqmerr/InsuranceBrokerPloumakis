@@ -24,13 +24,13 @@ const PARTNERS = [
 // gap between logos — applied as a right margin so translateX(-50%) stays seamless
 const GAP = 28;
 
-export default function PartnersMarquee() {
+export default function PartnersMarquee({showTitle=true}:{showTitle?:boolean}) {
   // duplicate the list once; the animation shifts by exactly one set width (-50%)
   const loop = [...PARTNERS, ...PARTNERS];
 
   return (
     <section style={{ background: "#fbf5f5", padding: "56px 0 64px" }}>
-      <h2
+     {showTitle &&(<h2
         style={{
           textAlign: "center",
           fontFamily: GOTHIC,
@@ -43,7 +43,7 @@ export default function PartnersMarquee() {
         }}
       >
         Συνεργαζόμενες εταιρείες
-      </h2>
+      </h2> )}
 
       <div className="marquee-viewport">
         <div className="marquee-track">

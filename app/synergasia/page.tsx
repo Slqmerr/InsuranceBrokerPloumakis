@@ -379,7 +379,7 @@ export default function SynergasiaPage() {
       </section>
 
       {/* Companies the associate gets to work with */}
-      <PartnersMarquee />
+      <PartnersMarquee showTitle={false}/>
 
       {/* === PERSONAS === */}
       <section className="section-pad" style={{ background: "#fff", padding: "72px 64px" }}>

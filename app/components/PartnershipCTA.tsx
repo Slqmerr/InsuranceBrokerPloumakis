@@ -52,12 +52,7 @@ export default function PartnershipCTA() {
           viewport={{ once: true, margin: "-80px" }}
           style={{ display: "flex", flexDirection: "column", gap: "22px" }}
         >
-          <motion.span
-            variants={fadeUp}
-            style={{ color: "#a30000", fontSize: "13px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase" }}
-          >
-            Συνεργασία
-          </motion.span>
+         
 
           <motion.h2
             variants={fadeUp}
