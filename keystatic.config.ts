@@ -152,7 +152,7 @@ export default config({
   },
   collections: {
     idiotes: collection({
-      label: "Προϊόντα — Ιδιώτες",
+      label: "Προϊόντα Ιδιωτών",
       path: "content/products/idiotes/*",
       format: "yaml",
       slugField: "title",
@@ -160,7 +160,7 @@ export default config({
       schema: productSchema("idiotes"),
     }),
     epixeirisi: collection({
-      label: "Προϊόντα — Επιχειρήσεις",
+      label: "Προϊόντα Επιχειρήσεων",
       path: "content/products/epixeirisi/*",
       format: "yaml",
       slugField: "title",
