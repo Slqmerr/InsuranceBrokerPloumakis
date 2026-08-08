@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "@keystatic/core": "^0.6.4",
+    "@keystatic/next": "^5.0.4",
+    "@markdoc/markdoc": "^0.5.9",
     "framer-motion": "^12.42.2",
     "gsap": "^3.15.0",
     "lucide-react": "^1.23.0",
