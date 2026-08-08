@@ -1,3 +1,6 @@
+// Navigation config for the navbar dropdown and homepage strip; product page
+// content is CMS-driven from content/products/ (except the astiki-efthyni hub
+// family, which still renders from the arrays below).
 import {
   Users, Home, Car, Heart, Briefcase, PiggyBank,
   Leaf, Scale, TrendingUp, ShieldCheck, PawPrint,
