@@ -125,30 +125,28 @@ function productSchema(routeBase: "idiotes" | "epixeirisi") {
   };
 }
 
+// Keystatic Cloud project, as "<team>/<project>" from keystatic.cloud. Cloud
+// handles editor login itself, so an editor needs a Keystatic account but NOT
+// a GitHub account, and the app needs no secrets — this identifier is public.
+// Unset (e.g. local development), the panel falls back to local mode and
+// writes straight to the working tree.
+const CLOUD_PROJECT = process.env.NEXT_PUBLIC_KEYSTATIC_CLOUD_PROJECT;
+
 export default config({
-  // GitHub mode: the admin UI authenticates editors through a GitHub App and
-  // commits through the GitHub API. It needs the four env vars documented in
-  // .env.example; in github mode Keystatic's route handler throws at import
-  // time without them, which would fail every build until they exist. So the
-  // storage is gated on NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG — a build-time
-  // inlined variable, identical in the server and client bundles: set all
-  // four vars (locally or on Vercel) and the admin runs github mode; unset,
-  // it falls back to local mode and the build always stays green. The public
-  // pages are unaffected either way — they read content/ from the filesystem
-  // at build time.
+  // Cloud mode: the admin UI authenticates through Keystatic Cloud, which
+  // holds the GitHub connection, and commits to the repo on the editor's
+  // behalf. Public pages are unaffected by the mode — they read content/
+  // from the filesystem at build time.
   //
   // branchPrefix limits the branches editors see and can create to cms/*.
   // Keystatic has no setting that forces saves through a PR — the enforcement
   // is branch protection on master (require PR + 1 approval), which makes
   // direct saves to master fail and pushes editors to a cms/* branch, from
   // which the admin UI offers "Create pull request".
-  storage: process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG
-    ? {
-        kind: "github",
-        repo: "Slqmerr/InsuranceBrokerPloumakis",
-        branchPrefix: "cms/",
-      }
+  storage: CLOUD_PROJECT
+    ? { kind: "cloud", branchPrefix: "cms/" }
     : { kind: "local" },
+  cloud: CLOUD_PROJECT ? { project: CLOUD_PROJECT } : undefined,
   ui: {
     brand: { name: "Ploumakis Insurance" },
   },
