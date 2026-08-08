@@ -4,10 +4,10 @@ import { ChevronRight, Home } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import QuoteForm from "../../components/QuoteForm";
-import { IDIWTES_PRODUCTS, EXTRA_IDIWTES_PAGES, EPIXEIRISI_PRODUCTS } from "../../components/products";
+import { IDIWTES_PRODUCTS, EXTRA_IDIWTES_PAGES, EPIXEIRISI_PRODUCTS, EXTRA_EPIXEIRISI_PAGES } from "../../components/products";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
-const ALL = [...IDIWTES_PRODUCTS, ...EXTRA_IDIWTES_PAGES, ...EPIXEIRISI_PRODUCTS];
+const ALL = [...IDIWTES_PRODUCTS, ...EXTRA_IDIWTES_PAGES, ...EPIXEIRISI_PRODUCTS, ...EXTRA_EPIXEIRISI_PAGES];
 
 export function generateStaticParams() {
   // de-duplicate slugs (astiki-efthyni & cyber appear in both categories)
