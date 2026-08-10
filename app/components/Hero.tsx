@@ -41,7 +41,7 @@ export default function Hero() {
     }}>
       {/* Background photo — full bleed */}
       <img
-        src="/634A9698.jpg"
+        src="/dimitrios.jpg"
         alt="Δημήτριος Πλουμάκης"
         style={{
           position: "absolute",
@@ -82,7 +82,7 @@ export default function Hero() {
           lineHeight: 1.15,
           margin: "0 0 20px",
         }}>
-          Προστατεύουμε ό,τι αγαπάτε περισσότερο
+          Προστατεύω ό,τι αγαπάτε περισσότερο
         </h1>
         <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "15px", fontWeight: 700, lineHeight: 1.6, marginBottom: "32px" }}>
           Εξατομικευμένες ασφαλιστικές λύσεις για εσάς, την οικογένεια και την επιχείρησή σας.

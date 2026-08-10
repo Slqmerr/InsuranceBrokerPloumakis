@@ -34,10 +34,10 @@ export default function EpikoinoniaPage() {
         </nav>
 
         <h1 className="fade-up" style={{ color: "#fff", fontFamily: UBUNTU, fontSize: "32px", fontWeight: 700, margin: "0 0 12px", lineHeight: 1.2, animationDelay: "0.08s" }}>
-          Κλείστε ραντεβού ή στείλτε μας την ερώτησή σας
+          Κλείστε ραντεβού ή στείλτε μου την ερώτησή σας
         </h1>
         <p className="fade-up" style={{ color: "rgba(255,255,255,0.85)", fontSize: "16px", lineHeight: 1.6, margin: 0, maxWidth: "560px", animationDelay: "0.16s" }}>
-          Συμπληρώστε τα στοιχεία σας και θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατό.
+          Συμπληρώστε τα στοιχεία σας και θα επικοινωνήσω μαζί σας το συντομότερο δυνατό.
         </p>
       </section>
 

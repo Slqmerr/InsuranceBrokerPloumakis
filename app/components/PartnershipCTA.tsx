@@ -65,7 +65,7 @@ export default function PartnershipCTA() {
               margin: 0,
             }}
           >
-            Χτίσε καριέρα στην ασφάλιση, δίπλα μας
+            Χτίσε καριέρα στην ασφάλιση, δίπλα μου
           </motion.h2>
 
           <motion.p

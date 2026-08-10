@@ -1,284 +1,388 @@
-# Τελικό περιεχόμενο προϊόντων — dploumakis.gr
-**Βάση:** επαληθευμένες καλύψεις από την έρευνα στις 12 εταιρίες (15/7/2026).
-**Κανόνες που εφαρμόστηκαν:** καμία αναφορά σε εταιρίες ή εμπορικά ονόματα προϊόντων · καμία τιμή/ασφάλιστρο · καμία προϋπόθεση/όρος (δουλειά του Δημήτρη) · πλήρεις λίστες καλύψεων — σβήνετε ό,τι δεν σας χρειάζεται.
-**Μορφή ανά προϊόν:** Τίτλος (hero) → Intro (μπλε πάνελ) → «Τι καλύπτει» σε σύντομες προτάσεις, όπως το υπάρχον format.
+# Task for Claude Code — Prompt 19: Keystatic CMS — Slug Warning, Free-Form Color, Icon/Color Picker Tool
+
+This prompt makes 3 changes, all on the `feature/keystatic-cms` branch. **Do the sections in
+order.**
+
+**Context — read this before touching anything.** All three of Ploum's original asks (lock the
+slug, ditch the preset color list, show icons instead of names) run into the same Keystatic
+platform limit: its field API doesn't support custom-rendered or read-only scalar fields outside
+of rich-text component-blocks. Concretely:
+
+- `fields.slug()` is always a two-input widget (title + editable slug) — there is no `readOnly`
+  option. This is a confirmed, currently-open upstream limitation:
+  [Thinkmill/keystatic#1212](https://github.com/Thinkmill/keystatic/issues/1212). Do not attempt
+  to hide/disable the slug input via CSS or DOM hacks — Keystatic's internal markup isn't a
+  stable public API and this would break on any version bump.
+- There is no `fields.color`. The only way to get a fully custom widget in Keystatic is a
+  component-block inside a `document`/`mdx` field, which would mean turning `color` into
+  rich text — out of proportion for one field.
+- `fields.select` options are plain `{label, value}` strings — no icon rendering inside the
+  dropdown itself.
+
+So this prompt does the best *real* version of each: harden the slug warning (can't lock it,
+so make it unmissable), switch color to free-form validated hex (any color, no preset list),
+and add emoji previews to the icon dropdown — then build one small new page,
+`/keystatic-tools`, that gives Dimitrios an actual native color wheel and a horizontal row of
+real rendered icons to pick from and copy from, since Keystatic's own form can't host either.
 
 ---
 
-# ΙΔΙΩΤΕΣ
+## 1. `keystatic.config.ts` — harden the slug warning
 
-## 1. ygeia — Υγεία
+Find the `title: fields.slug({...})` block inside `productSchema()` and replace it with:
 
-**Τίτλος:** Υγεία
+```tsx
+    // Paired title+slug field: the Greek title is stored in the YAML file,
+    // the slug becomes the filename (filename = slug discipline) and the
+    // last URL segment. Keystatic has no readOnly option for the slug half
+    // of this field (open upstream request, still unresolved as of writing:
+    // github.com/Thinkmill/keystatic/issues/1212), and its auto-slug button
+    // doesn't transliterate Greek into Latin characters — so this field
+    // cannot be locked or reliably auto-filled. The warning below plus PR
+    // review before merging a cms/* branch are the real protection.
+    title: fields.slug({
+      name: {
+        label: "Τίτλος",
+        validation: { isRequired: true },
+      },
+      slug: {
+        label: "Slug (URL) — μόνο developer",
+        description:
+          `ΜΗΝ αλλάζετε αυτό το πεδίο μόνοι σας. Καθορίζει τη διεύθυνση του προϊόντος ` +
+          `(/${routeBase}/<slug>) — αν αλλάξει σε υπάρχον προϊόν, ο σύνδεσμός του σταματά να ` +
+          `λειτουργεί αμέσως. Η αυτόματη συμπλήρωση από τον τίτλο ΔΕΝ μεταφράζει σωστά τα ` +
+          `ελληνικά σε λατινικά, οπότε ούτε αυτή είναι αξιόπιστη. Αν φτιάχνετε νέο προϊόν, ` +
+          `αποθηκεύστε κανονικά και επικοινωνήστε μαζί μας πριν το pull request μπει live — ` +
+          `θα ελέγξουμε/διορθώσουμε το slug τότε.`,
+        validation: {
+          length: { min: 1 },
+          pattern: {
+            regex: /^[a-z0-9-]+$/,
+            message: "Μόνο πεζά λατινικά, αριθμοί και παύλες.",
+          },
+        },
+      },
+    }),
+```
 
-**Intro:** Νοσοκομειακή και εξωνοσοκομειακή περίθαλψη, σχεδιασμένη στα μέτρα σας — εσείς επιλέγετε τις καλύψεις, εμείς βρίσκουμε το πρόγραμμα που σας ταιριάζει.
-
-**Τι καλύπτει:**
-- Έξοδα νοσηλείας από ασθένεια ή ατύχημα, σε Ελλάδα και εξωτερικό
-- Επιλογή θέσης νοσηλείας, ύψους κάλυψης και ποσού συμμετοχής, ώστε το κόστος να προσαρμόζεται στις δυνατότητές σας
-- Οικονομικότερα προγράμματα με κάλυψη νοσηλείας μόνο από ατύχημα
-- Αντιμετώπιση επειγόντων περιστατικών που δεν απαιτούν νοσηλεία
-- Ιατρικές επισκέψεις σε όλες τις ειδικότητες, διαγνωστικές εξετάσεις και προληπτικά check-up
-- Χειρουργικά επιδόματα και επιδόματα νοσηλείας
-- Εφάπαξ κεφάλαιο σε περίπτωση διάγνωσης σοβαρής ασθένειας
-- Κάλυψη της συμμετοχής σας σε συνταγογραφούμενα φάρμακα
-- Συμπληρωματική λειτουργία πάνω στο ομαδικό συμβόλαιο του εργοδότη σας, με εξασφάλιση της μελλοντικής σας ασφαλισιμότητας
-- Οικογενειακά προγράμματα και ασφάλιση παιδιών, με οικογενειακές εκπτώσεις
-- 24ωρη γραμμή υγείας και υπηρεσίες τηλεϊατρικής
-
-## 2. katoikia — Κατοικία
-
-**Τίτλος:** Κατοικία
-
-**Intro:** Προστασία για το σπίτι και το περιεχόμενό του — από τη φωτιά και τον σεισμό μέχρι τη διαρροή και την κλοπή.
-
-**Τι καλύπτει:**
-- Πυρκαγιά, κεραυνός, έκρηξη, καπνός
-- Σεισμός, καθίζηση και κατολίσθηση εδάφους
-- Καιρικά φαινόμενα: πλημμύρα, θύελλα, χαλάζι, βάρος χιονιού
-- Ζημιές από νερά λόγω θραύσης ή διαρροής σωληνώσεων
-- Κλοπή μετά από διάρρηξη και ζημιές του κτιρίου από την απόπειρά της· κακόβουλες ενέργειες και ταραχές
-- Πτώση δέντρων, στύλων ή κεραιών, πρόσκρουση οχήματος, πτώση αεροσκάφους
-- Θραύση κρυστάλλων και ζημιές από βραχυκύκλωμα
-- Αστική ευθύνη προς τρίτους, με δυνατότητα επέκτασης σε οικογενειακή αστική ευθύνη
-- Έξοδα κατεδάφισης, απομάκρυνσης συντριμμιών και αμοιβές μηχανικών
-- Κάλυψη της δόσης στεγαστικού δανείου αν η κατοικία μείνει προσωρινά μη κατοικήσιμη
-- Επείγουσα τεχνική βοήθεια στο σπίτι, 24 ώρες το 24ωρο
-- Ασφάλιση περιεχομένου και για ενοικιαστές, με αποζημίωση σε αξία καινούριου
-- Δυνατότητα κάλυψης φωτοβολταϊκής εγκατάστασης και επιλογών «κατά παντός κινδύνου»
-- Μείωση ΕΝΦΙΑ έως 20% για την ασφαλισμένη κατοικία
-
-## 3. oxima — Όχημα
-
-**Τίτλος:** Όχημα
-
-**Intro:** Από την υποχρεωτική αστική ευθύνη μέχρι την πλήρη μικτή κάλυψη — με οδική βοήθεια και φροντίδα σε κάθε διαδρομή.
-
-**Τι καλύπτει:**
-- Αστική ευθύνη προς τρίτους (υποχρεωτική): σωματικές βλάβες έως 1.300.000€ ανά θύμα και υλικές ζημιές έως 1.300.000€ ανά ατύχημα
-- Υλικές ζημιές από ανασφάλιστο όχημα
-- Προσωπικό ατύχημα οδηγού
-- Φυσικές καταστροφές: πλημμύρα, σεισμός, πυρκαγιά από δάσος, χαλάζι, θύελλα
-- Πυρκαγιά, κεραυνός, έκρηξη
-- Ολική και μερική κλοπή
-- Τρομοκρατικές ενέργειες, στάσεις και αναταραχές
-- Ίδιες ζημιές (μικτή ασφάλιση) και κακόβουλες ενέργειες
-- Θραύση κρυστάλλων μέσω δικτύου συνεργαζόμενων συνεργείων
-- Οδική βοήθεια και φροντίδα ατυχήματος σε Ελλάδα και Ευρώπη, με όχημα αντικατάστασης
-- Νομική προστασία οχήματος και οδηγού
-- Αποζημίωση και όταν το άλλο όχημα είναι εκτός Φιλικού Διακανονισμού
-- Ειδικές καλύψεις για ηλεκτρικά και plug-in υβριδικά: κλοπή καλωδίου, ζημιές και ατύχημα κατά τη φόρτιση
-- Λύσεις και για μοτοσυκλέτες και αγροτικά οχήματα
-
-## 4. cyber — Ασφάλιση Cyber ⚠️ νέος τίτλος (πρώην «Cyber Edge»)
-
-**Τίτλος:** Ασφάλιση Cyber
-
-**Intro:** Προστασία για εσάς και την οικογένειά σας από τις οικονομικές και ψηφιακές συνέπειες της ζωής στο διαδίκτυο.
-
-**Τι καλύπτει:**
-- Κλοπή ψηφιακής ταυτότητας
-- Ηλεκτρονική απάτη και οικονομικές απώλειες από online συναλλαγές
-- Προστασία διαδικτυακών αγορών
-- Έξοδα αποκατάστασης συστημάτων και ανάκτησης δεδομένων μετά από επίθεση
-- Εκβιασμός μέσω διαδικτύου (cyber extortion)
-- Απώλεια εισοδήματος εξαιτίας ηλεκτρονικού συμβάντος
-- Περιστατικά διαδικτυακού εκφοβισμού (cyberbullying), με κάλυψη για όλη την οικογένεια
-- 24ωρη τεχνική υποστήριξη και καθοδήγηση από εξειδικευμένους συνεργάτες
-
-## 5. katoikidio — Κατοικίδια
-
-**Τίτλος:** Κατοικίδια
-
-**Intro:** Κτηνιατρική φροντίδα για τον σκύλο ή τη γάτα σας, από το τσεκάπ μέχρι το χειρουργείο.
-
-**Τι καλύπτει:**
-- Κτηνιατρικές επισκέψεις από ατύχημα ή ασθένεια
-- Διαγνωστικές εξετάσεις και θεραπείες
-- Νοσηλεία και χειρουργικές επεμβάσεις
-- Επείγοντα περιστατικά, με 24ωρο συντονιστικό κέντρο
-- Άμεση εξυπηρέτηση σε συμβεβλημένο δίκτυο κτηνιάτρων και κλινικών
-- Εκπτώσεις και παροχές σε υπηρεσίες φροντίδας, καλλωπισμού και διατροφής
-- Προγράμματα για σκύλους και γάτες κάθε ηλικίας και φυλής
-
-## 6. skafi — Σκάφη
-
-**Τίτλος:** Σκάφη
-
-**Intro:** Η υποχρεωτική αστική ευθύνη του σκάφους σας — και κάθε επιπλέον κάλυψη για να απολαμβάνετε τη θάλασσα με ασφάλεια.
-
-**Τι καλύπτει:**
-- Αστική ευθύνη προς τρίτους (υποχρεωτική βάσει Ν.4926/2022): σωματικές βλάβες, υλικές ζημιές σε σκάφη και λιμενικές εγκαταστάσεις, θαλάσσια ρύπανση
-- Απαραίτητη κάλυψη και για ελλιμενισμό ή πρόσβαση σε μαρίνες
-- Ίδιες ζημιές: καιρικά φαινόμενα, πυρκαγιά, κλοπή, σύγκρουση ή πρόσκρουση, κίνδυνοι της θάλασσας — έως και ολική απώλεια
-- Ζημιές κατά την οδική μεταφορά του σκάφους με τρέιλερ
-- Αστική ευθύνη από και προς θαλάσσιο σκιέρ
-- Πανιά και κατάρτια κατά τη διάρκεια ιστιοπλοϊκών αγώνων
-- Μηχανικές βλάβες μηχανών και πτώση εξωλέμβιας μηχανής στη θάλασσα
-- Προσωπικά αντικείμενα κατά την παραμονή στο σκάφος
-- Νομική προστασία για υποθέσεις σχετικές με το σκάφος
-- Για κάθε τύπο σκάφους αναψυχής — ιδιωτική ή επαγγελματική χρήση
-
-## 7. taxidi — Ταξιδιωτικές Ασφαλίσεις
-
-**Τίτλος:** Ταξιδιωτικές Ασφαλίσεις
-
-**Intro:** Ηρεμία σε κάθε ταξίδι — από ένα ιατρικό απρόοπτο στο εξωτερικό μέχρι μια χαμένη βαλίτσα.
-
-**Τι καλύπτει:**
-- Επείγοντα ιατρικά έξοδα στο εξωτερικό, με 24ωρη τηλεφωνική υποστήριξη
-- Πλήρη διαχείριση και μεταφορά σε έκτακτο ιατρικό περιστατικό
-- Ακύρωση ή διακοπή ταξιδιού
-- Απώλεια ή καθυστέρηση αποσκευών
-- Κάλυψη που πληροί τις προϋποθέσεις για θεώρηση Schengen
-- Ασφάλιση ανά ταξίδι ή ετήσια πολυταξιδιωτικά προγράμματα
-- Ατομικά, οικογενειακά και επαγγελματικά ταξίδια
-- Ειδικά προγράμματα για φοιτητές εξωτερικού (π.χ. Erasmus)
-
-## 8. oikogeneia — Οικογένεια
-
-**Τίτλος:** Οικογένεια
-
-**Intro:** Ένα πλέγμα προστασίας ζωής, εισοδήματος και υγείας, υπολογισμένο στις πραγματικές ανάγκες της δικής σας οικογένειας.
-
-**Τι καλύπτει:**
-- Ασφάλεια ζωής: εφάπαξ κεφάλαιο στους δικαιούχους σε περίπτωση απώλειας ζωής
-- Προστασία εισοδήματος: αναπλήρωση εισοδήματος σε μόνιμη ή πρόσκαιρη ανικανότητα για εργασία, από ασθένεια ή ατύχημα
-- Κάλυψη δανειακών υποχρεώσεων (π.χ. στεγαστικό), ώστε να μην μεταφέρονται στους δικούς σας
-- Προαιρετικές καλύψεις υγείας και προσωπικού ατυχήματος για κάθε μέλος
-- Προγράμματα προστασίας παιδιού και εξασφάλισης σπουδών
-- Δυνατότητα αποταμιευτικού σκέλους για το μέλλον των παιδιών — χωρίς εγγυημένη απόδοση, ο επενδυτικός κίνδυνος βαρύνει τον ασφαλισμένο
-- Ευελιξία στο ύψος του κεφαλαίου και στη διάρκεια, με επανεξέταση όσο αλλάζουν οι ανάγκες
-
-## 9. apotamieusi — Αποταμίευση
-
-**Τίτλος:** Αποταμίευση
-
-**Intro:** Χτίστε βήμα-βήμα ένα κεφάλαιο για τη σύνταξη, τις σπουδές των παιδιών ή τους δικούς σας στόχους.
-
-**Τι καλύπτει / Τι προσφέρει:**
-- Συστηματική μηνιαία ή ετήσια αποταμίευση, ή εφάπαξ καταβολή
-- Δημιουργία κεφαλαίου για σύνταξη, σπουδές ή μακροπρόθεσμους στόχους
-- Σύνδεση με επενδυτικά κεφάλαια που διαχειρίζονται επαγγελματίες διαχειριστές
-- Επιλογή επενδυτικού προφίλ ανάλογα με το ρίσκο που σας ταιριάζει
-- Ευελιξία στις καταβολές και δυνατότητα έκτακτων καταβολών
-- Συνδυασμός με καλύψεις ζωής και προστασίας
-- Συνταξιοδοτικά προγράμματα για ενίσχυση της μελλοντικής σύνταξης
-- Διαφάνεια: τα προγράμματα επενδυτικού τύπου δεν έχουν εγγυημένη απόδοση — ο επενδυτικός κίνδυνος βαρύνει τον ασφαλισμένο
+This is a copy/label change only — behavior is unchanged, and nothing downstream
+(`cmsProducts.ts`, the routes) reads the slug's label or description, so there's nothing else
+to touch here.
 
 ---
 
-# ΕΠΙΧΕΙΡΗΣΕΙΣ
+## 2. `keystatic.config.ts` — replace the preset color dropdown with free-form hex
 
-## 10. omadiki-asfalisi — Ομαδική Ασφάλιση
+**Delete** the entire `COLOR_OPTIONS` array (and its leading comment) near the top of the file:
 
-**Τίτλος:** Ομαδική Ασφάλιση
+```tsx
+// The distinct accent colors already in use across product cards, each with
+// a short Greek label so the dropdown reads better than raw hex codes.
+const COLOR_OPTIONS = [
+  { value: "#e0245e", label: "Έντονο ροζ (#e0245e)" },
+  ...
+] as const;
+```
 
-**Intro:** Παροχές υγείας, ζωής και σύνταξης για τους ανθρώπους της επιχείρησής σας — το πιο ουσιαστικό κίνητρο παραμονής.
+**Find** the `color` field inside `productSchema()`:
 
-**Τι καλύπτει:**
-- Ασφάλιση ζωής και μόνιμης ή πρόσκαιρης ανικανότητας
-- Νοσοκομειακή και εξωνοσοκομειακή περίθαλψη εργαζομένων
-- Προστασία εισοδήματος σε ανικανότητα για εργασία
-- Ομαδικά συνταξιοδοτικά και αποταμιευτικά προγράμματα
-- Ομαδική ασφάλιση προσωπικού ατυχήματος
-- Κάλυψη επαγγελματικών ταξιδιών των στελεχών
-- Δυνατότητα ένταξης εξαρτώμενων μελών
-- Λύσεις και για μικρές ομάδες προσωπικού
-- Ειδικά προγράμματα για συλλόγους, ακαδημίες και σχολεία
+```tsx
+    color: fields.select({
+      label: "Χρώμα",
+      options: COLOR_OPTIONS.map(({ label, value }) => ({ label, value })),
+      defaultValue: COLOR_OPTIONS[0].value,
+    }),
+```
 
-## 11. epaggelmatikos-xoros — Ασφάλιση Επιχείρησης ⚠️ προτεινόμενος νέος τίτλος (πρώην «Ασφαλιστήρια πυρός επιχειρήσεων»)
+**Replace** it with:
 
-**Τίτλος:** Ασφάλιση Επιχείρησης *(εναλλακτικά κρατήστε τον παλιό — αλλάζει και το navbar)*
+```tsx
+    color: fields.text({
+      label: "Χρώμα (κωδικός hex)",
+      description:
+        "Οποιοδήποτε χρώμα θέλετε — δεν περιορίζεστε σε έτοιμη λίστα. Χρειάζεται κωδικός hex " +
+        "(π.χ. #1E439A). Αν δεν ξέρετε τον κωδικό, ανοίξτε σε νέα καρτέλα τη διεύθυνση " +
+        "του site σας ακολουθούμενη από /keystatic-tools — εκεί υπάρχει επιλογέας χρωμάτων " +
+        "που σας δίνει τον κωδικό έτοιμο για αντιγραφή.",
+      validation: {
+        isRequired: true,
+        pattern: {
+          regex: /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/,
+          message: "Πρέπει να είναι κωδικός χρώματος hex, π.χ. #1E439A ή #f59e0b.",
+        },
+      },
+      defaultValue: "#1E439A",
+    }),
+```
 
-**Intro:** Προστασία για το κτίριο, τον εξοπλισμό και τα εμπορεύματά σας — και συμμόρφωση με την υποχρεωτική ασφάλιση φυσικών καταστροφών.
-
-**Τι καλύπτει:**
-- Κτίριο, εξοπλισμός και εμπορεύματα, για ιδιοκτήτες και ενοικιαστές
-- Πυρκαγιά, κεραυνός, έκρηξη, καπνός — και μετάδοση πυρκαγιάς από δάσος· έξοδα πυρόσβεσης
-- Σεισμός, καθίζηση και κατολίσθηση
-- Καιρικά φαινόμενα και πλημμύρα
-- Κλοπή με διάρρηξη ή ληστεία, ζημιές του κτιρίου από την κλοπή, ληστεία ταμείου
-- Βραχυκύκλωμα, θραύση κρυστάλλων, φωτεινές επιγραφές
-- Αστική ευθύνη από μετάδοση πυρκαγιάς προς τρίτους και προς τον ιδιοκτήτη του ακινήτου
-- Έξοδα κατεδάφισης και απομάκρυνσης ερειπίων, φύλαξης και προσωρινής μεταστέγασης
-- Διακοπή εργασιών: ημερήσιο επίδομα ή κάλυψη απώλειας κερδών μετά από ζημιά
-- Επείγουσα τεχνική βοήθεια 24 ώρες το 24ωρο
-- Κάλυψη της υποχρεωτικής ασφάλισης φυσικών καταστροφών: από 1/6/2025, επιχειρήσεις με ετήσιο τζίρο άνω των 500.000€ υποχρεούνται να ασφαλίζονται για δασική πυρκαγιά, πλημμύρα και σεισμό, τουλάχιστον στο 70% της αξίας των περιουσιακών τους στοιχείων
-
-## 12. astiki-efthyni — Αστική Ευθύνη
-
-**Τίτλος:** Αστική Ευθύνη
-
-**Intro:** Κάλυψη για ζημιές προς τρίτους από τη λειτουργία της επιχείρησης — γενική, εργοδοτική και επαγγελματική ευθύνη.
-
-**Τι καλύπτει:**
-- Σωματικές βλάβες ή υλικές ζημιές τρίτων από τη λειτουργία της επιχείρησης και τη χρήση των εγκαταστάσεών της
-- Εργοδοτική ευθύνη για εργατικά ατυχήματα
-- Αστική ευθύνη προϊόντος
-- Ευθύνη από πυρκαγιά, έκρηξη ή διαρροή
-- Επαγγελματική αστική ευθύνη ανά κλάδο: ιατροί, φαρμακοποιοί, τεχνικά επαγγέλματα, τουριστικά γραφεία κ.ά.
-- Αστική ευθύνη οικοδεσπότη βραχυχρόνιας μίσθωσης (υποχρεωτική από 1/10/2025)
-- Αστική ευθύνη από τη λειτουργία και χρήση drone
-- Όρια κάλυψης που προσαρμόζονται στη δραστηριότητα και το μέγεθος της επιχείρησης
-- Δυνατότητα συνδυασμού με την ασφάλιση περιουσίας της επιχείρησης
-
-## 13. etairika-oximata — Εταιρικά Οχήματα
-
-**Τίτλος:** Εταιρικά Οχήματα
-
-**Intro:** Ενιαία διαχείριση και πλήρης κάλυψη για τον στόλο της επιχείρησής σας — από το επαγγελματικό ΙΧ μέχρι το φορτηγό.
-
-**Τι καλύπτει:**
-- Αστική ευθύνη επαγγελματικών οχημάτων (υποχρεωτική)
-- Ίδιες ζημιές, ολική και μερική κλοπή
-- Πυρκαγιά και φυσικά φαινόμενα
-- Φορτηγά, τουριστικά και υπεραστικά λεωφορεία, ενοικιαζόμενα και αγροτικά οχήματα
-- Ηλεκτρικά εταιρικά οχήματα, με ειδικές καλύψεις φόρτισης
-- Κάλυψη στόλου με ενιαία διαχείριση συμβολαίων και ανανεώσεων
-- Οδική βοήθεια και φροντίδα ατυχήματος
-- Προσωπικό ατύχημα οδηγού
-- Νομική προστασία οχημάτων και οδηγών
-
-## 14. cyber (επιχειρήσεις) — Ασφάλιση Cyber ⚠️ νέος τίτλος (πρώην «Cyber Edge»)
-
-**Τίτλος:** Ασφάλιση Cyber
-
-**Intro:** Θωράκιση της επιχείρησης απέναντι σε κυβερνοεπιθέσεις, διαρροές δεδομένων και ηλεκτρονική απάτη.
-
-**Τι καλύπτει:**
-- Παραβίαση δεδομένων και επιθέσεις ransomware
-- Ομάδα άμεσης αντίδρασης, διαθέσιμη 24/7
-- Έξοδα αποκατάστασης συστημάτων και ανάκτησης δεδομένων
-- Διακοπή εργασιών εξαιτίας κυβερνοσυμβάντος
-- Ευθύνη έναντι τρίτων για διαρροή προσωπικών δεδομένων (GDPR)
-- Ηλεκτρονικό έγκλημα και ηλεκτρονική απάτη
-- Διαχείριση φήμης και επικοινωνίας κρίσης
-- Νομική υποστήριξη σε όλη τη διαχείριση του περιστατικού
-- Υπηρεσίες πρόληψης και αξιολόγησης της ψηφιακής ανθεκτικότητας
-- Λύσεις για επιχειρήσεις κάθε μεγέθους
-
-## 15. metafora-emporeumaton — Μεταφορά Εμπορευμάτων
-
-**Τίτλος:** Μεταφορά Εμπορευμάτων
-
-**Intro:** Προστασία των εμπορευμάτων σας σε κάθε στάδιο της μεταφοράς — στην Ελλάδα και διεθνώς.
-
-**Τι καλύπτει:**
-- Κάλυψη κατά παντός κινδύνου (ρήτρα Α) ή στοχευμένες καλύψεις (ρήτρες Β και C) κατά τα Institute Cargo Clauses
-- Χερσαία, θαλάσσια και αεροπορική μεταφορά, εντός και εκτός συνόρων
-- Πρώτες ύλες και έτοιμα εμπορεύματα
-- Ζημιές ή απώλειες από ατύχημα του μεταφορικού μέσου, κλοπή, πυρκαγιά και φυσικούς κινδύνους
-- Αστική ευθύνη μεταφορέα και διαμεταφορέα, εσωτερικού και διεθνών μεταφορών (CMR)
-- Λύσεις για εμπορικές επιχειρήσεις, μεταφορείς, εισαγωγείς και εξαγωγείς
-- Μεμονωμένα συμβόλαια ανά φόρτωση ή ετήσια συμβόλαια
+No data migration needed — the 17 existing YAML files already store `color` as a plain hex
+string (e.g. `"#e0245e"`), which is valid under the new field too. `cmsProducts.ts` reads
+`color: entry.color` as a passthrough string either way — leave it untouched.
 
 ---
 
-## Σημειώσεις για την υλοποίηση (όχι για το site)
+## 3. `keystatic.config.ts` — emoji previews on the icon dropdown
 
-1. Τα δύο «Cyber Edge» μετονομάστηκαν σε «Ασφάλιση Cyber» — τα slugs (`cyber`) δεν αλλάζουν.
-2. Στο 11 προτείνω «Ασφάλιση Επιχείρησης» αντί «Ασφαλιστήρια πυρός επιχειρήσεων» γιατί οι λίστες καλύψεων πλέον ξεπερνούν το «πυρός» — αν αλλάξει, αλλάζει και η ετικέτα στο navbar dropdown. Δική σας απόφαση.
-3. Αφαιρέθηκαν ως ανεπιβεβαίωτα ή εκτός κανόνων: «εγγυημένη ελάχιστη απόδοση» (αποταμίευση), «ετήσιος εμβολιασμός» και «αστική ευθύνη ιδιοκτήτη» (κατοικίδια), «άμεση ιατρική βοήθεια 24/7 επιβαινόντων» (σκάφη), «100.000–1.000.000€» (αστική ευθύνη), «φορολογικές ελαφρύνσεις» (ομαδική), όλα τα ονόματα εταιριών και προϊόντων, τιμές και προϋποθέσεις.
-4. Οι δύο νομικές αναφορές που έμειναν (υποχρεωτική ασφάλιση φυσικών καταστροφών επιχειρήσεων 1/6/2025 · υποχρεωτική ΑΕ βραχυχρόνιας μίσθωσης 1/10/2025 · Ν.4926/2022 σκάφη) είναι θεσμικά γεγονότα, όχι όροι προϊόντων — τα κράτησα γιατί είναι οι λόγοι που ο πελάτης θα σας αναζητήσει. Αν τα θεωρείτε «conditions», σβήστε τα.
-5. Τα intro κείμενα είναι μία πρόταση το καθένα, στο υπάρχον ύφος του site. Τα descriptions (η παράγραφος κάτω από το intro) δεν συμπεριλήφθηκαν εδώ — θα γραφτούν στο Fable prompt με βάση τις τελικές λίστες που θα εγκρίνετε.
+**Find** the `iconName` field:
+
+```tsx
+    iconName: fields.select({
+      label: "Εικονίδιο",
+      options: ICON_NAMES.map((name) => ({ label: name, value: name })),
+      defaultValue: "ShieldCheck",
+    }),
+```
+
+**Add** this lookup table near the `ICON_NAMES` array at the top of the file:
+
+```tsx
+// A rough visual proxy for each icon, since Keystatic's select can't render
+// the actual lucide-react component inside the dropdown. The real horizontal
+// icon picker lives at /keystatic-tools — this is just a quick in-dropdown cue.
+const ICON_EMOJI: Record<(typeof ICON_NAMES)[number], string> = {
+  Users: "👨‍👩‍👧", Home: "🏠", Car: "🚗", Heart: "❤️", Briefcase: "💼",
+  PiggyBank: "🐷", Leaf: "🍃", Scale: "⚖️", TrendingUp: "📈", ShieldCheck: "🛡️",
+  PawPrint: "🐾", Building2: "🏢", Truck: "🚚", ShieldAlert: "🚨", Package: "📦",
+  Sailboat: "⛵", Plane: "✈️", Palette: "🎨", Gavel: "🔨", Umbrella: "☂️",
+};
+```
+
+**Replace** the `iconName` field with:
+
+```tsx
+    iconName: fields.select({
+      label: "Εικονίδιο",
+      description:
+        "Δείτε όλα τα εικονίδια σε πραγματικό μέγεθος στη σελίδα /keystatic-tools (ανοίξτε σε " +
+        "νέα καρτέλα) — πατήστε πάνω σε ένα για να αντιγραφεί το όνομά του, μετά διαλέξτε το " +
+        "ίδιο όνομα εδώ.",
+      options: ICON_NAMES.map((name) => ({
+        label: `${ICON_EMOJI[name]} ${name}`,
+        value: name,
+      })),
+      defaultValue: "ShieldCheck",
+    }),
+```
+
+`ICON_NAMES` itself, `iconMap.ts`, and `ICON_MAP` stay exactly as they are — this only changes
+the dropdown's display labels, not the stored values.
+
+---
+
+## 4. New file: `app/keystatic-tools/page.tsx`
+
+A standalone helper page (`/keystatic-tools`) with a real color wheel and a horizontal row of
+the actual 20 icons, matching `iconMap.ts` exactly. No layout wrapper needed — follow the same
+minimal pattern as `app/keystatic/layout.tsx` (no Navbar/Footer; this is a utility page, not a
+marketing page). Client component (uses `useState` and the clipboard API).
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import {
+  Users, Home, Car, Heart, Briefcase, PiggyBank,
+  Leaf, Scale, TrendingUp, ShieldCheck, PawPrint,
+  Building2, Truck, ShieldAlert, Package,
+  Sailboat, Plane, Palette, Gavel, Umbrella,
+  Check, Copy, type LucideIcon,
+} from "lucide-react";
+
+// Must stay in sync with ICON_MAP in app/components/iconMap.ts.
+const ICONS: { name: string; Icon: LucideIcon }[] = [
+  { name: "Users", Icon: Users },
+  { name: "Home", Icon: Home },
+  { name: "Car", Icon: Car },
+  { name: "Heart", Icon: Heart },
+  { name: "Briefcase", Icon: Briefcase },
+  { name: "PiggyBank", Icon: PiggyBank },
+  { name: "Leaf", Icon: Leaf },
+  { name: "Scale", Icon: Scale },
+  { name: "TrendingUp", Icon: TrendingUp },
+  { name: "ShieldCheck", Icon: ShieldCheck },
+  { name: "PawPrint", Icon: PawPrint },
+  { name: "Building2", Icon: Building2 },
+  { name: "Truck", Icon: Truck },
+  { name: "ShieldAlert", Icon: ShieldAlert },
+  { name: "Package", Icon: Package },
+  { name: "Sailboat", Icon: Sailboat },
+  { name: "Plane", Icon: Plane },
+  { name: "Palette", Icon: Palette },
+  { name: "Gavel", Icon: Gavel },
+  { name: "Umbrella", Icon: Umbrella },
+];
+
+export default function KeystaticToolsPage() {
+  const [color, setColor] = useState("#1E439A");
+  const [colorCopied, setColorCopied] = useState(false);
+  const [copiedIcon, setCopiedIcon] = useState<string | null>(null);
+
+  function copyColor() {
+    navigator.clipboard.writeText(color);
+    setColorCopied(true);
+    setTimeout(() => setColorCopied(false), 1500);
+  }
+
+  function copyIcon(name: string) {
+    navigator.clipboard.writeText(name);
+    setCopiedIcon(name);
+    setTimeout(() => setCopiedIcon(null), 1500);
+  }
+
+  return (
+    <main
+      style={{
+        fontFamily: "var(--font-ubuntu-sans), sans-serif",
+        maxWidth: "900px",
+        margin: "0 auto",
+        padding: "48px 24px 96px",
+        color: "#1a1a1a",
+      }}
+    >
+      <h1 style={{ color: "#1E439A", fontSize: "28px", fontWeight: 700, marginBottom: "8px" }}>
+        Εργαλεία CMS
+      </h1>
+      <p style={{ color: "#555", fontSize: "15px", marginBottom: "40px", lineHeight: 1.6 }}>
+        Βοηθητικά εργαλεία για τη φόρμα προϊόντων στο Keystatic. Διαλέξτε εδώ, πατήστε
+        «Αντιγραφή», και επιστρέψτε στην άλλη καρτέλα για να το επικολλήσετε στο σωστό πεδίο.
+      </p>
+
+      {/* ===== COLOR PICKER ===== */}
+      <section
+        style={{
+          marginBottom: "40px",
+          padding: "24px",
+          border: "1px solid #e8eaef",
+          borderRadius: "12px",
+        }}
+      >
+        <h2 style={{ fontSize: "18px", fontWeight: 700, marginBottom: "8px" }}>🎨 Χρώμα</h2>
+        <p style={{ color: "#555", fontSize: "14px", marginBottom: "20px" }}>
+          Πατήστε στο τετράγωνο για να ανοίξει ο επιλογέας χρωμάτων. Διαλέξτε όποιο χρώμα
+          θέλετε — δεν υπάρχει έτοιμη λίστα, το χρώμα είναι δικό σας.
+        </p>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+          <input
+            type="color"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            style={{
+              width: "64px",
+              height: "64px",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          />
+          <div
+            style={{
+              fontFamily: "monospace",
+              fontSize: "18px",
+              fontWeight: 600,
+              background: "#f4f5f8",
+              padding: "10px 16px",
+              borderRadius: "8px",
+              minWidth: "110px",
+            }}
+          >
+            {color.toUpperCase()}
+          </div>
+          <button
+            onClick={copyColor}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              background: colorCopied ? "#2e9e5b" : "#1E439A",
+              color: "#fff",
+              fontWeight: 600,
+              border: "none",
+              borderRadius: "999px",
+              padding: "10px 20px",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            {colorCopied ? <Check size={16} /> : <Copy size={16} />}
+            {colorCopied ? "Αντιγράφηκε" : "Αντιγραφή κωδικού"}
+          </button>
+        </div>
+      </section>
+
+      {/* ===== ICON PICKER — horizontal, wraps on small screens ===== */}
+      <section
+        style={{ padding: "24px", border: "1px solid #e8eaef", borderRadius: "12px" }}
+      >
+        <h2 style={{ fontSize: "18px", fontWeight: 700, marginBottom: "8px" }}>🧩 Εικονίδιο</h2>
+        <p style={{ color: "#555", fontSize: "14px", marginBottom: "20px" }}>
+          Πατήστε πάνω σε ένα εικονίδιο για να αντιγραφεί το όνομά του, μετά επικολλήστε το
+          στο πεδίο «Εικονίδιο» στο Keystatic.
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+          {ICONS.map(({ name, Icon }) => {
+            const isCopied = copiedIcon === name;
+            return (
+              <button
+                key={name}
+                onClick={() => copyIcon(name)}
+                title={name}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "6px",
+                  width: "84px",
+                  height: "84px",
+                  border: isCopied ? "2px solid #2e9e5b" : "1px solid #e8eaef",
+                  borderRadius: "10px",
+                  background: isCopied ? "#eafaf1" : "#fff",
+                  cursor: "pointer",
+                  transition: "border-color 0.15s, background 0.15s",
+                }}
+              >
+                <Icon size={26} color="#1E439A" strokeWidth={1.75} />
+                <span style={{ fontSize: "10px", color: "#555", textAlign: "center" }}>
+                  {isCopied ? "✓ OK" : name}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+    </main>
+  );
+}
+```
+
+The icon row uses `flex-wrap`, not a single non-wrapping scroll strip — on narrow screens it
+wraps into multiple rows rather than requiring horizontal scrolling, since the project is
+mobile-first.
+
+---
+
+## Constraints
+
+- Keep inline styles throughout — no Tailwind, no CSS modules
+- Preserve all existing Greek copy elsewhere exactly
+- Do not touch `cmsProducts.ts`, `iconMap.ts`, or any of the 17 existing product YAML files —
+  none of them need to change for this
+- Do not attempt to hide or disable the slug input via CSS/DOM targeting — see the Context note
+  at the top
+- `app/keystatic-tools/page.tsx` is new; nothing links to it automatically — that's expected,
+  it's reached by typing the URL, as described in the field descriptions
+
+## QA checklist
+
+- `npm run dev`, open `/keystatic`, confirm both collections (`idiotes`, `epixeirisi`) still
+  load and existing entries still show their correct title/slug/color/icon on open
+- Confirm the slug field shows the new warning label and description
+- Confirm the color field is now a plain text box; typing an invalid value (e.g. `blue`) shows
+  the validation error; typing `#1E439A` saves fine
+- Confirm the icon dropdown options now show an emoji + name (e.g. "🏠 Home")
+- Open `/keystatic-tools`, confirm the color wheel opens and the hex code updates live, confirm
+  "Αντιγραφή κωδικού" copies to clipboard, confirm clicking any icon copies its name and shows
+  the green "✓ OK" state briefly
+- Confirm the homepage, product cards, and product detail pages still render unchanged (this
+  prompt doesn't touch any frontend-facing component)
