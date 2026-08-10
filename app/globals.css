@@ -144,6 +144,62 @@ input:focus-visible + .consent-box {
   }
 }
 
+/* ── Product page: sub-cover tiles and cross-links ──
+   ProductPageContent is a server component, so these carry their own
+   base styles and hover here instead of inline handlers. */
+
+.pp-variants {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.pp-variant {
+  display: block;
+  background: #fff;
+  border: 1px solid #e8eaef;
+  border-radius: 14px;
+  padding: 16px 18px;
+  text-decoration: none;
+}
+
+.pp-variant-link {
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.pp-variant-link:hover {
+  border-color: #a30000;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(163, 0, 0, 0.1);
+}
+
+.pp-related {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #f7f9fc;
+  border: 1px solid #e8eaef;
+  border-radius: 14px;
+  padding: 16px 18px;
+  text-decoration: none;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.pp-related:hover {
+  border-color: #a30000;
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pp-variant-link,
+  .pp-related {
+    transition: none;
+  }
+  .pp-variant-link:hover {
+    transform: none;
+  }
+}
+
 /* ════════════════════════════════════════════════════════════════
    Mobile / responsive layer
    Components carry their desktop look as inline styles, so every

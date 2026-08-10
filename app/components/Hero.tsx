@@ -41,7 +41,7 @@ export default function Hero() {
     }}>
       {/* Background photo — full bleed */}
       <img
-        src="/dimitrios.jpg"
+        src="/634A9698.jpg"
         alt="Δημήτριος Πλουμάκης"
         style={{
           position: "absolute",

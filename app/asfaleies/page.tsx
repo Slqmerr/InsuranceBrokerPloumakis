@@ -5,11 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, Plus, Minus } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS, EXTRA_IDIWTES_PAGES, type Product } from "../components/products";
+import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS, EXTRA_IDIWTES_PAGES, EXTRA_EPIXEIRISI_PAGES, type Product } from "../components/products";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
 const ALL_IDIWTES = [...IDIWTES_PRODUCTS, ...EXTRA_IDIWTES_PAGES];
+const ALL_EPIXEIRISI = [...EPIXEIRISI_PRODUCTS, ...EXTRA_EPIXEIRISI_PAGES];
 
 // How many cards each category shows before the «Δείτε περισσότερα» tile
 const INITIAL_VISIBLE = 5;
@@ -320,7 +321,7 @@ export default function AsfaleiesPage() {
           </motion.div>
 
           <CategorySection label="Ιδιώτες" products={ALL_IDIWTES} basePath="/idiotes" />
-          <CategorySection label="Επιχειρήσεις" products={EPIXEIRISI_PRODUCTS} basePath="/epixeirisi" />
+          <CategorySection label="Επιχειρήσεις" products={ALL_EPIXEIRISI} basePath="/epixeirisi" />
         </div>
       </main>
       <Footer />
