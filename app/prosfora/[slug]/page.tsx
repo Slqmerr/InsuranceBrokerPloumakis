@@ -59,7 +59,7 @@ export default async function ProsforaPage({
           Ζητήστε προσφορά για {product.title}
         </h1>
         <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "16px", lineHeight: 1.6, margin: 0, maxWidth: "560px" }}>
-          Συμπληρώστε τα στοιχεία σας και θα επικοινωνήσουμε μαζί σας με μια εξατομικευμένη προσφορά.
+          Συμπληρώστε τα στοιχεία σας και θα επικοινωνήσω μαζί σας με μια εξατομικευμένη προσφορά.
         </p>
       </section>
 

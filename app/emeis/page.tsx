@@ -279,7 +279,7 @@ export default function EmeisPage() {
           position: "relative",
         }}>
           <motion.img
-            src="/dimitrios.jpg"
+            src="/634A9698.jpg"
             alt="Δημήτριος Πλουμάκης"
             initial={{ opacity: 0, scale: 1.12, x: 48 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}

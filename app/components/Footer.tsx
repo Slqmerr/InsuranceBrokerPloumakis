@@ -174,7 +174,7 @@ export default function Footer() {
             textTransform: "uppercase",
             margin: "0 0 20px",
           }}>
-            Πού θα μας βρείτε
+            Πού θα με βρείτε
           </h4>
           <iframe
             src={MAP_EMBED_SRC}
