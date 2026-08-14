@@ -1,6 +1,5 @@
 "use client";
 
-import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import ProductCardStrip from "./components/ProductCardStrip";
 import PartnersMarquee from "./components/PartnersMarquee";
@@ -16,7 +15,6 @@ export default function Home() {
     <main style={{ fontFamily: "var(--font-ubuntu-sans), sans-serif", background: "#fff", color: "#1a1a1a", width: "100%" }}>
 
       {/* == NAVBAR + MEGA DROPDOWN == */}
-      <Navbar/>
 
       {/* === HERO ===*/}
       <Hero/>

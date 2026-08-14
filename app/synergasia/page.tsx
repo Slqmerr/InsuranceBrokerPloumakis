@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import { motion, animate, useInView, AnimatePresence, type Variants } from "framer-motion";
 import { GraduationCap, Building2, LifeBuoy, TrendingUp, ChevronDown, UserPlus, Rocket, Target, ArrowRight } from "lucide-react";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PartnersMarquee from "../components/PartnersMarquee";
 import QuoteForm from "../components/QuoteForm";
@@ -204,7 +203,6 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export default function SynergasiaPage() {
   return (
     <main style={{ fontFamily: UBUNTU, background: "#fff", color: "#1a1a1a", width: "100%" }}>
-      <Navbar />
 
       {/* === HERO: split layout, mirrors /emeis === */}
       <section className="emeis-hero" style={{ display: "flex", flexDirection: "row", minHeight: "460px", background: "#a30000", overflow: "hidden" }}>

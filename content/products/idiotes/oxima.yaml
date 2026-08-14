@@ -21,6 +21,5 @@ needs:
   - Ημερομηνία λήξης τρέχοντος συμβολαίου
 iconName: Car
 color: "#ea580c"
-hidden: false
 image: /products/oxima.jpg
 imagePosition: center 70%

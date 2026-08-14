@@ -14,6 +14,5 @@ needs:
   - Συχνότητα φορτώσεων (ανά φόρτωση ή ετησίως)
 iconName: Package
 color: "#2e9e5b"
-hidden: false
 image: /products/metafora-emporeumaton.jpg
 imagePosition: center

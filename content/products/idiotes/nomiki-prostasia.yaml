@@ -14,6 +14,6 @@ needs:
   - Τυχόν εκκρεμείς ή γνωστές υποθέσεις
 iconName: Gavel
 color: "#1e3a8a"
-hidden: true
 image: /products/nomiki-prostasia.jpg
 imagePosition: center
+hidden: true

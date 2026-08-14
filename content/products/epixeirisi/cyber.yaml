@@ -14,6 +14,5 @@ needs:
   - Υφιστάμενα μέτρα ασφαλείας (π.χ. backup, antivirus)
 iconName: ShieldAlert
 color: "#4f46e5"
-hidden: false
 image: /products/cyber.jpg
 imagePosition: center

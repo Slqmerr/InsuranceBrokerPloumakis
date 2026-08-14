@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowUpRight, Check, ChevronRight, Home, Phone } from "lucide-react";
-import Navbar from "./Navbar";
 import Footer from "./Footer";
 import HeroCtaButtons from "./HeroCtaButtons";
 import type { Product, ProductVariant } from "./products";
@@ -70,7 +69,6 @@ export default function ProductPageContent({
 }) {
   return (
     <main style={{ fontFamily: UBUNTU, background: "#fff", color: "#1a1a1a", width: "100%", minHeight: "100vh" }}>
-      <Navbar />
 
       {/* Hero — blue copy half + photo half */}
       <section className="pp-hero" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "460px" }}>

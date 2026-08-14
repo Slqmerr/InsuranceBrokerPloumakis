@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
-import Navbar from "../components/Navbar";
 import QuoteForm from "../components/QuoteForm";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
@@ -10,7 +9,6 @@ const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 export default function EpikoinoniaPage() {
   return (
     <main style={{ fontFamily: UBUNTU, background: "#fff", color: "#1a1a1a", width: "100%", minHeight: "100vh" }}>
-      <Navbar />
 
       {/* Blue header band — breadcrumb + heading, matching the product hero style */}
       <section className="band-header" style={{ background: "#a30000", padding: "24px 64px 88px" }}>

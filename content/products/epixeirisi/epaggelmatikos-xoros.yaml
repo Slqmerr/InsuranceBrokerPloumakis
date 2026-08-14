@@ -19,6 +19,5 @@ needs:
   - Εκτίμηση αξίας εξοπλισμού και εμπορευμάτων
 iconName: Building2
 color: "#a30000"
-hidden: false
 image: /products/epaggelmatikos-xoros.jpg
 imagePosition: 25% center

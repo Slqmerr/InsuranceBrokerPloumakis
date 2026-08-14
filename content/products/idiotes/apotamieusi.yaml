@@ -16,6 +16,6 @@ needs:
   - Ποσό που μπορείτε να αποταμιεύετε τακτικά
 iconName: PiggyBank
 color: "#0d9488"
-hidden: true
 image: /products/ependysi.jpg
 imagePosition: 35% center
+hidden: true

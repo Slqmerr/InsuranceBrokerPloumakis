@@ -14,6 +14,5 @@ needs:
   - Ημερομηνίες λήξης τρεχόντων συμβολαίων
 iconName: Truck
 color: "#ea580c"
-hidden: false
 image: /products/oxima.jpg
 imagePosition: center 70%

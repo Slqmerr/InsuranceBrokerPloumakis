@@ -15,6 +15,5 @@ needs:
   - Αριθμός microchip και βιβλιάριο εμβολιασμών
 iconName: PawPrint
 color: "#b45309"
-hidden: false
 image: /products/katoikidio.jpg
 imagePosition: center 30%

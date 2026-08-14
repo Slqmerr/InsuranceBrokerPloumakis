@@ -10,28 +10,12 @@
 // accidentally corrupt the hub taxonomy. They stay hardcoded in
 // app/components/products.ts, developer-managed, same as before.
 import { config, fields, collection } from "@keystatic/core";
-// Custom field: a real colour picker in the entry form. See the file header
-// for why this is a hand-written field rather than fields.select/fields.text.
+// Custom fields: a real colour picker, a real icon picker, and a title field
+// that derives and then hides the URL slug. See each file's header for why
+// these are hand-written rather than fields.select/fields.text/fields.slug.
 import { colorField } from "./keystatic-fields/colorField";
-
-// Must match the icon components imported in app/components/products.ts and
-// mapped in app/components/iconMap.ts.
-const ICON_NAMES = [
-  "Users", "Home", "Car", "Heart", "Briefcase", "PiggyBank",
-  "Leaf", "Scale", "TrendingUp", "ShieldCheck", "PawPrint",
-  "Building2", "Truck", "ShieldAlert", "Package",
-  "Sailboat", "Plane", "Palette", "Gavel", "Umbrella",
-] as const;
-
-// A rough visual proxy for each icon, since Keystatic's select can't render
-// the actual lucide-react component inside the dropdown. The real horizontal
-// icon picker lives at /keystatic-tools — this is just a quick in-dropdown cue.
-const ICON_EMOJI: Record<(typeof ICON_NAMES)[number], string> = {
-  Users: "👨‍👩‍👧", Home: "🏠", Car: "🚗", Heart: "❤️", Briefcase: "💼",
-  PiggyBank: "🐷", Leaf: "🍃", Scale: "⚖️", TrendingUp: "📈", ShieldCheck: "🛡️",
-  PawPrint: "🐾", Building2: "🏢", Truck: "🚚", ShieldAlert: "🚨", Package: "📦",
-  Sailboat: "⛵", Plane: "✈️", Palette: "🎨", Gavel: "🔨", Umbrella: "☂️",
-};
+import { iconField } from "./keystatic-fields/iconField";
+import { productTitleField } from "./keystatic-fields/productTitleField";
 
 // The prompt called for one collection with a `category` select, but the slug
 // "cyber" exists in BOTH categories (Ασφάλιση Cyber for ιδιώτες, Cyber Edge
@@ -43,36 +27,12 @@ const ICON_EMOJI: Record<(typeof ICON_NAMES)[number], string> = {
 function productSchema(routeBase: "idiotes" | "epixeirisi") {
   return {
     // Paired title+slug field: the Greek title is stored in the YAML file,
-    // the slug becomes the filename (filename = slug discipline) and the
-    // last URL segment. Keystatic has no readOnly option for the slug half
-    // of this field (open upstream request, still unresolved as of writing:
-    // github.com/Thinkmill/keystatic/issues/1212), and its auto-slug button
-    // doesn't transliterate Greek into Latin characters — so this field
-    // cannot be locked or reliably auto-filled. The warning below plus PR
-    // review before merging a cms/* branch are the real protection.
-    title: fields.slug({
-      name: {
-        label: "Τίτλος",
-        validation: { isRequired: true },
-      },
-      slug: {
-        label: "Slug (URL) — μόνο developer",
-        description:
-          `ΜΗΝ αλλάζετε αυτό το πεδίο μόνοι σας. Καθορίζει τη διεύθυνση του προϊόντος ` +
-          `(/${routeBase}/<slug>) — αν αλλάξει σε υπάρχον προϊόν, ο σύνδεσμός του σταματά να ` +
-          `λειτουργεί αμέσως. Η αυτόματη συμπλήρωση από τον τίτλο ΔΕΝ μεταφράζει σωστά τα ` +
-          `ελληνικά σε λατινικά, οπότε ούτε αυτή είναι αξιόπιστη. Αν φτιάχνετε νέο προϊόν, ` +
-          `αποθηκεύστε κανονικά και επικοινωνήστε μαζί μας πριν το pull request μπει live — ` +
-          `θα ελέγξουμε/διορθώσουμε το slug τότε.`,
-        validation: {
-          length: { min: 1 },
-          pattern: {
-            regex: /^[a-z0-9-]+$/,
-            message: "Μόνο πεζά λατινικά, αριθμοί και παύλες.",
-          },
-        },
-      },
-    }),
+    // the slug becomes the filename (filename = slug discipline) and the last
+    // URL segment. The slug is derived from the title by transliteration on
+    // new entries, frozen on existing ones, and collapsed out of sight in both
+    // cases — see keystatic-fields/productTitleField.tsx for why that replaced
+    // the paragraph of warning text that used to sit here.
+    title: productTitleField({ routeBase }),
     intro: fields.text({
       label: "Εισαγωγή (hero)",
       multiline: true,
@@ -99,16 +59,11 @@ function productSchema(routeBase: "idiotes" | "epixeirisi") {
         itemLabel: (props) => props.value || "Στοιχείο",
       }
     ),
-    iconName: fields.select({
+    iconName: iconField({
       label: "Εικονίδιο",
       description:
-        "Δείτε όλα τα εικονίδια σε πραγματικό μέγεθος στη σελίδα /keystatic-tools (ανοίξτε σε " +
-        "νέα καρτέλα) — πατήστε πάνω σε ένα για να αντιγραφεί το όνομά του, μετά διαλέξτε το " +
-        "ίδιο όνομα εδώ.",
-      options: ICON_NAMES.map((name) => ({
-        label: `${ICON_EMOJI[name]} ${name}`,
-        value: name,
-      })),
+        "Το εικονίδιο του προϊόντος, όπως εμφανίζεται στην κάρτα και στη σελίδα του. " +
+        "Πατήστε πάνω σε όποιο θέλετε — αυτό ακριβώς θα δει και ο επισκέπτης.",
       defaultValue: "ShieldCheck",
     }),
     color: colorField({
@@ -116,12 +71,14 @@ function productSchema(routeBase: "idiotes" | "epixeirisi") {
       description:
         "Το χρώμα τονισμού του προϊόντος (εικονίδιο, γραμμές, κάρτα). Διαλέξτε ό,τι " +
         "χρώμα θέλετε — δεν χρειάζεται να γράψετε κωδικό πουθενά.",
-      defaultValue: "#e6e8ef",
+      defaultValue: "#1e439a",
     }),
     hidden: fields.checkbox({
       label: "Κρυφό από το μενού",
       description:
-        "Αν είναι ενεργό, το προϊόν δεν εμφανίζεται στο dropdown του μενού ή στην αρχική (αντίστοιχο του παλιού EXTRA_IDIWTES_PAGES) — παραμένει όμως προσβάσιμο στη διεύθυνσή του.",
+        "Αν είναι ενεργό, το προϊόν δεν εμφανίζεται στο μενού πλοήγησης — παραμένει " +
+        "όμως προσβάσιμο στη διεύθυνσή του και στη σελίδα «Ασφάλειες», ώστε να " +
+        "μπορείτε να στείλετε τον σύνδεσμο σε πελάτη πριν το ανακοινώσετε.",
       defaultValue: false,
     }),
     image: fields.text({

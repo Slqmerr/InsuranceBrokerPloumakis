@@ -19,6 +19,5 @@ needs:
   - Επιθυμητή θέση νοσηλείας και νοσοκομεία προτίμησης
 iconName: Heart
 color: "#e0245e"
-hidden: false
 image: /products/ygeia.jpg
 imagePosition: center

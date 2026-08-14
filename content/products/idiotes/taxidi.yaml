@@ -16,6 +16,5 @@ needs:
   - Σκοπός ταξιδιού (διακοπές, επαγγελματικό, σπουδές)
 iconName: Plane
 color: "#f59e0b"
-hidden: false
 image: /products/taxidi.jpg
 imagePosition: center

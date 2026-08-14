@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
@@ -61,7 +60,6 @@ const SECTIONS: { heading: string; body: string[] }[] = [
 export default function OroiXrisisPage() {
   return (
     <main style={{ fontFamily: UBUNTU, background: "#fff", color: "#1a1a1a", width: "100%" }}>
-      <Navbar />
 
       <article
         style={{

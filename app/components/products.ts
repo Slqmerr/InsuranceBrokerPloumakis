@@ -41,6 +41,11 @@ export type Product = {
   description: string; // opening body paragraph
   covers: string[]; // "Τι καλύπτει" list
   needs: string[]; // "Τι θα χρειαστείτε" sidebar checklist — what the client should have ready for a quote
+  // Kept out of the navbar dropdown, but still reachable at its own URL and
+  // still listed on /asfaleies. Set from the CMS "Κρυφό από το μενού"
+  // checkbox; the EXTRA_*_PAGES arrays below are marked hidden in
+  // cmsProducts.ts, which is what has always kept them out of the navbar.
+  hidden?: boolean;
   // Hub products only: the sub-covers this category splits into, grouped by
   // where the risk comes from. Rendered as tiles above "Τι καλύπτει".
   variantsHeading?: string;

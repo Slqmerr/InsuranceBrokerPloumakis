@@ -14,6 +14,6 @@ needs:
   - Χώρος φύλαξης και τυχόν μέτρα ασφαλείας (συναγερμός, θυρίδα)
 iconName: Palette
 color: "#9333ea"
-hidden: true
 image: /products/erga-texnis.jpg
 imagePosition: center
+hidden: true

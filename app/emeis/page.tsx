@@ -6,7 +6,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Trophy } from "lucide-react";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PartnersMarquee from "../components/PartnersMarquee";
 
@@ -191,7 +190,6 @@ export default function EmeisPage() {
     <main style={{ fontFamily: UBUNTU, background: "#fff", color: "#1a1a1a", width: "100%" }}>
 
       {/* == NAVBAR == */}
-      <Navbar />
 
       {/* === HERO: split layout === */}
       <section className="emeis-hero" style={{

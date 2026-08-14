@@ -1,18 +1,15 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
-import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import QuoteForm from "../../components/QuoteForm";
-import { IDIWTES_PRODUCTS, EXTRA_IDIWTES_PAGES, EPIXEIRISI_PRODUCTS, EXTRA_EPIXEIRISI_PAGES } from "../../components/products";
+import { allSlugs, productForSlug } from "../../components/cmsProducts";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
-const ALL = [...IDIWTES_PRODUCTS, ...EXTRA_IDIWTES_PAGES, ...EPIXEIRISI_PRODUCTS, ...EXTRA_EPIXEIRISI_PAGES];
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   // de-duplicate slugs (astiki-efthyni & cyber appear in both categories)
-  const slugs = Array.from(new Set(ALL.map((p) => p.slug)));
-  return slugs.map((slug) => ({ slug }));
+  return (await allSlugs()).map((slug) => ({ slug }));
 }
 
 export default async function ProsforaPage({
@@ -21,15 +18,14 @@ export default async function ProsforaPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = ALL.find((p) => p.slug === slug);
-  if (!product) notFound();
+  const found = await productForSlug(slug);
+  if (!found) notFound();
 
-  const isIdiotis = [...IDIWTES_PRODUCTS, ...EXTRA_IDIWTES_PAGES].some((p) => p.slug === slug);
-  const productHref = `/${isIdiotis ? "idiotes" : "epixeirisi"}/${slug}`;
+  const { product, category } = found;
+  const productHref = `/${category}/${slug}`;
 
   return (
     <main style={{ fontFamily: UBUNTU, background: "#fff", color: "#1a1a1a", width: "100%", minHeight: "100vh" }}>
-      <Navbar />
 
       {/* Blue header band — breadcrumb + heading, matching the product hero style */}
       <section className="band-header" style={{ background: "#a30000", padding: "24px 64px 88px" }}>

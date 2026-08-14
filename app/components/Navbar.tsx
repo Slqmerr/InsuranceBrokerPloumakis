@@ -6,14 +6,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ChevronDown, Phone, MapPin, Menu, X, ArrowRight } from "lucide-react";
-import { IDIWTES_PRODUCTS, EPIXEIRISI_PRODUCTS } from "./products";
+import type { NavProduct } from "./cmsProducts";
+import { navIconFor } from "./navIcons";
 
 gsap.registerPlugin(useGSAP);
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 const MotionLink = motion.create(Link);
 
-export default function Navbar() {
+/** Product lists come from the CMS, fetched in app/layout.tsx (a server
+ *  component) and passed down — this component is client-side and can't read
+ *  the filesystem itself. They arrive as plain data with an `iconName`, which
+ *  navIconFor() turns back into a lucide component here. */
+export default function Navbar({
+  idiotes,
+  epixeirisi,
+}: {
+  idiotes: NavProduct[];
+  epixeirisi: NavProduct[];
+}) {
   const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   // which accordion section is expanded inside the mobile drawer
@@ -398,9 +409,11 @@ export default function Navbar() {
                     gridTemplateColumns: activeMenu === "idiwtes" ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
                     gap: "4px",
                   }}>
-                    {(activeMenu === "idiwtes" ? IDIWTES_PRODUCTS : EPIXEIRISI_PRODUCTS).map((product) => (
+                    {(activeMenu === "idiwtes" ? idiotes : epixeirisi).map((product) => {
+                      const Icon = navIconFor(product.iconName);
+                      return (
                       <motion.a
-                        key={product.title}
+                        key={product.slug}
                         href={`/${activeMenu === "idiwtes" ? "idiotes" : "epixeirisi"}/${product.slug}`}
                         initial={{ color: "#5c5c5c" }}
                         whileHover={{ color: product.color }}
@@ -428,7 +441,7 @@ export default function Navbar() {
                           justifyContent: "center",
                           flexShrink: 0,
                         }}>
-                          <product.icon size={20} color="currentColor" strokeWidth={1.75} />
+                          <Icon size={20} color="currentColor" strokeWidth={1.75} />
                         </div>
                         <div style={{
                           fontSize: "17px",
@@ -439,7 +452,8 @@ export default function Navbar() {
                           {product.title}
                         </div>
                       </motion.a>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -581,8 +595,8 @@ export default function Navbar() {
 
               {/* Accordion sections — Ιδιώτες / Επιχειρήσεις */}
               {([
-                { key: "idiwtes", label: "Ιδιώτες", products: IDIWTES_PRODUCTS, base: "idiotes" },
-                { key: "epixeirisi", label: "Επιχειρήσεις", products: EPIXEIRISI_PRODUCTS, base: "epixeirisi" },
+                { key: "idiwtes", label: "Ιδιώτες", products: idiotes, base: "idiotes" },
+                { key: "epixeirisi", label: "Επιχειρήσεις", products: epixeirisi, base: "epixeirisi" },
               ] as const).map((section) => (
                 <div key={section.key} className="drawer-item" style={{ borderBottom: "1px solid #f0e3e3" }}>
                   <button
@@ -624,9 +638,11 @@ export default function Navbar() {
                         style={{ overflow: "hidden" }}
                       >
                         <div style={{ display: "flex", flexDirection: "column", gap: "2px", paddingBottom: "14px" }}>
-                          {section.products.map((product) => (
+                          {section.products.map((product) => {
+                            const Icon = navIconFor(product.iconName);
+                            return (
                             <a
-                              key={product.title}
+                              key={product.slug}
                               href={`/${section.base}/${product.slug}`}
                               onClick={closeMenu}
                               style={{
@@ -650,11 +666,12 @@ export default function Navbar() {
                                 flexShrink: 0,
                                 color: "#a30000",
                               }}>
-                                <product.icon size={18} color="currentColor" strokeWidth={1.75} />
+                                <Icon size={18} color="currentColor" strokeWidth={1.75} />
                               </div>
                               <span style={{ fontSize: "15.5px", fontWeight: 600 }}>{product.title}</span>
                             </a>
-                          ))}
+                            );
+                          })}
                         </div>
                       </motion.div>
                     )}

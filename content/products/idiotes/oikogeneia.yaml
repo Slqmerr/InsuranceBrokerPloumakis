@@ -15,6 +15,6 @@ needs:
   - Τυχόν υπάρχοντα ασφαλιστήρια
 iconName: Users
 color: "#a30000"
-hidden: true
 image: /products/oikogeneia.jpg
 imagePosition: center 40%
+hidden: true
