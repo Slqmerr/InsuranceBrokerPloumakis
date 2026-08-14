@@ -1,8 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import Image, { type StaticImageData } from "next/image";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+
+// Statically imported so Next infers each mark's intrinsic width/height — the
+// marquee sets height and leaves width auto, so only the aspect ratio matters
+// and nothing has to be re-measured by hand when a logo file is swapped.
+import interamericanLogo from "@/public/partners/interamerican.png";
+import eurolifeLogo from "@/public/partners/eurolife.png";
+import allianzLogo from "@/public/partners/allianz.png";
+import generaliLogo from "@/public/partners/generali.svg";
+import ergoLogo from "@/public/partners/ergo.png";
+import aigLogo from "@/public/partners/aig.png";
+import interlifeLogo from "@/public/partners/interlife.png";
+import ethnikiLogo from "@/public/partners/ethniki.svg";
+import heroPhoto from "@/public/dimitrios.jpg";
 
 // Link that accepts motion props, so the CTA keeps client-side navigation
 const MotionLink = motion.create(Link);
@@ -21,15 +35,15 @@ const arrowSlide: Variants = {
 
 // height compensates for each file's padding/aspect so the marks look the same size.
 // Source PNGs/SVGs are tightly cropped, so height maps directly to the mark's cap height.
-const PARTNER_LOGOS = [
-  { src: "/partners/interamerican.png", alt: "Interamerican", height: 25 },
-  { src: "/partners/eurolife.png", alt: "Eurolife FFH", height: 26 },
-  { src: "/partners/allianz.png", alt: "Allianz", height: 26 },
-  { src: "/partners/generali.svg", alt: "Generali", height: 36 },
-  { src: "/partners/ergo.png", alt: "ERGO", height: 24 },
-  { src: "/partners/aig.png", alt: "AIG", height: 30 },
-  { src: "/partners/interlife.png", alt: "Interlife", height: 28 },
-  { src: "/partners/ethniki.svg", alt: "Εθνική Ασφαλιστική", height: 32 },
+const PARTNER_LOGOS: { src: StaticImageData; alt: string; height: number }[] = [
+  { src: interamericanLogo, alt: "Interamerican", height: 25 },
+  { src: eurolifeLogo, alt: "Eurolife FFH", height: 26 },
+  { src: allianzLogo, alt: "Allianz", height: 26 },
+  { src: generaliLogo, alt: "Generali", height: 36 },
+  { src: ergoLogo, alt: "ERGO", height: 24 },
+  { src: aigLogo, alt: "AIG", height: 30 },
+  { src: interlifeLogo, alt: "Interlife", height: 28 },
+  { src: ethnikiLogo, alt: "Εθνική Ασφαλιστική", height: 32 },
 ];
 
 export default function Hero() {
@@ -40,14 +54,15 @@ export default function Hero() {
       overflow: "hidden",
     }}>
       {/* Background photo — full bleed */}
-      <img
-        src="/dimitrios.jpg"
+      {/* `fill` against the section's position:relative — full bleed at every
+          width, hence sizes="100vw". preload: this is the homepage LCP. */}
+      <Image
+        src={heroPhoto}
         alt="Δημήτριος Πλουμάκης"
+        fill
+        sizes="100vw"
+        preload
         style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
           objectFit: "cover",
           objectPosition: "center 20%",
         }}
@@ -141,11 +156,14 @@ export default function Hero() {
           style={{ display: "flex", alignItems: "center", gap: "72px", width: "max-content", paddingRight: "72px" }}
         >
           {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((logo, i) => (
-            <img
+            <Image
               key={`${logo.alt}-${i}`}
               src={logo.src}
               alt={i < PARTNER_LOGOS.length ? logo.alt : ""}
               aria-hidden={i >= PARTNER_LOGOS.length}
+              // The static import supplies intrinsic width/height; the style pins
+              // the rendered height and lets width follow the aspect ratio.
+              // .svg marks are passed through unoptimized by next/image.
               style={{
                 height: `${logo.height}px`,
                 width: "auto",

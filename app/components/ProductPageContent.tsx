@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, Check, ChevronRight, Home, Phone } from "lucide-react";
 import Footer from "./Footer";
 import HeroCtaButtons from "./HeroCtaButtons";
@@ -137,10 +138,18 @@ export default function ProductPageContent({
         {/* Right: product photo — absolutely positioned so its intrinsic size
             can't inflate the grid row; the blue panel alone sets the hero height */}
         <div className="pp-hero-photo" style={{ position: "relative", minHeight: "460px" }}>
-          <img
+          {/* `fill` keeps the parent as the only thing sizing the photo, same as
+              the absolute inset-0 it replaces. The hero spans half the grid until
+              .pp-hero collapses to one column at 900px, hence the sizes pair —
+              without it the browser would fetch a 100vw candidate everywhere.
+              preload: this is the LCP element on every product page. */}
+          <Image
             src={product.image}
             alt={product.title}
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: product.imagePosition ?? "center" }}
+            fill
+            sizes="(max-width: 900px) 100vw, 50vw"
+            preload
+            style={{ objectFit: "cover", objectPosition: product.imagePosition ?? "center" }}
           />
         </div>
       </section>

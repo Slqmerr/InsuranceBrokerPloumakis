@@ -1,24 +1,38 @@
 "use client";
 
+import Image, { type StaticImageData } from "next/image";
 import { motion } from "framer-motion";
+
+import interamericanLogo from "@/public/partners/interamerican.png";
+import allianzLogo from "@/public/partners/allianz.png";
+import generaliLogo from "@/public/partners/generali.svg";
+import eurolifeLogo from "@/public/partners/eurolife.png";
+import aigLogo from "@/public/partners/aig.png";
+import ergoLogo from "@/public/partners/ergo.png";
+import nnLogo from "@/public/partners/nn.svg";
+import ydrogiosLogo from "@/public/partners/ydrogios.png";
+import interlifeLogo from "@/public/partners/interlife.png";
+import ethnikiLogo from "@/public/partners/ethniki.svg";
 
 const GOTHIC = "var(--font-ubuntu-sans), sans-serif";
 
 /**
  * Partner insurance companies. Logo files live in /public/partners.
- * To add one: drop the file in that folder and add a { name, src } entry here.
+ * To add one: drop the file in that folder, import it above, and add a
+ * { name, src } entry here. The static import is what gives next/image the
+ * intrinsic dimensions, so the tile never reflows once the mark loads.
  */
-const PARTNERS = [
-  { name: "Interamerican", src: "/partners/interamerican.png" },
-  { name: "Allianz", src: "/partners/allianz.png" },
-  { name: "Generali", src: "/partners/generali.svg" },
-  { name: "Eurolife", src: "/partners/eurolife.png" },
-  { name: "AIG", src: "/partners/aig.png" },
-  { name: "ERGO", src: "/partners/ergo.png" },
-  { name: "NN", src: "/partners/nn.svg" },
-  { name: "Υδρόγειος", src: "/partners/ydrogios.png" },
-  { name: "Interlife", src: "/partners/interlife.png" },
-  { name: "Εθνική Ασφαλιστική", src: "/partners/ethniki.svg" },
+const PARTNERS: { name: string; src: StaticImageData }[] = [
+  { name: "Interamerican", src: interamericanLogo },
+  { name: "Allianz", src: allianzLogo },
+  { name: "Generali", src: generaliLogo },
+  { name: "Eurolife", src: eurolifeLogo },
+  { name: "AIG", src: aigLogo },
+  { name: "ERGO", src: ergoLogo },
+  { name: "NN", src: nnLogo },
+  { name: "Υδρόγειος", src: ydrogiosLogo },
+  { name: "Interlife", src: interlifeLogo },
+  { name: "Εθνική Ασφαλιστική", src: ethnikiLogo },
 ];
 
 // gap between logos — applied as a right margin so translateX(-50%) stays seamless
@@ -69,10 +83,9 @@ export default function PartnersMarquee({showTitle=true}:{showTitle?:boolean}) {
                   cursor: "pointer",
                 }}
               >
-                <img
+                <Image
                   src={partner.src}
                   alt={partner.name}
-                  loading="lazy"
                   draggable={false}
                   style={{
                     maxWidth: "100%",

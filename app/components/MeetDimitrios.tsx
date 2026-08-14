@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import { Award, TrendingUp, BadgeCheck, ArrowRight } from "lucide-react";
+import dimitriosPhoto from "@/public/dimitrios.jpg";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
@@ -49,9 +51,13 @@ export default function MeetDimitrios() {
             minHeight: "440px",
           }}
         >
-          <img
-            src="/dimitrios.jpg"
+          {/* Sized by CSS rather than `fill`, so the `.meet-photo img` height
+              override at ≤900px keeps working. The static import supplies the
+              intrinsic dimensions; `sizes` drives the srcset the browser picks. */}
+          <Image
+            src={dimitriosPhoto}
             alt="Δημήτριος Πλουμάκης"
+            sizes="(max-width: 900px) 100vw, 50vw"
             style={{ width: "100%", height: "100%", minHeight: "440px", objectFit: "cover", objectPosition: "center top", display: "block" }}
           />
         </motion.div>
