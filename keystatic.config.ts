@@ -9,13 +9,15 @@
 // this flat schema doesn't model, and folding them in would let an editor
 // accidentally corrupt the hub taxonomy. They stay hardcoded in
 // app/components/products.ts, developer-managed, same as before.
-import { config, fields, collection } from "@keystatic/core";
-// Custom fields: a real colour picker, a real icon picker, and a title field
-// that derives and then hides the URL slug. See each file's header for why
-// these are hand-written rather than fields.select/fields.text/fields.slug.
+import { config, fields, collection, singleton } from "@keystatic/core";
+// Custom fields: a real colour picker, a real icon picker, a title field that
+// derives and then hides the URL slug, and a drag-to-sort menu order. See each
+// file's header for why these are hand-written rather than
+// fields.select/fields.text/fields.slug/fields.array.
 import { colorField } from "./keystatic-fields/colorField";
 import { iconField } from "./keystatic-fields/iconField";
 import { productTitleField } from "./keystatic-fields/productTitleField";
+import { productOrderField } from "./keystatic-fields/productOrderField";
 
 // The prompt called for one collection with a `category` select, but the slug
 // "cyber" exists in BOTH categories (Ασφάλιση Cyber for ιδιώτες, Cyber Edge
@@ -119,6 +121,39 @@ export default config({
   cloud: CLOUD_PROJECT ? { project: CLOUD_PROJECT } : undefined,
   ui: {
     brand: { name: "Ploumakis Insurance" },
+    // Spelled out only to put the ordering page directly under the two
+    // collections it reorders, behind a divider. Left unset, Keystatic lists
+    // every collection first and every singleton after, which is the same
+    // order here but without the visual grouping.
+    navigation: ["idiotes", "epixeirisi", "---", "menuOrder"],
+  },
+  singletons: {
+    // One file holding nothing but two sequences of slugs. Not a per-product
+    // "order" number, because ordering is a property of the list rather than
+    // of any one product: moving a product to the top would otherwise mean
+    // renumbering everything below it, across as many separate saves.
+    menuOrder: singleton({
+      label: "Σειρά στο μενού",
+      path: "content/settings/menu-order",
+      format: "yaml",
+      schema: {
+        idiotes: productOrderField({
+          category: "idiotes",
+          label: "Προϊόντα Ιδιωτών",
+          description:
+            "Η σειρά με την οποία εμφανίζονται τα προϊόντα ιδιωτών στο μενού " +
+            "«Ιδιώτες» και στη σελίδα «Ασφάλειες». Σύρετε μια γραμμή στη θέση " +
+            "που θέλετε και πατήστε αποθήκευση.",
+        }),
+        epixeirisi: productOrderField({
+          category: "epixeirisi",
+          label: "Προϊόντα Επιχειρήσεων",
+          description:
+            "Η σειρά με την οποία εμφανίζονται τα προϊόντα επιχειρήσεων στο " +
+            "μενού «Επιχειρήσεις» και στη σελίδα «Ασφάλειες».",
+        }),
+      },
+    }),
   },
   collections: {
     idiotes: collection({

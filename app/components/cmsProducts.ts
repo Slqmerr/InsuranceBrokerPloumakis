@@ -32,23 +32,50 @@ const STATIC_BY_CATEGORY: Record<CmsCategory, Product[]> = {
   epixeirisi: [...EPIXEIRISI_PRODUCTS, ...asHidden(EXTRA_EPIXEIRISI_PAGES)],
 };
 
-/** All products for a category route: CMS entries mapped into the Product
- *  shape, then any products.ts entries whose slug the CMS doesn't have. */
+/** The CMS-managed products for a category, in the order the editor dragged
+ *  them on the «Σειρά στο μενού» page.
+ *
+ *  Products the saved order doesn't mention sort last, keeping the reader's
+ *  own (alphabetical-by-filename) order among themselves — so a brand new
+ *  product appears at the end of the menu instead of disappearing, and a site
+ *  with no order saved at all looks exactly as it did before this existed.
+ *  Slugs in the order whose product was deleted simply never match. This is
+ *  the same merge productOrderField.tsx performs in the admin UI, so what the
+ *  editor drags is what the site renders. */
+async function cmsProductsFor(category: CmsCategory): Promise<Product[]> {
+  const [entries, order] = await Promise.all([
+    reader.collections[category].all(),
+    reader.singletons.menuOrder.read(),
+  ]);
+  const rank = new Map((order?.[category] ?? []).map((slug, i) => [slug, i]));
+  // MAX_SAFE_INTEGER rather than Infinity: two unranked products would
+  // subtract to NaN, and a NaN comparator silently scrambles the array.
+  const rankOf = (product: Product) =>
+    rank.get(product.slug) ?? Number.MAX_SAFE_INTEGER;
+
+  return entries
+    .map(({ slug, entry }) => ({
+      icon: iconForName(entry.iconName),
+      title: entry.title,
+      slug,
+      color: entry.color,
+      image: entry.image,
+      imagePosition: entry.imagePosition,
+      intro: entry.intro,
+      description: entry.description,
+      covers: [...entry.covers],
+      needs: [...entry.needs],
+      hidden: entry.hidden,
+    }))
+    .sort((a, b) => rankOf(a) - rankOf(b));
+}
+
+/** All products for a category route: CMS entries in the editor's order, then
+ *  any products.ts entries whose slug the CMS doesn't have. The hardcoded
+ *  hub-family pages stay last — they aren't in the collection, so there's no
+ *  row for them on the ordering page. */
 export async function allProducts(category: CmsCategory): Promise<Product[]> {
-  const entries = await reader.collections[category].all();
-  const fromCms: Product[] = entries.map(({ slug, entry }) => ({
-    icon: iconForName(entry.iconName),
-    title: entry.title,
-    slug,
-    color: entry.color,
-    image: entry.image,
-    imagePosition: entry.imagePosition,
-    intro: entry.intro,
-    description: entry.description,
-    covers: [...entry.covers],
-    needs: [...entry.needs],
-    hidden: entry.hidden,
-  }));
+  const fromCms = await cmsProductsFor(category);
   const cmsSlugs = new Set(fromCms.map((p) => p.slug));
   const staticOnly = STATIC_BY_CATEGORY[category].filter(
     (p) => !cmsSlugs.has(p.slug)
@@ -107,6 +134,18 @@ export async function navProducts(category: CmsCategory): Promise<NavProduct[]> 
  *  That page is the full catalogue — it has always shown the EXTRA_*_PAGES. */
 export async function indexProducts(category: CmsCategory): Promise<NavProduct[]> {
   return (await allProducts(category)).map(toNavProduct);
+}
+
+/** The rows the Keystatic «Σειρά στο μενού» page drags, served to it by
+ *  app/api/product-index/route.ts. Only the CMS-managed products — the
+ *  hardcoded hub pages have no collection entry to reorder. */
+export async function orderableProducts(
+  category: CmsCategory
+): Promise<(NavProduct & { hidden: boolean })[]> {
+  return (await cmsProductsFor(category)).map((product) => ({
+    ...toNavProduct(product),
+    hidden: product.hidden ?? false,
+  }));
 }
 
 /** Every slug that has a product page, across both routes. */
