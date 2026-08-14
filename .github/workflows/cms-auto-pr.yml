@@ -1,0 +1,73 @@
+# Opens a pull request automatically whenever the Keystatic panel pushes a
+# cms/* branch.
+#
+# Why this exists: Keystatic never creates the PR itself. Its "Create pull
+# request" button is a plain link to GitHub's new-PR page (an <ActionButton>
+# with href + target="_blank"), and it only renders while the panel is viewing
+# the non-default branch. An editor who saves and then navigates away leaves
+# the branch sitting there with nothing proposing a merge. This closes that
+# gap so every content branch arrives as a reviewable PR.
+name: Auto PR for CMS branches
+
+on:
+  push:
+    branches:
+      - "cms/**"
+
+# The repo default for GITHUB_TOKEN is read-only; the PR write scope is
+# requested here rather than raised repo-wide.
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  # Several saves in a row push the same branch repeatedly. Only the newest
+  # run matters — an in-flight one would just find the PR it already opened.
+  group: cms-auto-pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+    # Deleting a branch also emits a push event; there is nothing to propose.
+    if: github.event.deleted != true
+    steps:
+      - name: Open a PR if the branch doesn't have one
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ github.ref_name }}
+          BASE: ${{ github.event.repository.default_branch }}
+          # Keystatic commits read "Update content/products/idiotes/oxima",
+          # which is already a serviceable PR title.
+          SUBJECT: ${{ github.event.head_commit.message }}
+        run: |
+          set -euo pipefail
+
+          # Re-running after a second save must not open a duplicate.
+          # `gh pr list` rather than `gh pr view`: view exits non-zero when
+          # absent, which `set -e` would treat as a failure.
+          existing=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            echo "PR #$existing already open for $BRANCH — nothing to do."
+            exit 0
+          fi
+
+          # First line only; Keystatic appends a Co-authored-by trailer.
+          title=$(printf '%s' "$SUBJECT" | head -n 1)
+          [ -n "$title" ] || title="Content update on $BRANCH"
+
+          # Assembled with printf rather than a heredoc so no YAML indentation
+          # leaks in — four leading spaces would turn each line into a
+          # markdown code block.
+          body=$(printf '%s\n' \
+            "Content edit made in the Keystatic panel and pushed to \`$BRANCH\`." \
+            "" \
+            "Opened automatically by \`.github/workflows/cms-auto-pr.yml\`, because Keystatic only links out to GitHub's new-PR page rather than creating the pull request itself." \
+            "" \
+            "Review the diff below, then merge to publish.")
+
+          gh pr create \
+            --base "$BASE" \
+            --head "$BRANCH" \
+            --title "$title" \
+            --body "$body"
