@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { BLUR_MAP } from "./imageBlur";
 import { ArrowUpRight, Check, ChevronRight, Home, Phone } from "lucide-react";
 import Footer from "./Footer";
 import HeroCtaButtons from "./HeroCtaButtons";
@@ -137,18 +138,31 @@ export default function ProductPageContent({
 
         {/* Right: product photo — absolutely positioned so its intrinsic size
             can't inflate the grid row; the blue panel alone sets the hero height */}
-        <div className="pp-hero-photo" style={{ position: "relative", minHeight: "460px" }}>
+        {/* The accent colour fills the frame the moment the panel paints. Even
+            preloaded, the photo is optimized on demand and lands ~1s behind the
+            HTML on a cold cache, so without this the visitor watches a white box
+            where the picture should be. */}
+        <div
+          className="pp-hero-photo"
+          style={{ position: "relative", minHeight: "460px", background: product.color }}
+        >
           {/* `fill` keeps the parent as the only thing sizing the photo, same as
               the absolute inset-0 it replaces. The hero spans half the grid until
               .pp-hero collapses to one column at 900px, hence the sizes pair —
               without it the browser would fetch a 100vw candidate everywhere.
-              preload: this is the LCP element on every product page. */}
+              preload: this is the LCP element on every product page.
+              The blur placeholder is spread conditionally because a product whose
+              photo is missing from public/products/ has no entry in BLUR_MAP, and
+              placeholder="blur" without a blurDataURL is a hard error. */}
           <Image
             src={product.image}
             alt={product.title}
             fill
             sizes="(max-width: 900px) 100vw, 50vw"
             preload
+            {...(BLUR_MAP[product.image]
+              ? { placeholder: "blur" as const, blurDataURL: BLUR_MAP[product.image] }
+              : {})}
             style={{ objectFit: "cover", objectPosition: product.imagePosition ?? "center" }}
           />
         </div>
