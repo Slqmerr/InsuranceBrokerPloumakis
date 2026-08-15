@@ -2,16 +2,21 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, animate, useInView, AnimatePresence, type Variants } from "framer-motion";
 import { GraduationCap, Building2, LifeBuoy, TrendingUp, ChevronDown, UserPlus, Rocket, Target, ArrowRight } from "lucide-react";
 import Footer from "../components/Footer";
 import PartnersMarquee from "../components/PartnersMarquee";
 import QuoteForm from "../components/QuoteForm";
+import heroPhoto from "@/public/634A9690.jpg";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
 // Link that accepts motion props, so the outline CTA keeps client-side nav
 const MotionLink = motion.create(Link);
+
+// next/image forwards its ref to the underlying <img>, so it animates like one
+const MotionImage = motion.create(Image);
 
 /* ── Shared animation variants (mirrors /emeis) ── */
 const fadeUp: Variants = {
@@ -261,13 +266,18 @@ export default function SynergasiaPage() {
         </motion.div>
 
         <div className="emeis-hero-photo" style={{ flex: "0 0 42%", overflow: "hidden", position: "relative" }}>
-          <motion.img
-            src="/634A9690.jpg"
+          {/* `fill` against .emeis-hero-photo, which is already position:relative
+              and is what the ≤900px height override targets. */}
+          <MotionImage
+            src={heroPhoto}
             alt="Δημήτριος Πλουμάκης"
+            fill
+            sizes="(max-width: 900px) 100vw, 42vw"
+            preload
             initial={{ opacity: 0, scale: 1.12, x: 48 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
+            style={{ objectFit: "cover", objectPosition: "center top" }}
           />
           <motion.div
             initial={{ opacity: 0 }}

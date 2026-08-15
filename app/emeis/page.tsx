@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion, animate, useInView, type Variants } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,8 +9,12 @@ import { useGSAP } from "@gsap/react";
 import { Trophy } from "lucide-react";
 import Footer from "../components/Footer";
 import PartnersMarquee from "../components/PartnersMarquee";
+import heroPhoto from "@/public/634A9698.jpg";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+// next/image forwards its ref to the underlying <img>, so it animates like one
+const MotionImage = motion.create(Image);
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
@@ -276,15 +281,18 @@ export default function EmeisPage() {
           overflow: "hidden",
           position: "relative",
         }}>
-          <motion.img
-            src="/634A9698.jpg"
+          {/* `fill` against .emeis-hero-photo, which is already position:relative
+              and is what the ≤900px height override targets. */}
+          <MotionImage
+            src={heroPhoto}
             alt="Δημήτριος Πλουμάκης"
+            fill
+            sizes="(max-width: 900px) 100vw, 40vw"
+            preload
             initial={{ opacity: 0, scale: 1.12, x: 48 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              width: "100%",
-              height: "100%",
               objectFit: "cover",
               objectPosition: "center top",
             }}

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image, { type StaticImageData } from "next/image";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -8,6 +9,11 @@ const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
 // Link that accepts motion props, so the CTA keeps client-side navigation
 const MotionLink = motion.create(Link);
+
+// next/image forwards its ref to the underlying <img>, so it animates like one.
+// Kept as an image element rather than a `fill` wrapper so the `.split-img`
+// height and border-radius overrides at ≤900px still target it.
+const MotionImage = motion.create(Image);
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -31,7 +37,7 @@ const arrowSlide: Variants = {
 };
 
 type Props = {
-  imageSrc: string;
+  imageSrc: StaticImageData;
   imageAlt: string;
   imagePosition?: string;
   
@@ -53,9 +59,10 @@ export default function SplitFeature({
   reverse = false,
 }: Props) {
   const image = (
-    <motion.img
+    <MotionImage
       src={imageSrc}
       alt={imageAlt}
+      sizes="(max-width: 900px) 100vw, 50vw"
       className={`split-img ${reverse ? "split-img-right" : "split-img-left"}`}
       initial={{ opacity: 0, x: reverse ? 40 : -40 }}
       whileInView={{ opacity: 1, x: 0 }}

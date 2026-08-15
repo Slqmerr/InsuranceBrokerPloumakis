@@ -2,7 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from "@/public/logo_white-2.png";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ChevronDown, Phone, MapPin, Menu, X, ArrowRight } from "lucide-react";
@@ -149,11 +151,17 @@ export default function Navbar({
       }}>
         {/* Logo — left */}
         <Link href="/" onClick={closeMenu} style={{ justifySelf: "start", display: "inline-flex" }}>
-          <img
-            src="/logo_white-2.png"
+          {/* Above the fold on every route, so eager rather than the default
+              lazy. Not `preload` — the page's own hero is the LCP candidate. */}
+          <Image
+            src={logo}
             alt="Δημήτριος Πλουμάκης"
             className="nav-logo-img"
-            style={{ height: "70px", objectFit: "contain" }}
+            loading="eager"
+            // 70px tall at a 2.45 ratio ≈ 172px wide; without `sizes` the srcset
+            // is derived from the 839px intrinsic width instead.
+            sizes="172px"
+            style={{ height: "70px", width: "auto", objectFit: "contain" }}
           />
         </Link>
 

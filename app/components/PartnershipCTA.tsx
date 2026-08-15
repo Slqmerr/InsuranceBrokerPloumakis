@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import familyPhoto from "@/public/family.jpg";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
@@ -123,9 +125,12 @@ export default function PartnershipCTA() {
             boxShadow: "0 40px 80px -24px rgba(163,0,0,0.5), 0 12px 32px -12px rgba(163,0,0,0.35)",
           }}
         >
-          <img
-            src="/family.jpg"
+          {/* CSS-sized, not `fill` — preserves the `.partner-photo img` height
+              override at ≤900px. */}
+          <Image
+            src={familyPhoto}
             alt="Συνεργασία"
+            sizes="(max-width: 900px) 100vw, 50vw"
             style={{ width: "100%", height: "100%", minHeight: "440px", objectFit: "cover", objectPosition: "center", display: "block" }}
           />
         </motion.div>

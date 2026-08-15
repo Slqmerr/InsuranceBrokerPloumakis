@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import logo from "@/public/logo_white-2.png";
 
 // lucide-react removed its brand glyphs (Facebook/Linkedin) in this version,
 // so the social marks are inline SVGs sized to match the contact-row icons.
@@ -43,11 +45,14 @@ export default function Footer() {
 
         {/* Column 1 — Logo + tagline */}
         <div>
-          <img
-            src="/logo_white-2.png"
+          <Image
+            src={logo}
             alt="Δημήτριος Πλουμάκης"
+            // 56px tall at a 2.45 ratio ≈ 137px wide
+            sizes="140px"
             style={{
               height: "56px",
+              width: "auto",
               objectFit: "contain",
               marginBottom: "20px",
               display: "block",
