@@ -48,6 +48,8 @@ export default function Footer() {
           <Image
             src={logo}
             alt="Δημήτριος Πλουμάκης"
+            // 56px tall at a 2.45 ratio ≈ 137px wide
+            sizes="140px"
             style={{
               height: "56px",
               width: "auto",

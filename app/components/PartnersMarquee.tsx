@@ -87,6 +87,10 @@ export default function PartnersMarquee({showTitle=true}:{showTitle?:boolean}) {
                   src={partner.src}
                   alt={partner.name}
                   draggable={false}
+                  // Tile is 168px wide with 20px padding each side, so the mark
+                  // never exceeds 128px. Without `sizes` the srcset would come
+                  // from the intrinsic width — up to 3840px for a 128px slot.
+                  sizes="128px"
                   style={{
                     maxWidth: "100%",
                     maxHeight: "48px",
