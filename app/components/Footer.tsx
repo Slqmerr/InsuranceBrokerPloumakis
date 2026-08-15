@@ -215,7 +215,7 @@ export default function Footer() {
         </p>
         <div style={{ display: "flex", gap: "24px" }}>
           {[
-            { label: "Πολιτική Απορρήτου", href: "#" },
+            { label: "Πολιτική Απορρήτου", href: "/politiki-aporritou" },
             { label: "Όροι Χρήσης", href: "/oroi-xrisis" },
           ].map(({ label, href }) => (
             <a

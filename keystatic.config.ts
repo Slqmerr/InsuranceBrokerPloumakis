@@ -112,9 +112,14 @@ export default config({
   //
   // branchPrefix limits the branches editors see and can create to cms/*.
   // Keystatic has no setting that forces saves through a PR — the enforcement
-  // is branch protection on master (require PR + 1 approval), which makes
-  // direct saves to master fail and pushes editors to a cms/* branch, from
-  // which the admin UI offers "Create pull request".
+  // is branch protection on master (require PR), which makes direct saves to
+  // master fail.
+  //
+  // Editors never meet that failure, though: the panel is pinned to a single
+  // unprotected cms/* branch (NEXT_PUBLIC_KEYSTATIC_BRANCH, see
+  // app/keystatic/editorBranch.ts), so their save just lands, and CI opens the
+  // pull request onto master. Branch protection stays as the backstop for
+  // anything that tries to write to master directly.
   storage: CLOUD_PROJECT
     ? { kind: "cloud", branchPrefix: "cms/" }
     : { kind: "local" },

@@ -40,7 +40,6 @@ export const BASE_BOTTOM: QuoteField[] = [
       "Συναινώ στην επεξεργασία των στοιχείων μου για την αποστολή προσφοράς, σύμφωνα με την Πολιτική Απορρήτου.",
     type: "checkbox",
     required: true, // GDPR — collecting personal data requires explicit consent
-    // TODO: create the Privacy Policy page
     link: { text: "Πολιτική Απορρήτου", href: "/politiki-aporritou" },
   },
 ];
