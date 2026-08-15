@@ -164,6 +164,11 @@ export default function Hero() {
               // The static import supplies intrinsic width/height; the style pins
               // the rendered height and lets width follow the aspect ratio.
               // .svg marks are passed through unoptimized by next/image.
+              // `sizes` is required even at a fixed size: without it the srcset is
+              // built from the intrinsic width, and these source files are huge
+              // (allianz.png is 3840px wide for a ~105px slot). 200px is the
+              // widest any mark renders — interamerican at 25px tall.
+              sizes="200px"
               style={{
                 height: `${logo.height}px`,
                 width: "auto",

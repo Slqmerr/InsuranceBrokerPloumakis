@@ -158,6 +158,9 @@ export default function Navbar({
             alt="Δημήτριος Πλουμάκης"
             className="nav-logo-img"
             loading="eager"
+            // 70px tall at a 2.45 ratio ≈ 172px wide; without `sizes` the srcset
+            // is derived from the 839px intrinsic width instead.
+            sizes="172px"
             style={{ height: "70px", width: "auto", objectFit: "contain" }}
           />
         </Link>
