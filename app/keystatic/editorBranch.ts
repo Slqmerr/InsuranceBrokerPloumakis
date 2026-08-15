@@ -13,4 +13,10 @@
 // anything left to offer an editor. Unset, nothing changes — Keystatic opens
 // the default branch and the branch-naming dialog comes back — so the panel
 // never ends up pinned to a branch that does not exist yet.
-export const EDITOR_BRANCH = process.env.NEXT_PUBLIC_KEYSTATIC_BRANCH;
+//
+// Ignored in local mode, where the panel writes straight to the working tree
+// and has no /branch/* routes at all — pinning there would send local
+// development to a "Not found" screen.
+export const EDITOR_BRANCH = process.env.NEXT_PUBLIC_KEYSTATIC_CLOUD_PROJECT
+  ? process.env.NEXT_PUBLIC_KEYSTATIC_BRANCH
+  : undefined;
