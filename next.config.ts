@@ -6,7 +6,18 @@ const nextConfig: NextConfig = {
   // finds — so every build was rooting itself at /Users/<user> and warning
   // about it. Saying so explicitly keeps module resolution and file watching
   // inside the project.
-  turbopack: { root: __dirname },
+  turbopack: {
+    root: __dirname,
+
+    resolveAlias: {
+      // Keystatic's admin UI is the only thing in the app that imports this
+      // module, and keystatic-ui/table.tsx re-exports all of it unchanged
+      // except for the collection list's hardcoded "Slug" column, which it
+      // drops. That file's header explains why the interception has to happen
+      // out here rather than in keystatic.config.ts.
+      "@keystar/ui/table": "./keystatic-ui/table.tsx",
+    },
+  },
 
   images: {
     // Every distinct width in this list is a separate on-demand transform, and
