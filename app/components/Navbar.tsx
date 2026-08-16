@@ -279,7 +279,7 @@ export default function Navbar({
                 whiteSpace: "nowrap",
               }}
             >
-              Συνεργάσου μαζί μου
+              Συνεργάσου μαζί μας
             </MotionLink>
           </li>
 
@@ -495,7 +495,7 @@ export default function Navbar({
                         margin: 0,
                         lineHeight: 1.65,
                       }}>
-                        Μου λες τι χρειάζεσαι, εγώ συγκρίνω τις καλύτερες προσφορές από 15+ εταιρείες.
+                        Μας λες τι χρειάζεσαι, εμείς συγκρίνουμε τις καλύτερες προσφορές από 15+ εταιρείες.
                       </p>
                       <Link href="/asfaleies" onClick={closeMenu} style={{
                         marginTop: "8px",
@@ -700,7 +700,7 @@ export default function Navbar({
                 color: "#a30000",
                 textDecoration: "none",
               }}>
-                Δείτε όλα τα προγράμματά μου
+                Δείτε όλα τα προγράμματά μας
                 <ArrowRight size={18} strokeWidth={2.25} style={{ flexShrink: 0 }} />
               </Link>
 
@@ -725,7 +725,7 @@ export default function Navbar({
                 color: "#1a1a1a",
                 textDecoration: "none",
               }}>
-                Συνεργάσου μαζί μου
+                Συνεργάσου μαζί μας
               </Link>
 
               {/* Contact + CTA */}

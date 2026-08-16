@@ -127,9 +127,9 @@ export default function QuoteForm({
         const data = await res.json().catch(() => null);
         if (data?.fields) setErrors(data.fields);
       }
-      setSubmitError("Κάτι πήγε στραβά κατά την αποστολή. Δοκιμάστε ξανά ή καλέστε με απευθείας.");
+      setSubmitError("Κάτι πήγε στραβά κατά την αποστολή. Δοκιμάστε ξανά ή καλέστε μας απευθείας.");
     } catch {
-      setSubmitError("Κάτι πήγε στραβά κατά την αποστολή. Δοκιμάστε ξανά ή καλέστε με απευθείας.");
+      setSubmitError("Κάτι πήγε στραβά κατά την αποστολή. Δοκιμάστε ξανά ή καλέστε μας απευθείας.");
     } finally {
       setSending(false);
     }
@@ -139,9 +139,9 @@ export default function QuoteForm({
     return (
       <div className="fade-up quote-card" style={{ ...CARD, padding: "80px 40px", textAlign: "center" }}>
         <CheckCircle2 size={56} color="#a30000" strokeWidth={1.75} style={{ marginBottom: "20px" }} />
-        <h2 style={{ fontSize: "28px", fontWeight: 700, margin: "0 0 12px" }}>Ευχαριστώ!</h2>
+        <h2 style={{ fontSize: "28px", fontWeight: 700, margin: "0 0 12px" }}>Ευχαριστούμε!</h2>
         <p style={{ fontSize: "16px", color: "#4b5563", lineHeight: 1.6, margin: 0 }}>
-          Έλαβα το αίτημά σας. Θα επικοινωνήσω μαζί σας το συντομότερο δυνατό.
+          Λάβαμε το αίτημά σας. Θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατό.
         </p>
       </div>
     );
