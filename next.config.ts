@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // There is a stray package-lock.json in the home directory above this
+  // project, and Turbopack's root detection picks the outermost lockfile it
+  // finds — so every build was rooting itself at /Users/<user> and warning
+  // about it. Saying so explicitly keeps module resolution and file watching
+  // inside the project.
+  turbopack: { root: __dirname },
+
   images: {
     // Every distinct width in this list is a separate on-demand transform, and
     // each one is cold again after a deploy. The defaults end at 3840, but no
