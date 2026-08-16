@@ -33,6 +33,20 @@ const INPUT: React.CSSProperties = {
   outline: "none",
 };
 
+// Labels are visually replaced by placeholders, so keep a real one in the tree
+// for screen readers instead of leaving fields nameless
+const SR_ONLY: React.CSSProperties = {
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  padding: 0,
+  margin: "-1px",
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  border: 0,
+};
+
 const focusOn = (e: React.FocusEvent<HTMLElement>) => {
   e.currentTarget.style.borderColor = "#a30000";
 };
@@ -75,12 +89,23 @@ export default function QuoteForm({
   const [submitError, setSubmitError] = React.useState("");
   const [honeypot, setHoneypot] = React.useState("");
 
+  // Ids must be unique per form instance — label/input and input/error pairing
+  const uid = React.useId();
+  const fieldId = (name: string) => `${uid}-${name}`;
+  const errorId = (name: string) => `${uid}-${name}-error`;
+
+  // Kept so a failed submit can send focus to the first field that needs fixing
+  const controls = React.useRef<Record<string, HTMLElement | null>>({});
+
   const setValue = (name: string, value: string | boolean) => {
     setValues((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => (prev[name] ? { ...prev, [name]: "" } : prev));
   };
 
-  const validate = (): boolean => {
+  const textValue = (name: string) =>
+    typeof values[name] === "string" ? (values[name] as string) : "";
+
+  const validate = (): Record<string, string> => {
     const next: Record<string, string> = {};
     for (const field of fields) {
       const raw = values[field.name];
@@ -97,14 +122,25 @@ export default function QuoteForm({
         next[field.name] = "Μη έγκυρος αριθμός τηλεφώνου";
       }
     }
-    setErrors(next);
-    return Object.values(next).every((msg) => !msg);
+    return next;
+  };
+
+  // Errors below a field are easy to miss on a long form — go to the first one
+  const focusFirstError = (found: Record<string, string>) => {
+    const first = fields.find((field) => found[field.name]);
+    if (first) controls.current[first.name]?.focus();
   };
 
   // The API route (/api/quote) re-validates against the same field
   // definitions, builds the email and delivers it
   const handleSubmit = async () => {
-    if (!validate() || sending) return;
+    if (sending) return;
+    const invalid = validate();
+    setErrors(invalid);
+    if (Object.keys(invalid).length > 0) {
+      focusFirstError(invalid);
+      return;
+    }
     setSubmitError("");
     setSending(true);
     try {
@@ -116,6 +152,7 @@ export default function QuoteForm({
           subject: subject ?? `Αίτημα προσφοράς: ${productTitle}`,
           categoryLabel,
           values,
+          sourcePath: window.location.pathname,
           company: honeypot,
         }),
       });
@@ -123,11 +160,20 @@ export default function QuoteForm({
         setSubmitted(true);
         return;
       }
+      // Field-level errors speak for themselves — no generic banner on top
       if (res.status === 422) {
         const data = await res.json().catch(() => null);
-        if (data?.fields) setErrors(data.fields);
+        if (data?.fields && Object.keys(data.fields).length > 0) {
+          setErrors(data.fields);
+          focusFirstError(data.fields);
+          return;
+        }
       }
-      setSubmitError("Κάτι πήγε στραβά κατά την αποστολή. Δοκιμάστε ξανά ή καλέστε μας απευθείας.");
+      setSubmitError(
+        res.status === 429
+          ? "Έχουν σταλεί πολλά αιτήματα από τη σύνδεσή σας. Δοκιμάστε ξανά σε λίγο ή καλέστε μας απευθείας."
+          : "Κάτι πήγε στραβά κατά την αποστολή. Δοκιμάστε ξανά ή καλέστε μας απευθείας."
+      );
     } catch {
       setSubmitError("Κάτι πήγε στραβά κατά την αποστολή. Δοκιμάστε ξανά ή καλέστε μας απευθείας.");
     } finally {
@@ -149,7 +195,9 @@ export default function QuoteForm({
 
   const renderError = (name: string) =>
     errors[name] ? (
-      <p style={{ color: "#dc2626", fontSize: "13px", margin: "6px 0 0" }}>{errors[name]}</p>
+      <p id={errorId(name)} style={{ color: "#dc2626", fontSize: "13px", margin: "6px 0 0" }}>
+        {errors[name]}
+      </p>
     ) : null;
 
   // The consent label carries a link — split the label text around it
@@ -171,15 +219,28 @@ export default function QuoteForm({
   const placeholderFor = (field: QuoteField) =>
     (field.placeholder ?? field.label) + (field.required ? " *" : "");
 
+  // Shared by every control type: identity, autofill and error wiring
+  const controlProps = (field: QuoteField) => ({
+    id: fieldId(field.name),
+    name: field.name,
+    autoComplete: field.autoComplete,
+    "aria-invalid": errors[field.name] ? true : undefined,
+    "aria-describedby": errors[field.name] ? errorId(field.name) : undefined,
+    onFocus: focusOn,
+    onBlur: focusOff,
+  });
+
   const renderControl = (field: QuoteField) => {
     switch (field.type) {
       case "select":
         return (
           <select
-            value={typeof values[field.name] === "string" ? (values[field.name] as string) : ""}
+            {...controlProps(field)}
+            ref={(el) => {
+              controls.current[field.name] = el;
+            }}
+            value={textValue(field.name)}
             onChange={(e) => setValue(field.name, e.target.value)}
-            onFocus={focusOn}
-            onBlur={focusOff}
             style={{ ...INPUT, color: values[field.name] ? "#1a1a1a" : "#9aa1ac", cursor: "pointer" }}
           >
             <option value="" disabled>{placeholderFor(field)}</option>
@@ -191,11 +252,13 @@ export default function QuoteForm({
       case "textarea":
         return (
           <textarea
+            {...controlProps(field)}
+            ref={(el) => {
+              controls.current[field.name] = el;
+            }}
             rows={3}
-            value={typeof values[field.name] === "string" ? (values[field.name] as string) : ""}
+            value={textValue(field.name)}
             onChange={(e) => setValue(field.name, e.target.value)}
-            onFocus={focusOn}
-            onBlur={focusOff}
             placeholder={placeholderFor(field)}
             style={{ ...INPUT, resize: "vertical" }}
           />
@@ -203,11 +266,13 @@ export default function QuoteForm({
       default:
         return (
           <input
+            {...controlProps(field)}
+            ref={(el) => {
+              controls.current[field.name] = el;
+            }}
             type={field.type}
-            value={typeof values[field.name] === "string" ? (values[field.name] as string) : ""}
+            value={textValue(field.name)}
             onChange={(e) => setValue(field.name, e.target.value)}
-            onFocus={focusOn}
-            onBlur={focusOff}
             placeholder={placeholderFor(field)}
             style={INPUT}
           />
@@ -223,8 +288,15 @@ export default function QuoteForm({
               animated .consent-box right after it is what the visitor sees */}
           <input
             type="checkbox"
+            id={fieldId(field.name)}
+            name={field.name}
+            ref={(el) => {
+              controls.current[field.name] = el;
+            }}
             checked={values[field.name] === true}
             onChange={(e) => setValue(field.name, e.target.checked)}
+            aria-invalid={errors[field.name] ? true : undefined}
+            aria-describedby={errors[field.name] ? errorId(field.name) : undefined}
             style={{ position: "absolute", opacity: 0, width: "18px", height: "18px", margin: 0, cursor: "pointer" }}
           />
           <span className={`consent-box${values[field.name] === true ? " checked" : ""}`} aria-hidden="true">
@@ -238,6 +310,10 @@ export default function QuoteForm({
       </div>
     ) : (
       <div key={field.name}>
+        <label htmlFor={fieldId(field.name)} style={SR_ONLY}>
+          {field.label}
+          {field.required ? " (υποχρεωτικό)" : ""}
+        </label>
         {renderControl(field)}
         {renderError(field.name)}
       </div>
@@ -297,7 +373,7 @@ export default function QuoteForm({
       />
 
       {submitError && (
-        <p style={{ color: "#dc2626", fontSize: "14px", margin: 0 }}>{submitError}</p>
+        <p role="alert" style={{ color: "#dc2626", fontSize: "14px", margin: 0 }}>{submitError}</p>
       )}
 
       <button

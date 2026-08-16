@@ -17,6 +17,7 @@ type Payload = {
   subject?: unknown;
   categoryLabel?: unknown;
   values?: unknown;
+  sourcePath?: unknown; // page the form was submitted from, e.g. "/prosfora/ygeia"
   company?: unknown; // honeypot — real users never fill it
 };
 
@@ -96,10 +97,28 @@ export async function POST(request: Request) {
   const categoryLabel = typeof payload.categoryLabel === "string" ? oneLine(payload.categoryLabel, 120) : "";
   if (categoryLabel) entries.push({ label: "Κατηγορία", value: categoryLabel });
   for (const field of fields) {
-    if (field.type === "checkbox") continue;
     const raw = values[field.name];
+    // The GDPR consent is the reason we may hold this data — record it
+    if (field.type === "checkbox") {
+      entries.push({ label: field.emailLabel ?? field.label, value: raw === true ? "Ναι" : "Όχι" });
+      continue;
+    }
     const text = typeof raw === "string" ? raw.trim().slice(0, 2000) : "";
     if (text) entries.push({ label: field.label, value: text });
+  }
+
+  // When and from where the consent was given — the other half of the record
+  entries.push({
+    label: "Υποβλήθηκε",
+    value: `${new Date().toLocaleString("el-GR", {
+      timeZone: "Europe/Athens",
+      dateStyle: "medium",
+      timeStyle: "short",
+    })} (ώρα Ελλάδας)`,
+  });
+  const sourcePath = typeof payload.sourcePath === "string" ? oneLine(payload.sourcePath, 200) : "";
+  if (/^\/[A-Za-z0-9\-_/]*$/.test(sourcePath)) {
+    entries.push({ label: "Σελίδα", value: sourcePath });
   }
 
   const subject = oneLine(

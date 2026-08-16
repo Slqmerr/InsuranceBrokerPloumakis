@@ -10,6 +10,8 @@ export type QuoteField = {
   options?: string[]; // only for type "select"
   placeholder?: string;
   link?: { text: string; href: string }; // substring of label rendered as a link
+  autoComplete?: string; // browser autofill hint, e.g. "given-name"
+  emailLabel?: string; // shorter label for the delivered email, when `label` is a sentence
 };
 
 type QuoteProfile = {
@@ -19,11 +21,11 @@ type QuoteProfile = {
 };
 
 export const BASE_TOP: QuoteField[] = [
-  { name: "firstName", label: "Όνομα", type: "text", required: true },
-  { name: "lastName", label: "Επώνυμο", type: "text", required: true },
-  { name: "phone", label: "Τηλέφωνο (Κινητό ή Σταθερό)", type: "tel", required: true },
-  { name: "email", label: "E-mail", type: "email", required: true },
-  { name: "area", label: "Περιοχή / Πόλη", type: "text" },
+  { name: "firstName", label: "Όνομα", type: "text", required: true, autoComplete: "given-name" },
+  { name: "lastName", label: "Επώνυμο", type: "text", required: true, autoComplete: "family-name" },
+  { name: "phone", label: "Τηλέφωνο (Κινητό ή Σταθερό)", type: "tel", required: true, autoComplete: "tel" },
+  { name: "email", label: "E-mail", type: "email", required: true, autoComplete: "email" },
+  { name: "area", label: "Περιοχή / Πόλη", type: "text", autoComplete: "address-level2" },
   {
     name: "contactPref",
     label: "Προτιμώμενος τρόπος επικοινωνίας",
@@ -41,6 +43,7 @@ export const BASE_BOTTOM: QuoteField[] = [
     type: "checkbox",
     required: true, // GDPR — collecting personal data requires explicit consent
     link: { text: "Πολιτική Απορρήτου", href: "/politiki-aporritou" },
+    emailLabel: "Συγκατάθεση (Πολιτική Απορρήτου)",
   },
 ];
 
@@ -127,7 +130,7 @@ export const PROFILES: Record<string, QuoteProfile> = {
   },
   BUSINESS_PLACE: {
     fields: [
-      { name: "companyName", label: "Επωνυμία επιχείρησης", type: "text", required: true },
+      { name: "companyName", label: "Επωνυμία επιχείρησης", type: "text", required: true, autoComplete: "organization" },
       { name: "activity", label: "Κλάδος / Δραστηριότητα", type: "text", required: true },
       { name: "employees", label: "Αριθμός εργαζομένων", type: "number" },
       { name: "sqm", label: "Τετραγωνικά μέτρα χώρου", type: "number" },
@@ -147,7 +150,7 @@ export const PROFILES: Record<string, QuoteProfile> = {
   },
   GROUP: {
     fields: [
-      { name: "companyName", label: "Επωνυμία επιχείρησης", type: "text", required: true },
+      { name: "companyName", label: "Επωνυμία επιχείρησης", type: "text", required: true, autoComplete: "organization" },
       { name: "employees", label: "Αριθμός εργαζομένων προς κάλυψη", type: "number", required: true },
       { name: "activity", label: "Κλάδος / Δραστηριότητα", type: "text" },
       {
@@ -160,7 +163,7 @@ export const PROFILES: Record<string, QuoteProfile> = {
   },
   CARGO: {
     fields: [
-      { name: "companyName", label: "Επωνυμία επιχείρησης", type: "text", required: true },
+      { name: "companyName", label: "Επωνυμία επιχείρησης", type: "text", required: true, autoComplete: "organization" },
       { name: "goodsType", label: "Είδος εμπορευμάτων", type: "text", required: true },
       {
         name: "transportMode",
