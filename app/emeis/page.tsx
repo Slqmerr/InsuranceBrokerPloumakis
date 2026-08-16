@@ -289,6 +289,7 @@ export default function EmeisPage() {
             fill
             sizes="(max-width: 900px) 100vw, 40vw"
             preload
+            placeholder="blur"
             initial={{ opacity: 0, scale: 1.12, x: 48 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}

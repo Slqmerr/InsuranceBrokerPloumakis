@@ -58,6 +58,7 @@ export default function MeetDimitrios() {
             src={dimitriosPhoto}
             alt="Δημήτριος Πλουμάκης"
             sizes="(max-width: 900px) 100vw, 50vw"
+            placeholder="blur"
             style={{ width: "100%", height: "100%", minHeight: "440px", objectFit: "cover", objectPosition: "center top", display: "block" }}
           />
         </motion.div>

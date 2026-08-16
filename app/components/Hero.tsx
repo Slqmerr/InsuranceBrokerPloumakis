@@ -62,17 +62,22 @@ export default function Hero() {
         fill
         sizes="100vw"
         preload
+        placeholder="blur"
         style={{
           objectFit: "cover",
           objectPosition: "center 20%",
         }}
       />
 
-      {/* Red gradient overlay — solid near the text, fading out toward the photo */}
+      {/* Red gradient overlay — the color ramps down alongside the alpha. Full brand
+          red holds through the first ~35%, which is where the text column sits (a
+          560px content box), so the headline keeps its red backdrop and contrast.
+          Past that it shifts to a darkened red (half the red channel of #a30000) so
+          the photo itself takes a near-neutral scrim instead of a red wash. */}
       <div style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(100deg, rgba(163, 0, 0, 0.37) 0%, rgba(163, 0, 0, 0.31) 35%, rgba(163,0,0,0.35) 70%, rgba(163,0,0,0.15) 100%)",
+        background: "linear-gradient(100deg, rgba(163,0,0,0.42) 0%, rgba(155,0,0,0.34) 35%, rgba(82,0,0,0.24) 65%, rgba(82,0,0,0.12) 100%)",
       }} />
 {/* KANE ZOOM TO IMAGE KAI POSITION DEKSIA*/}
       {/* Text content */}

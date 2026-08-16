@@ -9,7 +9,22 @@ const nextConfig: NextConfig = {
     // fallback `src` pointed at. Dropping it and the near-duplicate 750 takes
     // the srcSet from eight candidates to six without changing what any real
     // viewport receives.
+    //
+    // scripts/optimize-photos.mjs now caps every source at 2048 to match the
+    // largest entry here, so no transform decodes pixels it will discard.
     deviceSizes: [640, 828, 1080, 1200, 1920, 2048],
+
+    // The default is 4 hours, which on a site with this little traffic means
+    // most visitors are the one paying for a cold transform. This only affects
+    // the product photos: everything else is a static import, so it is served
+    // from a content-hashed /_next/static URL whose `immutable` header already
+    // wins over this value. The product photos come out of the CMS as plain
+    // /products/*.jpg strings, so they get whatever this says.
+    //
+    // There is no way to invalidate the optimizer cache, so replacing a product
+    // photo in place will keep serving the old one for up to a month — rename
+    // the file (and update the `image` field in the CMS) to bust it.
+    minimumCacheTTL: 2678400, // 31 days
   },
 };
 

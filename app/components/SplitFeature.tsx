@@ -63,6 +63,7 @@ export default function SplitFeature({
       src={imageSrc}
       alt={imageAlt}
       sizes="(max-width: 900px) 100vw, 50vw"
+      placeholder="blur"
       className={`split-img ${reverse ? "split-img-right" : "split-img-left"}`}
       initial={{ opacity: 0, x: reverse ? 40 : -40 }}
       whileInView={{ opacity: 1, x: 0 }}
