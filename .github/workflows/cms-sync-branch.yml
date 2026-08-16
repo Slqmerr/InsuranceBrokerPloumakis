@@ -1,0 +1,96 @@
+# Keeps the pinned CMS branch level with master.
+#
+# Why this exists: the panel is pinned to one long-lived branch (cms/edits, see
+# app/keystatic/editorBranch.ts) instead of a fresh branch per save, so that
+# branch never gets deleted after its pull request merges — it just stays where
+# it was and starts drifting behind master. A squash merge makes that worse: the
+# edit is live on master, yet the branch keeps its own commit for it, so the
+# merge base goes stale and the next content PR is measured from the wrong
+# point. Realigning after every push to master keeps each content PR down to the
+# single edit the editor actually made.
+#
+# It also creates the branch if it is missing, which is what bootstraps the
+# whole arrangement — the pinning in proxy.ts stays switched off until both this
+# branch and NEXT_PUBLIC_KEYSTATIC_BRANCH exist.
+name: Sync CMS branch with master
+
+on:
+  push:
+    branches:
+      - master
+
+# The repo default for GITHUB_TOKEN is read-only; moving a branch needs write.
+# Note this is write to cms/edits, never to master — master's protection is
+# untouched by anything here.
+permissions:
+  contents: write
+
+concurrency:
+  # Two pushes in close succession would otherwise race to move the same ref,
+  # and the loser's --force-with-lease would fail the run for no good reason.
+  # Queued rather than cancelled: every push to master deserves its realign.
+  group: cms-sync-branch
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # The ancestry checks below need real history, not the single commit
+          # a default checkout fetches.
+          fetch-depth: 0
+
+      - name: Realign the CMS branch with master
+        env:
+          # Must match NEXT_PUBLIC_KEYSTATIC_BRANCH in the Vercel project.
+          BRANCH: cms/edits
+        run: |
+          set -euo pipefail
+
+          # Not left to actions/checkout's internals: the script needs the
+          # remote-tracking ref for BRANCH specifically, and asking for it
+          # outright is cheaper than depending on how the action expands
+          # fetch-depth 0.
+          git fetch --prune origin "+refs/heads/*:refs/remotes/origin/*"
+
+          master=$(git rev-parse HEAD)
+
+          if ! git show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
+            echo "$BRANCH does not exist yet — creating it at master."
+            git push origin "$master:refs/heads/$BRANCH"
+            exit 0
+          fi
+
+          edits=$(git rev-parse "refs/remotes/origin/$BRANCH")
+
+          if [ "$edits" = "$master" ]; then
+            echo "$BRANCH is already at master — nothing to do."
+            exit 0
+          fi
+
+          # Behind master with nothing of its own: an ordinary fast-forward,
+          # no force required.
+          if git merge-base --is-ancestor "$edits" "$master"; then
+            echo "$BRANCH is behind master — fast-forwarding."
+            git push origin "$master:refs/heads/$BRANCH"
+            exit 0
+          fi
+
+          # It carries commits master does not, but the files are identical, so
+          # the edit is already published — this is exactly what a squash merge
+          # leaves behind. That history has no value on its own and dropping it
+          # is what stops the drift.
+          if git diff --quiet "$master" "$edits"; then
+            echo "$BRANCH matches master's content but not its history — resetting."
+            git push --force-with-lease="refs/heads/$BRANCH:$edits" \
+              origin "$master:refs/heads/$BRANCH"
+            exit 0
+          fi
+
+          # Genuinely unpublished content: an open content PR, most likely.
+          # Moving the branch here would throw the editor's work away, so it is
+          # left alone; the push that merges that PR lands in one of the cases
+          # above and realigns it then.
+          echo "::notice::$BRANCH holds content that is not on master yet — left untouched."

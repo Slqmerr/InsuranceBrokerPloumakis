@@ -52,6 +52,22 @@ jobs:
             exit 0
           fi
 
+          # A branch that holds nothing master doesn't already have has no PR
+          # to propose, and `gh pr create` treats that as an error ("No commits
+          # between ..."), failing the run. It happens whenever cms/edits is
+          # first pushed straight from master by hand. Realignments by
+          # cms-sync-branch.yml don't reach here at all — a push made with
+          # GITHUB_TOKEN never triggers another workflow — but a person
+          # recreating the branch does.
+          #
+          # {owner}/{repo} would need a checkout to expand, and this job has
+          # none, so the repository is named outright.
+          state=$(gh api "repos/$GITHUB_REPOSITORY/compare/$BASE...$BRANCH" --jq '.status')
+          if [ "$state" = "identical" ] || [ "$state" = "behind" ]; then
+            echo "$BRANCH is $state to $BASE — nothing to propose."
+            exit 0
+          fi
+
           # First line only; Keystatic appends a Co-authored-by trailer.
           title=$(printf '%s' "$SUBJECT" | head -n 1)
           [ -n "$title" ] || title="Content update on $BRANCH"
