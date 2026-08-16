@@ -8,7 +8,7 @@ import { GraduationCap, Building2, LifeBuoy, TrendingUp, ChevronDown, UserPlus, 
 import Footer from "../components/Footer";
 import PartnersMarquee from "../components/PartnersMarquee";
 import QuoteForm from "../components/QuoteForm";
-import heroPhoto from "@/public/634A9690.jpg";
+import heroPhoto from "@/public/634A9682.jpg";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
@@ -270,14 +270,15 @@ export default function SynergasiaPage() {
               and is what the ≤900px height override targets. */}
           <MotionImage
             src={heroPhoto}
-            alt="Δημήτριος Πλουμάκης"
+            alt="Ο χώρος του γραφείου"
             fill
             sizes="(max-width: 900px) 100vw, 42vw"
             preload
+            placeholder="blur"
             initial={{ opacity: 0, scale: 1.12, x: 48 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-            style={{ objectFit: "cover", objectPosition: "center top" }}
+            style={{ objectFit: "cover", objectPosition: "center" }}
           />
           <motion.div
             initial={{ opacity: 0 }}

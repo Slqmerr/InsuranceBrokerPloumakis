@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import familyPhoto from "@/public/family.jpg";
+import officePhoto from "@/public/634A9650.jpg";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
@@ -128,9 +128,10 @@ export default function PartnershipCTA() {
           {/* CSS-sized, not `fill` — preserves the `.partner-photo img` height
               override at ≤900px. */}
           <Image
-            src={familyPhoto}
-            alt="Συνεργασία"
+            src={officePhoto}
+            alt="Το γραφείο του Δημήτριου Πλουμάκη"
             sizes="(max-width: 900px) 100vw, 50vw"
+            placeholder="blur"
             style={{ width: "100%", height: "100%", minHeight: "440px", objectFit: "cover", objectPosition: "center", display: "block" }}
           />
         </motion.div>
