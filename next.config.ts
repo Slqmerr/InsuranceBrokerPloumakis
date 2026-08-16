@@ -19,6 +19,18 @@ const nextConfig: NextConfig = {
     },
   },
 
+  // /api/product-index is the only route that reads content/ at request time
+  // rather than at build time (it feeds the Keystatic «Σειρά στο μενού» page),
+  // and Keystatic's reader builds those paths at runtime — so Next's tracer
+  // never sees them and the deployed function shipped without the content
+  // directory. The reader answers a missing directory with an empty list
+  // instead of an error, so the route returned 200 with no products and the
+  // ordering page rendered an empty box. Naming the files here puts them in
+  // that function's bundle.
+  outputFileTracingIncludes: {
+    "/api/product-index": ["./content/**/*"],
+  },
+
   images: {
     // Every distinct width in this list is a separate on-demand transform, and
     // each one is cold again after a deploy. The defaults end at 3840, but no

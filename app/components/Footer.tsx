@@ -133,8 +133,8 @@ export default function Footer() {
           {/* Social links — placeholder hrefs, swap when the real URLs are ready */}
           <div style={{ display: "flex", gap: "12px", marginTop: "20px" }}>
             {[
-              { label: "Facebook", href: "REPLACE_WITH_FACEBOOK_URL", Icon: FacebookIcon },
-              { label: "LinkedIn", href: "REPLACE_WITH_LINKEDIN_URL", Icon: LinkedinIcon },
+              { label: "Facebook", href: "https://www.facebook.com/dploumakis", Icon: FacebookIcon },
+              { label: "LinkedIn", href: "https://www.linkedin.com/in/dimitrios-ploumakis-9b0b98104/", Icon: LinkedinIcon },
             ].map(({ label, href, Icon }) => (
               <a
                 key={label}

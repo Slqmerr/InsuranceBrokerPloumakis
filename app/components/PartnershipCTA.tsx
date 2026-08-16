@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import officePhoto from "@/public/634A9650.jpg";
+import officePhoto from "@/public/634A9654.jpg";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
@@ -34,25 +34,35 @@ const arrowSlide: Variants = {
 
 export default function PartnershipCTA() {
   return (
-    <section className="section-pad" style={{ background: "#fff", padding: "88px 64px 96px" }}>
+    // Full-bleed like the split sections: no max-width cap, so the photo runs
+    // from the centre to the viewport edge. `overflow: hidden` keeps the photo's
+    // entrance transform from adding scrollable width; the 96px bottom padding
+    // clears the shadow's 56px reach, so nothing visible gets clipped.
+    <section className="partner-section" style={{ background: "#fff", padding: "88px 0 96px", overflow: "hidden" }}>
       <div
         className="partner-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "1.05fr 0.95fr",
-          gap: "64px",
-          alignItems: "center",
-          maxWidth: "1100px",
-          margin: "0 auto",
+          gridTemplateColumns: "1fr 1fr",
+          alignItems: "stretch",
         }}
       >
         {/* Huge text — left */}
         <motion.div
+          className="partner-content"
           variants={stagger}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          style={{ display: "flex", flexDirection: "column", gap: "22px" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "22px",
+            padding: "0 64px",
+            marginLeft: "auto",
+            maxWidth: "620px",
+          }}
         >
          
 
@@ -116,23 +126,21 @@ export default function PartnershipCTA() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{
             overflow: "hidden",
-            borderTopRightRadius: "160px",
-            borderBottomLeftRadius: "160px",
-            borderTopLeftRadius: "24px",
-            borderBottomRightRadius: "24px",
-            minHeight: "440px",
+            borderRadius: "32px 0 0 32px",
+            // Matches the photo's native 3:2, so the storefront keeps both wings
+            // and the ratio also sets the row height (720×480 at 1440px)
+            aspectRatio: "3 / 2",
             // Theme-color shadow
             boxShadow: "0 40px 80px -24px rgba(163,0,0,0.5), 0 12px 32px -12px rgba(163,0,0,0.35)",
           }}
         >
-          {/* CSS-sized, not `fill` — preserves the `.partner-photo img` height
-              override at ≤900px. */}
+          {/* CSS-sized, not `fill` — the frame owns the ratio, the image fills it */}
           <Image
             src={officePhoto}
             alt="Το γραφείο του Δημήτριου Πλουμάκη"
             sizes="(max-width: 900px) 100vw, 50vw"
             placeholder="blur"
-            style={{ width: "100%", height: "100%", minHeight: "440px", objectFit: "cover", objectPosition: "center", display: "block" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }}
           />
         </motion.div>
       </div>

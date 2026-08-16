@@ -26,16 +26,16 @@ const CREDENTIALS = [
 
 export default function MeetDimitrios() {
   return (
-    <section className="section-pad" style={{ background: "#fbf5f5", padding: "72px 64px" }}>
+    // Full-bleed like the split sections: no max-width cap, so the photo runs
+    // from the viewport edge to the centre. `overflow: hidden` keeps the photo's
+    // entrance transform from adding scrollable width.
+    <section className="meet-section" style={{ background: "#fbf5f5", padding: "72px 0", overflow: "hidden" }}>
       <div className="meet-grid" style={{
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
-        gap: "56px",
-        alignItems: "center",
-        maxWidth: "1100px",
-        margin: "0 auto",
+        alignItems: "stretch",
       }}>
-        {/* Photo — opposite-corner pill curve, echoing the split sections */}
+        {/* Photo — flush to the viewport edge, rounded on the inner side only */}
         <motion.div
           className="meet-photo"
           initial={{ opacity: 0, x: -32 }}
@@ -44,32 +44,40 @@ export default function MeetDimitrios() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{
             overflow: "hidden",
-            borderTopLeftRadius: "160px",
-            borderBottomRightRadius: "160px",
-            borderTopRightRadius: "24px",
-            borderBottomLeftRadius: "24px",
-            minHeight: "440px",
+            borderRadius: "0 32px 32px 0",
+            // Matches the photo's native 3:2, so nothing gets cropped and the
+            // ratio also sets the row height (720×480 at a 1440px viewport).
+            // `stretch` lets the cell grow if the copy ever runs taller.
+            aspectRatio: "3 / 2",
           }}
         >
-          {/* Sized by CSS rather than `fill`, so the `.meet-photo img` height
-              override at ≤900px keeps working. The static import supplies the
-              intrinsic dimensions; `sizes` drives the srcset the browser picks. */}
+          {/* Sized by CSS rather than `fill`: the frame owns the ratio and the
+              image just fills it. The static import supplies the intrinsic
+              dimensions; `sizes` drives the srcset the browser picks. */}
           <Image
             src={dimitriosPhoto}
             alt="Δημήτριος Πλουμάκης"
             sizes="(max-width: 900px) 100vw, 50vw"
             placeholder="blur"
-            style={{ width: "100%", height: "100%", minHeight: "440px", objectFit: "cover", objectPosition: "center top", display: "block" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }}
           />
         </motion.div>
 
         {/* Content */}
         <motion.div
+          className="meet-content"
           variants={stagger}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          style={{ display: "flex", flexDirection: "column", gap: "18px" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "18px",
+            padding: "0 64px",
+            maxWidth: "620px",
+          }}
         >
           
 

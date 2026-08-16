@@ -8,7 +8,7 @@ import { GraduationCap, Building2, LifeBuoy, TrendingUp, ChevronDown, UserPlus, 
 import Footer from "../components/Footer";
 import PartnersMarquee from "../components/PartnersMarquee";
 import QuoteForm from "../components/QuoteForm";
-import heroPhoto from "@/public/634A9682.jpg";
+import heroPhoto from "@/public/634A9662.jpg";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
@@ -145,11 +145,11 @@ const FAQS = [
   },
   {
     q: "Μπορώ να ξεκινήσω με μερική απασχόληση;",
-    a: "Ναι. Πολλοί ξεκινούν ως δεύτερη δραστηριότητα και περνούν σε πλήρη απασχόληση όταν το χαρτοφυλάκιό τους μεγαλώσει. Το προσαρμόζουμε στον ρυθμό σου.",
+    a: "Ναι. Πολλοί ξεκινούν ως δεύτερη δραστηριότητα και περνούν σε πλήρη απασχόληση όταν το χαρτοφυλάκιό τους μεγαλώσει.",
   },
   {
     q: "Πώς αμείβομαι;",
-    a: "Με προμήθειες επί των συμβολαίων και πρόσθετα bonus παραγωγής. Το σύστημα είναι διαφανές και σου το εξηγούμε αναλυτικά από την πρώτη κουβέντα.",
+    a: "Με προμήθειες επί των συμβολαίων και πρόσθετα bonus παραγωγής. Το σύστημα είναι διαφανές και σου το εξηγούμε αναλυτικά από την πρώτη στιγμή.",
   },
   {
     q: "Χρειάζομαι άδεια ή πιστοποίηση;",
@@ -236,7 +236,7 @@ export default function SynergasiaContent() {
             variants={fadeUp}
             style={{ color: "rgba(255,255,255,0.92)", fontSize: "16px", lineHeight: 1.7, margin: "0 0 32px", maxWidth: "520px" }}
           >
-            Δεν χρειάζεσαι εμπειρία — χρειάζεσαι ένα δίκτυο που σε εκπαιδεύει, σε στηρίζει και σου
+            Δεν χρειάζεσαι εμπειρία. Χρειάζεσαι ένα δίκτυο που σε εκπαιδεύει, σε στηρίζει και σου
             ανοίγει πρόσβαση στις κορυφαίες ασφαλιστικές εταιρείες της αγοράς.
           </motion.p>
 
@@ -307,7 +307,7 @@ export default function SynergasiaContent() {
           viewport={{ once: true, margin: "-60px" }}
           style={{ color: "#555", fontSize: "16px", lineHeight: 1.6, textAlign: "center", maxWidth: "620px", margin: "0 auto 48px" }}
         >
-          Ό,τι χρειάζεσαι για να ξεκινήσεις σωστά και να αναπτυχθείς — σε ένα μέρος.
+          Ό,τι χρειάζεσαι για να ξεκινήσεις σωστά και να αναπτυχθείς.
         </motion.p>
 
         <motion.div
@@ -334,40 +334,7 @@ export default function SynergasiaContent() {
           ))}
         </motion.div>
       </section>
-
-      {/* === ONBOARDING PATH === */}
-      <section className="section-pad" style={{ background: "#fbf5f5", padding: "72px 64px" }}>
-        <motion.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-60px" }}
-          style={{ fontFamily: UBUNTU, fontSize: "28px", fontWeight: 700, color: "#5e0000", textAlign: "center", margin: "0 0 48px" }}
-        >
-          Η διαδρομή σου, βήμα-βήμα
-        </motion.h2>
-
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-40px" }}
-          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "24px", maxWidth: "1080px", margin: "0 auto" }}
-        >
-          {STEPS.map(({ icon: Icon, title, body }, i) => (
-            <motion.div key={title} variants={fadeUp} style={{ position: "relative", background: "#fff", borderRadius: "20px", padding: "28px 24px", boxShadow: "0 10px 30px rgba(94,0,0,0.07)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
-                <span style={{ fontFamily: UBUNTU, fontSize: "34px", fontWeight: 700, color: "#f0cfcf", lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</span>
-                <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "#a30000", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Icon size={20} color="#fff" strokeWidth={1.9} />
-                </div>
-              </div>
-              <h3 style={{ fontFamily: UBUNTU, fontSize: "17px", fontWeight: 700, color: "#5e0000", margin: "0 0 8px" }}>{title}</h3>
-              <p style={{ color: "#555", fontSize: "14px", lineHeight: 1.6, margin: 0 }}>{body}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
+      
 
       {/* === CREDIBILITY STRIP (count-up) === */}
       <section style={{ background: "#a30000", padding: "56px 64px" }}>

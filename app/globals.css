@@ -261,31 +261,33 @@ input:focus-visible + .consent-box {
     grid-template-columns: 1fr !important;
     gap: 20px !important;
   }
-  .meet-grid {
+  /* Meet / Partnership stack. Both sections are full-bleed, so the side
+     padding lives on the copy — the photo keeps running edge to edge and
+     drops its inner radius, since neither side has a neighbour any more.
+     Height still comes from the inline 3:2 aspect-ratio. */
+  .meet-section,
+  .partner-section {
+    padding: 56px 0 !important;
+  }
+  .meet-grid,
+  .partner-grid {
     grid-template-columns: 1fr !important;
     gap: 36px !important;
   }
-  .meet-photo {
-    border-top-left-radius: 100px !important;
-    border-bottom-right-radius: 100px !important;
-    min-height: 0 !important;
+  .meet-content,
+  .partner-content {
+    padding: 0 20px !important;
+    max-width: none !important;
+    margin-left: 0 !important;
   }
-  .meet-photo img {
-    min-height: 0 !important;
-    height: 340px !important;
+  .meet-photo,
+  .partner-photo {
+    border-radius: 0 !important;
   }
 
   /* Partnership CTA: text on top, image below */
   .partner-grid {
-    grid-template-columns: 1fr !important;
     gap: 40px !important;
-  }
-  .partner-photo {
-    min-height: 0 !important;
-  }
-  .partner-photo img {
-    min-height: 0 !important;
-    height: 320px !important;
   }
 
   /* Split sections: photo on top, text on the tinted band below */
