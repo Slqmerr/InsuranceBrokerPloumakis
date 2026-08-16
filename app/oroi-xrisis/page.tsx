@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import Footer from "../components/Footer";
+import { SITE_URL } from "../siteMeta";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
+
+export const metadata: Metadata = {
+  title: "Όροι Χρήσης",
+  description:
+    "Οι όροι που διέπουν τη χρήση της ιστοσελίδας dploumakis.gr, το περιεχόμενό της και τα αιτήματα προσφοράς που υποβάλλονται μέσω αυτής.",
+  alternates: { canonical: "/oroi-xrisis" },
+  openGraph: { title: "Όροι Χρήσης", url: `${SITE_URL}/oroi-xrisis` },
+};
 
 /* Section copy — reproduced verbatim, not to be translated or shortened. */
 const SECTIONS: { heading: string; body: string[] }[] = [

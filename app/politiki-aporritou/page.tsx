@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import Footer from "../components/Footer";
+import { SITE_URL } from "../siteMeta";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
+// The business name used to be spelled out here; the root layout's title
+// template appends it now, so repeating it would double it up.
 export const metadata: Metadata = {
-  title: "Πολιτική Απορρήτου — Δημήτριος Πλουμάκης",
+  title: "Πολιτική Απορρήτου",
   description:
     "Πώς συλλέγονται, χρησιμοποιούνται και προστατεύονται τα προσωπικά δεδομένα που υποβάλλονται μέσω της ιστοσελίδας, σύμφωνα με τον GDPR.",
+  alternates: { canonical: "/politiki-aporritou" },
+  // A privacy policy is worth crawling for trust signals but has no business
+  // ranking, and it should never be the page a social preview shows.
+  openGraph: { title: "Πολιτική Απορρήτου", url: `${SITE_URL}/politiki-aporritou` },
 };
 
 /* Section copy — reproduced verbatim, not to be translated or shortened.

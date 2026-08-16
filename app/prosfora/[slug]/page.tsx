@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
@@ -10,6 +11,27 @@ const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 export async function generateStaticParams() {
   // de-duplicate slugs (astiki-efthyni & cyber appear in both categories)
   return (await allSlugs()).map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const found = await productForSlug(slug);
+  if (!found) return {};
+
+  const { product } = found;
+  return {
+    title: `Ζητήστε προσφορά — ${product.title}`,
+    description: `Συμπληρώστε τη φόρμα και λάβετε εξατομικευμένη προσφορά για ${product.title}, χωρίς καμία δέσμευση.`,
+    // One of these exists per product and they are all the same form under a
+    // different heading — exactly the thin, near-duplicate page that dilutes
+    // the product pages they duplicate. Crawl the links, index the product
+    // page instead. They are left out of sitemap.ts for the same reason.
+    robots: { index: false, follow: true },
+  };
 }
 
 export default async function ProsforaPage({
@@ -55,7 +77,7 @@ export default async function ProsforaPage({
           Ζητήστε προσφορά για {product.title}
         </h1>
         <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "16px", lineHeight: 1.6, margin: 0, maxWidth: "560px" }}>
-          Συμπληρώστε τα στοιχεία σας και θα επικοινωνήσω μαζί σας με μια εξατομικευμένη προσφορά.
+          Συμπληρώστε τα στοιχεία σας και θα επικοινωνήσουμε μαζί σας με μια εξατομικευμένη προσφορά.
         </p>
       </section>
 

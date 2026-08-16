@@ -1,8 +1,26 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
 import QuoteForm from "../components/QuoteForm";
+import { OG_IMAGE, SITE_URL } from "../siteMeta";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
+
+const TITLE = "Επικοινωνία — Κλείστε ραντεβού";
+const DESCRIPTION =
+  "Κλείστε ραντεβού ή στείλτε μας την ερώτησή σας. Ασφαλιστικό γραφείο Δημήτριου Πλουμάκη, Κυδωνίας 8, Ηράκλειο Κρήτης — τηλ. 2810 326400.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/epikoinonia" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: `${SITE_URL}/epikoinonia`,
+    images: [OG_IMAGE],
+  },
+};
 
 // General contact page — questions & appointment requests. Every generic
 // "Κλείσε Ραντεβού" CTA (navbar, homepage hero, dropdown panels) lands here.

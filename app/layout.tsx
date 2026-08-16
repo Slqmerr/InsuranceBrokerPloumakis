@@ -3,6 +3,7 @@ import { Ubuntu_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import { navProducts } from "./components/cmsProducts";
+import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "./siteMeta";
 
 const ubuntuSans = Ubuntu_Sans({
   subsets: ["latin", "greek"], // "greek" subset is required — without it, Greek characters won't load correctly
@@ -10,9 +11,42 @@ const ubuntuSans = Ubuntu_Sans({
   variable: "--font-ubuntu-sans",
 });
 
+// Defaults only — every route is expected to override `title` and
+// `description` with something of its own. `metadataBase` is what lets the
+// relative URLs below (and the per-page `alternates.canonical`) resolve to
+// absolute ones, which is a hard requirement for og:image and canonical tags.
 export const metadata: Metadata = {
-  title: "PloumakisAgency",
-  description: "Insurance Broker",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} | Ασφάλειες Ηράκλειο`,
+    // Pages set a bare title; the business name is appended here so no page
+    // has to remember to carry it.
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: "Δημήτριος Πλουμάκης" }],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "el_GR",
+    siteName: SITE_NAME,
+    url: SITE_URL,
+    title: `${SITE_NAME} | Ασφάλειες Ηράκλειο`,
+    description: SITE_DESCRIPTION,
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} | Ασφάλειες Ηράκλειο`,
+    description: SITE_DESCRIPTION,
+    images: [OG_IMAGE.url],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
 };
 
 // The navbar lives here rather than in each page so its product list can come
