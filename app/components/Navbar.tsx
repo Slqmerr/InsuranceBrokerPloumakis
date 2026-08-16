@@ -5,16 +5,24 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/public/logo_white-2.png";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import { ChevronDown, Phone, MapPin, Menu, X, ArrowRight } from "lucide-react";
 import type { NavProduct } from "./cmsProducts";
 import { navIconFor } from "./navIcons";
 
-gsap.registerPlugin(useGSAP);
-
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 const MotionLink = motion.create(Link);
+
+/** GSAP, fetched at the point of use instead of imported at the top of the
+ *  file. This component renders in the root layout, so a static import puts
+ *  the whole engine (~28KB gzipped) on the critical path of every page on the
+ *  site — to animate one drawer that only exists below 1199px and only moves
+ *  once someone taps the burger. Behind a dynamic import it lands in its own
+ *  chunk that most visits never request.
+ *
+ *  The promise is cached at module scope so repeated opens reuse one fetch. */
+type Gsap = typeof import("gsap").default;
+let gsapChunk: Promise<Gsap> | null = null;
+const loadGsap = () => (gsapChunk ??= import("gsap").then((m) => m.default));
 
 /** Product lists come from the CMS, fetched in app/layout.tsx (a server
  *  component) and passed down — this component is client-side and can't read
@@ -39,33 +47,64 @@ export default function Navbar({
   // Mobile drawer stays mounted; GSAP slides it in from the right edge and
   // fades the backdrop. visibility is toggled so the closed drawer can't be
   // tabbed into or clicked.
-  useGSAP(() => {
-    const drawer = drawerRef.current;
-    const backdrop = drawerBackdropRef.current;
-    if (!drawer || !backdrop) return;
+  //
+  // The closed state is already the drawer's own inline style, so the run this
+  // effect used to do on mount had nothing to show — skipping it until the
+  // first open is what keeps the GSAP chunk unfetched on a visit that never
+  // touches the menu.
+  const hasOpened = React.useRef(false);
+  React.useEffect(() => {
+    if (!mobileOpen && !hasOpened.current) return;
+    hasOpened.current = true;
 
-    if (mobileOpen) {
-      gsap.set([drawer, backdrop], { visibility: "visible" });
-      gsap.to(backdrop, { opacity: 1, duration: 0.3, ease: "power1.out", overwrite: "auto" });
-      gsap.fromTo(drawer,
-        { xPercent: 100 },
-        { xPercent: 0, duration: 0.5, ease: "power3.out", overwrite: "auto" },
-      );
-      gsap.fromTo(".drawer-item",
-        { x: 40, autoAlpha: 0 },
-        { x: 0, autoAlpha: 1, duration: 0.4, stagger: 0.06, delay: 0.12, ease: "power2.out", overwrite: "auto" },
-      );
-    } else {
-      gsap.to(backdrop, { opacity: 0, duration: 0.25, ease: "power1.in", overwrite: "auto" });
-      gsap.to(drawer, {
-        xPercent: 100,
-        duration: 0.38,
-        ease: "power3.in",
-        overwrite: "auto",
-        onComplete: () => gsap.set([drawer, backdrop], { visibility: "hidden" }),
-      });
+    let cancelled = false;
+    void loadGsap().then((gsap) => {
+      const drawer = drawerRef.current;
+      const backdrop = drawerBackdropRef.current;
+      if (cancelled || !drawer || !backdrop) return;
+
+      if (mobileOpen) {
+        gsap.set([drawer, backdrop], { visibility: "visible" });
+        gsap.to(backdrop, { opacity: 1, duration: 0.3, ease: "power1.out", overwrite: "auto" });
+        gsap.fromTo(drawer,
+          { xPercent: 100 },
+          { xPercent: 0, duration: 0.5, ease: "power3.out", overwrite: "auto" },
+        );
+        // useGSAP used to scope a bare ".drawer-item" selector string to
+        // drawerRef; without that hook the lookup has to say so itself.
+        gsap.fromTo(drawer.querySelectorAll(".drawer-item"),
+          { x: 40, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.4, stagger: 0.06, delay: 0.12, ease: "power2.out", overwrite: "auto" },
+        );
+      } else {
+        gsap.to(backdrop, { opacity: 0, duration: 0.25, ease: "power1.in", overwrite: "auto" });
+        gsap.to(drawer, {
+          xPercent: 100,
+          duration: 0.38,
+          ease: "power3.in",
+          overwrite: "auto",
+          onComplete: () => gsap.set([drawer, backdrop], { visibility: "hidden" }),
+        });
+      }
+    });
+
+    return () => { cancelled = true; };
+  }, [mobileOpen]);
+
+  // Pull the GSAP chunk down during idle time so the first tap on the burger
+  // animates instead of waiting on a network round trip. Gated on the same
+  // breakpoint that reveals the burger (globals.css, ≤1199px) — a desktop
+  // visitor can't open the drawer, so it should never spend the bytes.
+  React.useEffect(() => {
+    if (!window.matchMedia("(max-width: 1199px)").matches) return;
+
+    if (typeof window.requestIdleCallback !== "function") {
+      const timer = window.setTimeout(() => void loadGsap(), 2000);
+      return () => window.clearTimeout(timer);
     }
-  }, { dependencies: [mobileOpen], scope: drawerRef });
+    const handle = window.requestIdleCallback(() => void loadGsap());
+    return () => window.cancelIdleCallback(handle);
+  }, []);
 
   // The top address strip scrolls away while the nav is sticky, so the
   // dropdown's anchor point moves — track the nav's real bottom edge.
@@ -563,7 +602,8 @@ export default function Navbar({
       </AnimatePresence>
 
       {/* Mobile drawer — stays mounted; GSAP slides the panel in from the
-          right edge (see the useGSAP block above) */}
+          right edge (see the drawer effect above). The closed state below is
+          what that effect leans on to stay dormant until the first open. */}
       <div
         ref={drawerBackdropRef}
         onClick={closeMenu}
