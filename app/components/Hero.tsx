@@ -70,14 +70,15 @@ export default function Hero() {
       />
 
       {/* Red gradient overlay — the color ramps down alongside the alpha. Full brand
-          red holds through the first ~35%, which is where the text column sits (a
-          560px content box), so the headline keeps its red backdrop and contrast.
-          Past that it shifts to a darkened red (half the red channel of #a30000) so
-          the photo itself takes a near-neutral scrim instead of a red wash. */}
-      <div style={{
+          red is held to the first ~30%, where the 560px text column sits, so the
+          headline keeps its red backdrop and contrast. It then desaturates fast:
+          by ~46% — roughly where the face lands at desktop widths — the wash is a
+          warm near-neutral at low alpha, so the portrait takes a plain scrim
+          rather than a red one, and the eye stays on the text. */}
+      <div className="hero-overlay" style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(100deg, rgba(163,0,0,0.42) 0%, rgba(155,0,0,0.34) 35%, rgba(82,0,0,0.24) 65%, rgba(82,0,0,0.12) 100%)",
+        background: "linear-gradient(100deg, rgba(163,0,0,0.46) 0%, rgba(158,0,0,0.38) 30%, rgba(64,14,14,0.22) 46%, rgba(28,10,10,0.16) 68%, rgba(28,10,10,0.12) 100%)",
       }} />
 {/* KANE ZOOM TO IMAGE KAI POSITION DEKSIA*/}
       {/* Text content */}

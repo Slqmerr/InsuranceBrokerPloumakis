@@ -27,23 +27,37 @@ body {
 
 /* ── Partners marquee ── */
 .marquee-viewport {
+  position: relative;
   overflow: hidden;
   width: 100%;
-  /* soft fade on both edges */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 8%,
-    #000 92%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 8%,
-    #000 92%,
-    transparent 100%
-  );
+  /* colour of the band the strip sits on — the edge fade paints with it */
+  --marquee-fade: #fbf5f5;
+}
+
+/* Soft fade on both edges, painted as overlays rather than a mask-image.
+   Masking the viewport makes the browser re-composite the moving track every
+   frame on the main thread, which is what let a busy page (the count-up on
+   /synergasia) stall the scroll. The band is a flat colour, so an opaque
+   gradient is pixel-identical to the mask it replaces. */
+.marquee-viewport::before,
+.marquee-viewport::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.marquee-viewport::before {
+  left: 0;
+  background: linear-gradient(to right, var(--marquee-fade), transparent);
+}
+
+.marquee-viewport::after {
+  right: 0;
+  background: linear-gradient(to left, var(--marquee-fade), transparent);
 }
 
 .marquee-track {
@@ -51,19 +65,18 @@ body {
   width: max-content;
   /* the content is duplicated once, so -50% wraps seamlessly */
   animation: marquee-scroll 32s linear infinite;
-}
-
-/* pause while the visitor inspects a logo */
-.marquee-viewport:hover .marquee-track {
-  animation-play-state: running;
+  /* hand the track its own compositor layer, so main-thread work — count-ups,
+     scroll handlers, image decodes — can't freeze it */
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 @keyframes marquee-scroll {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
@@ -221,10 +234,46 @@ input:focus-visible + .consent-box {
     grid-template-columns: auto auto !important;
     justify-content: space-between !important;
   }
+
+  /* Hero: the stage narrows but the copy box didn't, so a 42px headline in a
+     432px measure ran nearly to mid-screen. Step the type and the column down
+     together — the layout is unchanged, only its scale. */
+  .hero-title {
+    font-size: 38px !important;
+  }
+  .hero-content {
+    max-width: 520px !important;
+    padding: 0 48px !important;
+  }
+  /* Below this width the photo's subject sits under the copy rather than
+     beside it, so the wash carries more of the contrast. Same colour and
+     direction as the desktop ramp, just held longer. */
+  .hero-overlay {
+    background: linear-gradient(
+      100deg,
+      rgba(163, 0, 0, 0.62) 0%,
+      rgba(150, 0, 0, 0.5) 38%,
+      rgba(60, 12, 12, 0.34) 62%,
+      rgba(28, 10, 10, 0.2) 100%
+    ) !important;
+  }
 }
 
 /* ── ≤1024px — grids tighten ── */
 @media (max-width: 1024px) {
+  /* 640px of hero plus the 124px nav is the whole of a 768px-tall tablet, so
+     the strip never peeked out. */
+  .hero-section {
+    height: 560px !important;
+  }
+  .hero-title {
+    font-size: 34px !important;
+  }
+  .hero-content {
+    max-width: 470px !important;
+    padding: 0 44px !important;
+  }
+
   .why-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
@@ -257,6 +306,17 @@ input:focus-visible + .consent-box {
 
 /* ── ≤900px — two-column layouts stack ── */
 @media (max-width: 900px) {
+  .hero-section {
+    height: 520px !important;
+  }
+  .hero-title {
+    font-size: 32px !important;
+  }
+  .hero-content {
+    max-width: 430px !important;
+    padding: 0 36px !important;
+  }
+
   .steps-grid {
     grid-template-columns: 1fr !important;
     gap: 20px !important;
@@ -365,11 +425,32 @@ input:focus-visible + .consent-box {
   }
   .hero-content {
     height: auto !important;
-    max-width: 100% !important;
+    /* not 100%: at 768 the headline ran the full 720px in one line. The cap
+       only bites on the wider phones and small tablets — below ~620px the
+       viewport is the constraint anyway. */
+    max-width: 620px !important;
     padding: 64px 24px 200px !important;
   }
   .hero-title {
     font-size: 30px !important;
+  }
+  /* Portrait box: the ramp runs mostly across at 100deg, which left the lower
+     half of a tall hero barely washed. Tip it down the column instead. */
+  .hero-overlay {
+    background: linear-gradient(
+      165deg,
+      rgba(163, 0, 0, 0.7) 0%,
+      rgba(140, 0, 0, 0.56) 45%,
+      rgba(60, 10, 10, 0.44) 75%,
+      rgba(28, 10, 10, 0.4) 100%
+    ) !important;
+  }
+  /* 72px between marks left barely two logos on screen at a time, both of them
+     cut by the fade. Tighter gap, and the track's trailing pad has to match it
+     or the -50% loop stops being seamless. */
+  .hero-marquee > div {
+    gap: 36px !important;
+    padding-right: 36px !important;
   }
 
   /* Product card strip */
@@ -466,11 +547,22 @@ input:focus-visible + .consent-box {
   .nav-phone {
     display: none !important;
   }
+
+  .hero-title {
+    font-size: 27px !important;
+  }
+  .hero-content {
+    padding: 56px 20px 176px !important;
+  }
+  .hero-marquee {
+    bottom: 80px !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;
+    will-change: auto;
   }
   .fade-up {
     animation: none;
