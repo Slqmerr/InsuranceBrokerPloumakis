@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import logo from "@/public/logo_white-2.png";
+import mapStill from "@/public/map-office.webp";
 
 // lucide-react removed its brand glyphs (Facebook/Linkedin) in this version,
 // so the social marks are inline SVGs sized to match the contact-row icons.
@@ -22,10 +24,17 @@ function LinkedinIcon({ size = 15 }: { size?: number }) {
 }
 
 const OFFICE_ADDRESS = "Κυδωνίας 8 & Ανδρεαδάκη, 71202 Ηράκλειο";
-// Keyless Google Maps embed — geocodes the address server-side
+// Keyless Google Maps embed — geocodes the address server-side.
+// Only mounted once the visitor asks for the live map: the embed pulls well over
+// a megabyte of third-party JS, so the footer ships a self-hosted still instead
+// (public/map-office.webp — OpenStreetMap tiles at z18, centred on the office).
 const MAP_EMBED_SRC = `https://maps.google.com/maps?q=${encodeURIComponent("Κυδωνίας 8, Ηράκλειο 71202")}&z=17&hl=el&output=embed`;
+const MAP_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(OFFICE_ADDRESS)}`;
 
 export default function Footer() {
+  const [liveMap, setLiveMap] = useState(false);
+  const [mapHover, setMapHover] = useState(false);
+
   return (
     <footer className="footer" style={{
       background: "#a30000",
@@ -181,19 +190,128 @@ export default function Footer() {
           }}>
             Πού θα μας βρείτε
           </h4>
-          <iframe
-            src={MAP_EMBED_SRC}
-            title={`Χάρτης — ${OFFICE_ADDRESS}`}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            style={{
-              width: "100%",
-              height: "260px",
-              border: "1px solid rgba(255,255,255,0.15)",
-              borderRadius: "16px",
-              display: "block",
-            }}
-          />
+          <div style={{
+            position: "relative",
+            height: "260px",
+            border: "1px solid rgba(255,255,255,0.15)",
+            borderRadius: "16px",
+            overflow: "hidden",
+            background: "rgba(255,255,255,0.08)",
+          }}>
+            {liveMap ? (
+              <iframe
+                src={MAP_EMBED_SRC}
+                title={`Χάρτης — ${OFFICE_ADDRESS}`}
+                referrerPolicy="no-referrer-when-downgrade"
+                style={{ width: "100%", height: "100%", border: 0, display: "block" }}
+              />
+            ) : (
+              <>
+                <Image
+                  src={mapStill}
+                  alt={`Χάρτης — ${OFFICE_ADDRESS}`}
+                  fill
+                  sizes="(max-width: 900px) 100vw, 700px"
+                  placeholder="blur"
+                  style={{
+                    objectFit: "cover",
+                    transform: mapHover ? "scale(1.04)" : "none",
+                    transition: "transform 0.4s ease",
+                  }}
+                />
+
+                {/* Full-card hit target — swaps in the real Google embed on demand */}
+                <button
+                  type="button"
+                  onClick={() => setLiveMap(true)}
+                  onMouseEnter={() => setMapHover(true)}
+                  onMouseLeave={() => setMapHover(false)}
+                  aria-label="Φόρτωση διαδραστικού χάρτη"
+                  title="Φόρτωση διαδραστικού χάρτη"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    padding: 0,
+                    border: 0,
+                    background: "transparent",
+                    cursor: "pointer",
+                    font: "inherit",
+                  }}
+                >
+                  {/* Pin tip sits on the office — the still is centred on it */}
+                  <span style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -100%)",
+                    filter: "drop-shadow(0 3px 5px rgba(0,0,0,0.35))",
+                    lineHeight: 0,
+                  }}>
+                    <svg width="30" height="35" viewBox="0 0 24 28" aria-hidden="true">
+                      <path
+                        d="M12 1.5c-4.7 0-8.5 3.8-8.5 8.5 0 6.2 8.5 16.5 8.5 16.5s8.5-10.3 8.5-16.5c0-4.7-3.8-8.5-8.5-8.5Z"
+                        fill="#a30000"
+                        stroke="#fff"
+                        strokeWidth="2"
+                      />
+                      <circle cx="12" cy="10" r="3.4" fill="#fff" />
+                    </svg>
+                  </span>
+                </button>
+
+                {/* Bottom bar sits above the hit target so the link wins the click */}
+                <div style={{
+                  position: "absolute",
+                  insetInline: 0,
+                  bottom: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "12px",
+                  padding: "28px 12px 10px",
+                  background: "linear-gradient(to top, rgba(0,0,0,0.55), transparent)",
+                  pointerEvents: "none",
+                }}>
+                  <a
+                    href={MAP_DIRECTIONS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "7px 12px",
+                      borderRadius: "999px",
+                      background: "#fff",
+                      color: "#a30000",
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      pointerEvents: "auto",
+                    }}
+                  >
+                    <MapPin size={14} strokeWidth={2} />
+                    Οδηγίες
+                  </a>
+                  <a
+                    href="https://www.openstreetmap.org/copyright"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: "rgba(255,255,255,0.85)",
+                      fontSize: "11px",
+                      textShadow: "0 1px 3px rgba(0,0,0,0.7)",
+                      textDecoration: "none",
+                      pointerEvents: "auto",
+                    }}
+                  >
+                    © OpenStreetMap
+                  </a>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 

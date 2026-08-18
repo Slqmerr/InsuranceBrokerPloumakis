@@ -1,7 +1,6 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import { motion } from "framer-motion";
 
 import interamericanLogo from "@/public/partners/interamerican.png";
 import allianzLogo from "@/public/partners/allianz.png";
@@ -60,17 +59,18 @@ export default function PartnersMarquee({showTitle=true}:{showTitle?:boolean}) {
       </h2> )}
 
       <div className="marquee-viewport">
+        {/* Plain divs on purpose. These tiles used to be motion.div with a
+            whileHover that went grayscale(0%) -> grayscale(0%) — no visual
+            change, but the inline filter gave every tile its own render
+            surface and knocked the track off the compositor. */}
         <div className="marquee-track">
           {loop.map((partner, i) => {
             const isClone = i >= PARTNERS.length;
             return (
-              <motion.div
+              <div
                 key={`${partner.name}-${i}`}
                 aria-hidden={isClone}
                 title={partner.name}
-                initial={{ filter: "grayscale(0%)", opacity: 1 }}
-                whileHover={{ filter: "grayscale(0%)", opacity: 1 }}
-                transition={{ duration: 1, ease: "easeOut" }}
                 style={{
                   flex: "0 0 auto",
                   marginRight: `${GAP}px`,
@@ -80,7 +80,6 @@ export default function PartnersMarquee({showTitle=true}:{showTitle?:boolean}) {
                   alignItems: "center",
                   justifyContent: "center",
                   padding: "0 20px",
-                  cursor: "pointer",
                 }}
               >
                 <Image
@@ -100,7 +99,7 @@ export default function PartnersMarquee({showTitle=true}:{showTitle?:boolean}) {
                     display: "block",
                   }}
                 />
-              </motion.div>
+              </div>
             );
           })}
         </div>

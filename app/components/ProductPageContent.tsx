@@ -172,7 +172,7 @@ export default function ProductPageContent({
       <section className="pp-body" style={{
         padding: "64px",
         display: "grid",
-        gridTemplateColumns: "minmax(0, 720px) 320px",
+        gridTemplateColumns: "minmax(0, 1fr) 320px",
         gap: "64px",
         alignItems: "start",
       }}>
@@ -218,7 +218,7 @@ export default function ProductPageContent({
         <h2 style={{ fontFamily: UBUNTU, fontSize: "22px", fontWeight: 600, margin: "0 0 20px" }}>
           Τι καλύπτει
         </h2>
-        <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px", display: "grid", gap: "12px" }}>
+        <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "12px 32px" }}>
           {product.covers.map((item) => (
             <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: "12px", fontSize: "15px", color: "#333", lineHeight: 1.5 }}>
               <Check size={18} color="#a30000" strokeWidth={2.5} style={{ flexShrink: 0, marginTop: "2px" }} />
@@ -234,7 +234,7 @@ export default function ProductPageContent({
             <h2 style={{ fontFamily: UBUNTU, fontSize: "22px", fontWeight: 600, margin: "0 0 20px" }}>
               {product.relatedHeading ?? "Σχετικές καλύψεις"}
             </h2>
-            <div style={{ display: "grid", gap: "10px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "10px" }}>
               {product.related.map((item) => (
                 <Link key={item.href} href={item.href} className="pp-related">
                   <span style={{ flex: 1 }}>

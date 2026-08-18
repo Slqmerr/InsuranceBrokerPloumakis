@@ -3,13 +3,23 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useAnimationControls } from "framer-motion";
 import logo from "@/public/logo_white-2.png";
 import { ChevronDown, Phone, MapPin, Menu, X, ArrowRight } from "lucide-react";
 import type { NavProduct } from "./cmsProducts";
 import { navIconFor } from "./navIcons";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
+/** Same curve and duration as the sliding highlight in ProductCardStrip. */
+const SWIPE = { duration: 0.4, ease: [0.4, 0, 0.2, 1] } as const;
+/** The strip's tiles carry hand-picked pastels; the menu's options only know
+ *  their product's saturated colour, so wash it out to the same weight — 12%
+ *  over white. Returned as rgb() because framer can't interpolate color-mix(). */
+const tint = (hex: string) => {
+  const n = parseInt(hex.slice(1), 16);
+  const wash = (c: number) => Math.round(c * 0.12 + 255 * 0.88);
+  return `rgb(${wash((n >> 16) & 255)}, ${wash((n >> 8) & 255)}, ${wash(n & 255)})`;
+};
 const MotionLink = motion.create(Link);
 
 /** GSAP, fetched at the point of use instead of imported at the top of the
@@ -43,6 +53,20 @@ export default function Navbar({
   const drawerRef = React.useRef<HTMLDivElement>(null);
   const drawerBackdropRef = React.useRef<HTMLDivElement>(null);
   const [panelTop, setPanelTop] = React.useState(88);
+
+  // ── Sliding highlight for the dropdown's options ────────────────────────
+  // Same device as ProductCardStrip: one shared highlight rather than a
+  // background per option, so only ever one is lit and it slides between them
+  // instead of blinking off and on, crossfading to each product's colour on
+  // the way. The strip's tiles are a uniform row and can move on percentages;
+  // these sit in a grid of two or three columns, so each option measures
+  // itself off the grid, which is its offset parent.
+  const optionHighlight = useAnimationControls();
+  const litOption = React.useRef<number | null>(null);
+  // The panel's contents are keyed on activeMenu and remount when you hop
+  // between menus, taking the highlight element with them — so the record of
+  // what was lit has to go too, or the next hover slides in from nowhere.
+  React.useEffect(() => { litOption.current = null; }, [activeMenu]);
 
   // Mobile drawer stays mounted; GSAP slides it in from the right edge and
   // fades the backdrop. visibility is toggled so the closed drawer can't be
@@ -451,12 +475,36 @@ export default function Navbar({
                   </div>
 
                   {/* Product Grid */}
-                  <div style={{
-                    display: "grid",
-                    gridTemplateColumns: activeMenu === "idiwtes" ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
-                    gap: "4px",
-                  }}>
-                    {(activeMenu === "idiwtes" ? idiotes : epixeirisi).map((product) => {
+                  <div
+                    onMouseLeave={() => {
+                      litOption.current = null;
+                      optionHighlight.start({ opacity: 0, transition: { duration: 0.25, ease: "easeOut" } });
+                    }}
+                    style={{
+                      position: "relative",
+                      display: "grid",
+                      gridTemplateColumns: activeMenu === "idiwtes" ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
+                      gap: "4px",
+                    }}
+                  >
+                    {/* Shared sliding highlight */}
+                    <motion.div
+                      aria-hidden
+                      initial={{ opacity: 0 }}
+                      animate={optionHighlight}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: 0,
+                        height: 0,
+                        borderRadius: "10px",
+                        zIndex: 0,
+                        pointerEvents: "none",
+                      }}
+                    />
+
+                    {(activeMenu === "idiwtes" ? idiotes : epixeirisi).map((product, i) => {
                       const Icon = navIconFor(product.iconName);
                       return (
                       <motion.a
@@ -467,6 +515,8 @@ export default function Navbar({
                         transition={{ duration: 0.25 }}
                         style={{
                           color: "#5c5c5c",
+                          position: "relative",
+                          zIndex: 1,
                           display: "flex",
                           alignItems: "center",
                           gap: "16px",
@@ -475,8 +525,28 @@ export default function Navbar({
                           textDecoration: "none",
                           cursor: "pointer",
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = "#fbf5f5"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                        onMouseEnter={(e) => {
+                          const el = e.currentTarget;
+                          const box = { x: el.offsetLeft, y: el.offsetTop, width: el.offsetWidth, height: el.offsetHeight };
+                          if (litOption.current === null) {
+                            // Appear at this option, sliding in from the side the
+                            // cursor crossed — already on the right row, so only
+                            // the horizontal travel shows.
+                            const r = el.getBoundingClientRect();
+                            const fromLeft = e.clientX - r.left < r.width / 2;
+                            optionHighlight.set({
+                              ...box,
+                              x: box.x + (fromLeft ? -box.width / 2 : box.width / 2),
+                              backgroundColor: tint(product.color),
+                              opacity: 0,
+                            });
+                            optionHighlight.start({ ...box, opacity: 1, transition: SWIPE });
+                          } else {
+                            // Slide to the new option and crossfade to its colour.
+                            optionHighlight.start({ ...box, backgroundColor: tint(product.color), transition: SWIPE });
+                          }
+                          litOption.current = i;
+                        }}
                       >
                         <div style={{
                           width: "44px",

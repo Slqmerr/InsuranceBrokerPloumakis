@@ -199,23 +199,7 @@ export default function PolitikiAporritouPage() {
           Πολιτική Απορρήτου
         </h1>
 
-        {/* Review notice — flagged for legal review before launch */}
-        <div
-          style={{
-            background: "#FFF8E6",
-            border: "1px dashed #E0B33A",
-            borderRadius: "12px",
-            padding: "16px 20px",
-            margin: "0 0 40px",
-            color: "#7A5B00",
-            fontSize: "14px",
-            lineHeight: 1.65,
-            fontStyle: "italic",
-          }}
-        >
-          Σημείωση: Το παρόν κείμενο αποτελεί προσχέδιο. Πρέπει να ελεγχθεί από εξειδικευμένο νομικό
-          σύμβουλο και να συμπληρωθούν τα στοιχεία εντός αγκυλών πριν τεθεί η ιστοσελίδα σε λειτουργία.
-        </div>
+      
 
         <p style={{ fontSize: "16px", lineHeight: 1.8, color: "#333", margin: "0 0 32px" }}>
           Η προστασία των προσωπικών σας δεδομένων είναι προτεραιότητά μας. Η παρούσα Πολιτική

@@ -47,23 +47,30 @@ const arrowSlide: Variants = {
   hover: { x: 5, transition: { type: "spring", stiffness: 400, damping: 18 } },
 };
 
-/* Animated count-up for the credibility strip */
+/* Animated count-up for the credibility strip.
+   The number is written straight to the DOM node instead of through state:
+   a setState per frame re-renders three of these at 60fps at exactly the
+   scroll position where the partners marquee is on screen, and that was
+   enough main-thread work to visibly stall it. */
 function StatValue({ value, suffix = "" }: { value: number; suffix?: string }) {
   const ref = React.useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
-  const [display, setDisplay] = React.useState(0);
 
   React.useEffect(() => {
-    if (!inView) return;
+    const node = ref.current;
+    if (!inView || !node) return;
     const controls = animate(0, value, {
       duration: 1.4,
       ease: "easeOut",
-      onUpdate: (v) => setDisplay(Math.round(v)),
+      onUpdate: (v) => {
+        node.textContent = `${Math.round(v)}${suffix}`;
+      },
     });
     return () => controls.stop();
-  }, [inView, value]);
+  }, [inView, value, suffix]);
 
-  return <span ref={ref}>{display}{suffix}</span>;
+  // never re-rendered after mount, so the imperative writes above are safe
+  return <span ref={ref}>{`0${suffix}`}</span>;
 }
 
 /* ── Data ── */
@@ -145,7 +152,7 @@ const FAQS = [
   },
   {
     q: "Μπορώ να ξεκινήσω με μερική απασχόληση;",
-    a: "Ναι. Πολλοί ξεκινούν ως δεύτερη δραστηριότητα και περνούν σε πλήρη απασχόληση όταν το χαρτοφυλάκιό τους μεγαλώσει.",
+    a: "Ναι. Πολλοί ξεκινούν ως δεύτερη δραστηριότητα και περνούν σε πλήρη απασχόληση όταν το χαρτοφυλάκιό τους αυξάνεται.",
   },
   {
     q: "Πώς αμείβομαι;",
