@@ -13,6 +13,6 @@ needs:
   - Αριθμός οχημάτων και χρήση τους
   - Ημερομηνίες λήξης τρεχόντων συμβολαίων
 iconName: Truck
-color: "#ea580c"
+color: "#a30000"
 image: /products/oxima.jpg
 imagePosition: center 70%

@@ -22,7 +22,7 @@ needs:
   - 'Χρήση: κύρια ή εξοχική κατοικία'
   - Υφιστάμενες καλύψεις που θέλετε να διευρύνετε
 iconName: Umbrella
-color: '#0f766e'
+color: "#a30000"
 hidden: true
 image: /products/kata-pantos-kindynou.jpg
 imagePosition: center

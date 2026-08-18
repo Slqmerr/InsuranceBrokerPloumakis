@@ -13,7 +13,7 @@ needs:
   - Εκτίμηση αξίας ή πιστοποιητικά αυθεντικότητας
   - Χώρος φύλαξης και τυχόν μέτρα ασφαλείας (συναγερμός, θυρίδα)
 iconName: Palette
-color: "#9333ea"
+color: "#a30000"
 image: /products/erga-texnis.jpg
 imagePosition: center
 hidden: true

@@ -20,6 +20,6 @@ needs:
   - Δίπλωμα οδήγησης
   - Ημερομηνία λήξης τρέχοντος συμβολαίου
 iconName: Car
-color: "#ea580c"
+color: "#a30000"
 image: /products/oxima.jpg
 imagePosition: center 70%

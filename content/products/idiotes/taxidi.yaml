@@ -15,6 +15,6 @@ needs:
   - Αριθμός και ηλικίες ταξιδιωτών
   - Σκοπός ταξιδιού (διακοπές, επαγγελματικό, σπουδές)
 iconName: Plane
-color: "#f59e0b"
+color: "#a30000"
 image: /products/taxidi.jpg
 imagePosition: center

@@ -58,7 +58,7 @@ export type Product = {
 
 export const IDIWTES_PRODUCTS: Product[] = [
   {
-    icon: Heart, title: "Υγεία", slug: "ygeia", color: "#e0245e",
+    icon: Heart, title: "Υγεία", slug: "ygeia", color: "#a30000",
     image: "/products/ygeia.jpg",
     intro: "Νοσοκομειακή και εξωνοσοκομειακή περίθαλψη, σχεδιασμένη στα μέτρα σας — εσείς επιλέγετε τις καλύψεις, εμείς βρίσκουμε το πρόγραμμα που σας ταιριάζει.",
     description: "Ένα πρόγραμμα υγείας εξασφαλίζει πρόσβαση σε ποιοτική περίθαλψη και προστατεύει το εισόδημά σας από απρόβλεπτα έξοδα νοσηλείας, στην Ελλάδα και στο εξωτερικό. Σύγχρονες λύσεις, όπως το Bewell της Interamerican ή τα προγράμματα της Eurolife, σας επιτρέπουν να επιλέξετε το κεφάλαιο κάλυψης, την απαλλαγή και τις πρόσθετες παροχές που ταιριάζουν σε εσάς.",
@@ -113,7 +113,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
   },
 
   {
-    icon: Car, title: "Όχημα", slug: "oxima", color: "#ea580c",
+    icon: Car, title: "Όχημα", slug: "oxima", color: "#a30000",
     image: "/products/oxima.jpg",
     imagePosition: "center 70%",
     intro: "Από την υποχρεωτική αστική ευθύνη μέχρι την πλήρη μικτή κάλυψη — με οδική βοήθεια και φροντίδα σε κάθε διαδρομή.",
@@ -141,7 +141,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
   },
   
   {
-    icon: ShieldCheck, title: "Ασφάλιση Cyber", slug: "cyber", color: "#4f46e5",
+    icon: ShieldCheck, title: "Ασφάλιση Cyber", slug: "cyber", color: "#a30000",
     image: "/products/cyber.jpg",
     intro: "Προστασία για εσάς και την οικογένειά σας από τις οικονομικές και ψηφιακές συνέπειες της ζωής στο διαδίκτυο.",
     description: "Καθώς η καθημερινότητα γίνεται ολοένα πιο ψηφιακή, η ασφάλιση cyber προσφέρει υποστήριξη σε περιστατικά όπως παραβίαση προσωπικών δεδομένων, ηλεκτρονική απάτη και κακόβουλες επιθέσεις. Περιλαμβάνει υπηρεσίες άμεσης αντίδρασης από εξειδικευμένους τεχνικούς και νομικούς συμβούλους.",
@@ -162,7 +162,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
     ],
   },
   {
-    icon: PawPrint, title: "Κατοικίδια", slug: "katoikidio", color: "#b45309",
+    icon: PawPrint, title: "Κατοικίδια", slug: "katoikidio", color: "#a30000",
     image: "/products/katoikidio.jpg",
     imagePosition: "center 30%", // tall photo — dog and owner faces in the upper third
     intro: "Κτηνιατρική φροντίδα για τον σκύλο ή τη γάτα σας, από το τσεκάπ μέχρι το χειρουργείο.",
@@ -183,7 +183,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
     ],
   },
   {
-    icon: Sailboat, title: "Σκάφη", slug: "skafi", color: "#0ea5e9",
+    icon: Sailboat, title: "Σκάφη", slug: "skafi", color: "#a30000",
     image: "/products/skafi.jpg",
     intro: "Η υποχρεωτική αστική ευθύνη του σκάφους σας — και κάθε επιπλέον κάλυψη για να απολαμβάνετε τη θάλασσα με ασφάλεια.",
     description: "Η ασφάλιση σκάφους αναψυχής καλύπτει, πρώτα απ' όλα, την Αστική Ευθύνη προς τρίτους και επιβαίνοντες, που είναι υποχρεωτική από τον νόμο (Ν.4926/2022) για όλα τα ταχύπλοα ιδιωτικά και επαγγελματικά σκάφη αναψυχής. Πέρα από αυτήν, προγράμματα με διαβαθμισμένα επίπεδα κάλυψης προσφέρουν επιπλέον προστασία — από νομική υποστήριξη και ιατρική βοήθεια για τους επιβαίνοντες, έως κάλυψη ιδίων ζημιών του σκάφους.",
@@ -206,7 +206,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
     ],
   },
   {
-    icon: Plane, title: "Ταξιδιωτικές Ασφαλίσεις", slug: "taxidi", color: "#f59e0b",
+    icon: Plane, title: "Ταξιδιωτικές Ασφαλίσεις", slug: "taxidi", color: "#a30000",
     image: "/products/taxidi.jpg",
     intro: "Ηρεμία σε κάθε ταξίδι — από ένα ιατρικό απρόοπτο στο εξωτερικό μέχρι μια χαμένη βαλίτσα.",
     description: "Η ταξιδιωτική ασφάλιση αναλαμβάνει τα απρόοπτα που μπορεί να προκύψουν πριν ή κατά τη διάρκεια ενός ταξιδιού: από ένα επείγον ιατρικό περιστατικό στο εξωτερικό, μέχρι καθυστέρηση πτήσης ή απώλεια αποσκευών. Τα προγράμματα προσαρμόζονται στον προορισμό, τη διάρκεια και τον σκοπό του ταξιδιού σας, είτε πρόκειται για διακοπές, επαγγελματική μετακίνηση ή ταξίδι που απαιτεί θεώρηση Schengen.",
@@ -230,7 +230,7 @@ export const IDIWTES_PRODUCTS: Product[] = [
 
 export const EPIXEIRISI_PRODUCTS: Product[] = [
   {
-    icon: Users, title: "Ομαδική Ασφάλιση", slug: "omadiki-asfalisi", color: "#0d9488",
+    icon: Users, title: "Ομαδική Ασφάλιση", slug: "omadiki-asfalisi", color: "#a30000",
     image: "/products/omadiki-asfalisi.jpg",
     imagePosition: "40% center", // team around the table is center-left, right edge is a dark frame
     intro: "Παροχές υγείας, ζωής και σύνταξης για τους ανθρώπους της επιχείρησής σας — το πιο ουσιαστικό κίνητρο παραμονής.",
@@ -278,7 +278,7 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
     ],
   },
   {
-    icon: Scale, title: "Αστική Ευθύνη", slug: "astiki-efthyni", color: "#7c3aed",
+    icon: Scale, title: "Αστική Ευθύνη", slug: "astiki-efthyni", color: "#a30000",
     image: "/products/astiki-efthyni.jpg",
     imagePosition: "75% 40%", // warning sign occupies the right third
     intro: "Κάλυψη για ζημιές σε τρίτους κατά τη λειτουργία της επιχείρησής σας — από τη γενική ευθύνη του χώρου μέχρι την ευθύνη του προϊόντος και του επαγγέλματος.",
@@ -290,11 +290,11 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
         items: [
           {
             title: "Γενική Αστική Ευθύνη προς τρίτους",
-            blurb: "Ο κορμός της κάλυψης: ατυχήματα επισκεπτών και πελατών στον χώρο σας, ζημιές από τη λειτουργία, από εγκαταστάσεις και από επιγραφές.",
+            blurb: "Καλύπτει ατυχήματα επισκεπτών και πελατών στον χώρο σας καθώς και ζημιές από τη λειτουργία των εγκαταστάσεων της επιχείρησης",
           },
           {
             title: "Αστική Ευθύνη Εργοδότη",
-            blurb: "Για εργατικό ατύχημα, όταν ο εργαζόμενος στραφεί κατά της επιχείρησης πέρα από τις παροχές του ασφαλιστικού φορέα.",
+            blurb: "Καλύπτει εργατικά ατύχημα, όταν ο εργαζόμενος στραφεί κατά της επιχείρησης πέρα από τις παροχές του ασφαλιστικού φορέα.",
             href: "/epixeirisi/astiki-efthyni-ergodoti",
           },
           {
@@ -386,7 +386,7 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
     ],
   },
   {
-    icon: Truck, title: "Εταιρικά Οχήματα", slug: "etairika-oximata", color: "#ea580c",
+    icon: Truck, title: "Εταιρικά Οχήματα", slug: "etairika-oximata", color: "#a30000",
     image: "/products/oxima.jpg",
     imagePosition: "center 70%",
     intro: "Ολοκληρωμένη κάλυψη για τον στόλο και τα επαγγελματικά οχήματα της επιχείρησης.",
@@ -406,7 +406,7 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
     ],
   },
   {
-    icon: ShieldAlert, title: "Cyber Edge", slug: "cyber", color: "#4f46e5",
+    icon: ShieldAlert, title: "Cyber Edge", slug: "cyber", color: "#a30000",
     image: "/products/cyber.jpg",
     intro: "Θωράκιση της επιχείρησής σας απέναντι σε κυβερνοεπιθέσεις και διαρροές δεδομένων.",
     description: "Μία κυβερνοεπίθεση ή διαρροή δεδομένων μπορεί να προκαλέσει οικονομικές απώλειες και πλήγμα στη φήμη μιας επιχείρησης. Προγράμματα όπως το CyberEdge της AIG συνδυάζουν ασφαλιστική κάλυψη με υπηρεσίες πρόληψης και άμεσης αντίδρασης, για επιχειρήσεις κάθε μεγέθους.",
@@ -426,7 +426,7 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
   },
   
   {
-    icon: Package, title: "Μεταφορά Εμπορευμάτων", slug: "metafora-emporeumaton", color: "#2e9e5b",
+    icon: Package, title: "Μεταφορά Εμπορευμάτων", slug: "metafora-emporeumaton", color: "#a30000",
     image: "/products/metafora-emporeumaton.jpg",
     intro: "Προστασία των εμπορευμάτων σας σε κάθε στάδιο της μεταφοράς.",
     description: "Η ασφάλιση μεταφορών καλύπτει τα εμπορεύματά σας από απώλειες ή ζημιές κατά τη χερσαία, θαλάσσια ή αεροπορική μεταφορά, εντός και εκτός συνόρων. Τα προγράμματα βασίζονται στις διεθνείς ρήτρες του Ινστιτούτου Άγγλων Ασφαλιστών (Institute Cargo Clauses A, B, C) και διατίθενται ανά φόρτωση ή με ετήσιο συμβόλαιο.",
@@ -452,7 +452,7 @@ export const EPIXEIRISI_PRODUCTS: Product[] = [
 // Keep exactly one entry per slug across this and EPIXEIRISI_PRODUCTS.
 export const EXTRA_EPIXEIRISI_PAGES: Product[] = [
   {
-    icon: BriefcaseBusiness, title: "Επαγγελματική Αστική Ευθύνη", slug: "epaggelmatiki-astiki-efthyni", color: "#6d28d9",
+    icon: BriefcaseBusiness, title: "Επαγγελματική Αστική Ευθύνη", slug: "epaggelmatiki-astiki-efthyni", color: "#a30000",
     image: "/products/astiki-efthyni.jpg",
     imagePosition: "75% 40%",
     intro: "Για το λάθος, την παράλειψη ή τη συμβουλή που κόστισε χρήματα στον πελάτη σας — η κάλυψη που ζητούν όλο και συχνότερα συμβάσεις και διαγωνισμοί.",
@@ -489,7 +489,7 @@ export const EXTRA_EPIXEIRISI_PAGES: Product[] = [
     ],
   },
   {
-    icon: HardHat, title: "Αστική Ευθύνη Εργοδότη", slug: "astiki-efthyni-ergodoti", color: "#7c3aed",
+    icon: HardHat, title: "Αστική Ευθύνη Εργοδότη", slug: "astiki-efthyni-ergodoti", color: "#a30000",
     image: "/products/astiki-efthyni.jpg",
     imagePosition: "30% 40%",
     intro: "Όταν ένα εργατικό ατύχημα καταλήγει σε αγωγή κατά της επιχείρησης, πέρα από όσα καταβάλλει ο ασφαλιστικός φορέας.",
@@ -525,7 +525,7 @@ export const EXTRA_EPIXEIRISI_PAGES: Product[] = [
     ],
   },
   {
-    icon: PackageCheck, title: "Αστική Ευθύνη Προϊόντος", slug: "astiki-efthyni-proiontos", color: "#8b5cf6",
+    icon: PackageCheck, title: "Αστική Ευθύνη Προϊόντος", slug: "astiki-efthyni-proiontos", color: "#a30000",
     image: "/products/metafora-emporeumaton.jpg",
     intro: "Για τη ζημιά που προκαλεί το προϊόν σας αφού φύγει από τα χέρια σας — στον καταναλωτή ή στην περιουσία του.",
     description: "Ο παραγωγός, ο τυποποιητής, ο εισαγωγέας και ο διανομέας ενός προϊόντος ευθύνονται για τη ζημιά που αυτό προκαλεί λόγω ελαττώματος, ακόμη και χωρίς δική τους αμέλεια. Η αστική ευθύνη προϊόντος καλύπτει σωματικές βλάβες και υλικές ζημιές τρίτων από ελαττωματικό προϊόν που έχει ήδη διατεθεί στην αγορά, μαζί με το κόστος υπεράσπισης. Αφορά τρόφιμα και ποτά, καλλυντικά, εξοπλισμό και μηχανήματα, παιχνίδια, ηλεκτρικές και ηλεκτρονικές συσκευές, αλλά και επιχειρήσεις που απλώς εισάγουν ή επισημαίνουν ένα προϊόν με το δικό τους σήμα. Για όσους εξάγουν, τα όρια και το εδαφικό πεδίο εφαρμογής χρειάζονται ιδιαίτερη προσοχή.",
@@ -560,7 +560,7 @@ export const EXTRA_EPIXEIRISI_PAGES: Product[] = [
     ],
   },
   {
-    icon: Hotel, title: "Αστική Ευθύνη Ξενοδοχείων & Καταλυμάτων", slug: "astiki-efthyni-touristikon", color: "#a855f7",
+    icon: Hotel, title: "Αστική Ευθύνη Ξενοδοχείων & Καταλυμάτων", slug: "astiki-efthyni-touristikon", color: "#a30000",
     image: "/products/epaggelmatikos-xoros.jpg",
     imagePosition: "60% center",
     intro: "Ευθύνη έναντι πελατών σε δωμάτια, πισίνα, εστιατόριο και κοινόχρηστους χώρους — για ξενοδοχεία, ενοικιαζόμενα και βραχυχρόνιες μισθώσεις.",
@@ -623,7 +623,7 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
     ],
   },
   {
-    icon: PiggyBank, title: "Αποταμίευση", slug: "apotamieusi", color: "#0d9488",
+    icon: PiggyBank, title: "Αποταμίευση", slug: "apotamieusi", color: "#a30000",
     image: "/products/ependysi.jpg",
     imagePosition: "35% center", // coin cup with seedling sits left of center
     intro: "Χτίστε βήμα-βήμα ένα κεφάλαιο για τη σύνταξη, τις σπουδές των παιδιών ή τους δικούς σας στόχους.",
@@ -645,7 +645,7 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
     ],
   },
   {
-    icon: Palette, title: "Έργα Τέχνης", slug: "erga-texnis", color: "#9333ea",
+    icon: Palette, title: "Έργα Τέχνης", slug: "erga-texnis", color: "#a30000",
     image: "/products/erga-texnis.jpg",
     intro: "Εξειδικευμένη κάλυψη «κατά παντός κινδύνου» για πίνακες, γλυπτά, αντίκες και συλλογές — στο σπίτι, σε έκθεση ή σε μεταφορά.",
     description: "Τα έργα τέχνης και οι συλλογές είναι αντικείμενα μοναδικά και συχνά αναντικατάστατα, γι' αυτό ασφαλίζονται με ειδικό συμβόλαιο «κατά παντός κινδύνου». Η κάλυψη αφορά πίνακες, γλυπτά, εικόνες, αντίκες, κοσμήματα, νομίσματα, γραμματόσημα, πορσελάνες και χαλιά, είτε βρίσκονται στην κατοικία ή στο γραφείο σας, είτε ταξιδεύουν για μια έκθεση εντός ή εκτός Ελλάδας. Στόχος είναι, σε περίπτωση ζημιάς, το έργο να αποκατασταθεί από ειδικούς συντηρητές και, αν καταστραφεί ή χαθεί, να αποζημιωθείτε στη συμφωνημένη αξία.",
@@ -664,7 +664,7 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
     ],
   },
   {
-    icon: Gavel, title: "Νομική Προστασία", slug: "nomiki-prostasia", color: "#1e3a8a",
+    icon: Gavel, title: "Νομική Προστασία", slug: "nomiki-prostasia", color: "#a30000",
     image: "/products/nomiki-prostasia.jpg",
     intro: "Αναλαμβάνει δικηγορικές αμοιβές και δικαστικά έξοδα, ώστε να διεκδικείτε το δίκιο σας χωρίς να σας ανησυχεί το κόστος.",
     description: "Η ασφάλιση νομικής προστασίας αναλαμβάνει τα δικηγορικά και δικαστικά έξοδα που απαιτούνται για να διεκδικήσετε μια δίκαιη απαίτησή σας ή να υπερασπιστείτε τον εαυτό σας. Έναντι ενός προκαθορισμένου ασφαλίστρου, απαλλάσσεστε από αμοιβές δικηγόρων, δικαστικά τέλη και έξοδα πραγματογνωμόνων, στην ιδιωτική και στην καθημερινή σας δραστηριότητα. Ανάλογα με το πρόγραμμα, στην κάλυψη περιλαμβάνονται ο ασφαλισμένος, ο/η σύζυγος και τα ανήλικα τέκνα.",
@@ -683,7 +683,7 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
     ],
   },
   {
-    icon: Umbrella, title: "Κατά Παντός Κινδύνου", slug: "kata-pantos-kindynou", color: "#0f766e",
+    icon: Umbrella, title: "Κατά Παντός Κινδύνου", slug: "kata-pantos-kindynou", color: "#a30000",
     image: "/products/kata-pantos-kindynou.jpg",
     intro: "Μία «ομπρέλα» προστασίας που καλύπτει κάθε αιφνίδιο και απρόβλεπτο γεγονός, πέρα από τους κατονομασμένους κινδύνους.",
     description: "Η κάλυψη «κατά παντός κινδύνου» λειτουργεί σαν ομπρέλα πάνω από το ασφαλιστήριο περιουσίας σας: αποζημιώνει υλικές ζημιές στο κτίριο και στο περιεχόμενο από κάθε αιφνίδιο, τυχαίο και απρόβλεπτο γεγονός που δεν κατονομάζεται ήδη στις επιμέρους καλύψεις. Έτσι, αντί να ασφαλίζεστε μόνο για συγκεκριμένους κινδύνους, προστατεύεστε για ό,τι δεν προβλέπεται — με σαφείς εξαιρέσεις που ορίζονται στο συμβόλαιο. Συνήθως προσφέρεται σε κύριες κατοικίες ή περιουσίες υψηλότερης ασφαλισμένης αξίας.",

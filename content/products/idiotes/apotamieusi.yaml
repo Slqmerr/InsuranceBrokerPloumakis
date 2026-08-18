@@ -15,7 +15,7 @@ needs:
   - Χρονικός ορίζοντας
   - Ποσό που μπορείτε να αποταμιεύετε τακτικά
 iconName: PiggyBank
-color: "#0d9488"
+color: "#a30000"
 image: /products/ependysi.jpg
 imagePosition: 35% center
 hidden: true

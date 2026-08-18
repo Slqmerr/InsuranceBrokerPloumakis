@@ -13,7 +13,7 @@ needs:
   - Ποια μέλη της οικογένειας θα περιλαμβάνονται
   - Τυχόν εκκρεμείς ή γνωστές υποθέσεις
 iconName: Gavel
-color: "#1e3a8a"
+color: "#a30000"
 image: /products/nomiki-prostasia.jpg
 imagePosition: center
 hidden: true

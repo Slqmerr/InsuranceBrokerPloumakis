@@ -14,6 +14,6 @@ needs:
   - Ηλικία του ζώου
   - Αριθμός microchip και βιβλιάριο εμβολιασμών
 iconName: PawPrint
-color: "#b45309"
+color: "#a30000"
 image: /products/katoikidio.jpg
 imagePosition: center 30%
