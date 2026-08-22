@@ -204,7 +204,9 @@ export default function EmeisContent() {
         background: "#a30000",
         overflow: "hidden",
       }}>
-        {/* Left: bio content — staggered entrance */}
+        {/* Left: bio content — staggered entrance.
+            Top-aligned, not centred: with the subtitle gone, centring inside the
+            hero's min-height dropped the whole block below where it used to start. */}
         <motion.div
           className="emeis-hero-bio"
           variants={stagger}
@@ -214,7 +216,7 @@ export default function EmeisContent() {
             flex: "0 0 60%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             padding: "80px 64px",
           }}
         >

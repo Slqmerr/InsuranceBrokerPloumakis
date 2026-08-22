@@ -8,23 +8,22 @@ import type { Product, ProductVariant } from "./products";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
-/** Sidebar "Πώς λειτουργεί" steps, phrased around the current product. */
-function processSteps(product: Product): { title: string; text: string }[] {
-  return [
-    {
-      title: "Επικοινωνία",
-      text: `Μας καλείτε ή ζητάτε προσφορά για «${product.title}» online, χωρίς καμία δέσμευση.`,
-    },
-    {
-      title: "Σύγκριση",
-      text: `Εξετάζουμε τα προγράμματα «${product.title}» των συνεργαζόμενων εταιρειών για εσάς.`,
-    },
-    {
-      title: "Απόφαση",
-      text: "Επιλέγετε το πρόγραμμα που ταιριάζει σε εσάς — τα υπόλοιπα τα αναλαμβάνουμε εμείς.",
-    },
-  ];
-}
+/** Sidebar "Πώς λειτουργεί" steps. The same three on every product page: the
+ *  copy used to name the product, and reads better without it. */
+const PROCESS_STEPS: { title: string; text: string }[] = [
+  {
+    title: "Επικοινωνία",
+    text: "Μας καλείτε ή ζητάτε προσφορά για το προϊόν που σας ενδιαφέρει. Online, χωρίς καμία δέσμευση.",
+  },
+  {
+    title: "Σύγκριση",
+    text: "Εξετάζουμε τα προγράμματα των συνεργαζόμενων εταιρειών για εσάς.",
+  },
+  {
+    title: "Απόφαση",
+    text: "Επιλέγετε το πρόγραμμα που ταιριάζει σε εσάς. Τα υπόλοιπα τα αναλαμβάνουμε εμείς.",
+  },
+];
 
 /**
  * One sub-cover tile. Variants with an `href` become links to their own page;
@@ -218,7 +217,7 @@ export default function ProductPageContent({
         <h2 style={{ fontFamily: UBUNTU, fontSize: "22px", fontWeight: 600, margin: "0 0 20px" }}>
           Τι καλύπτει
         </h2>
-        <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "12px 32px" }}>
+        <ul className="pp-covers" role="list">
           {product.covers.map((item) => (
             <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: "12px", fontSize: "15px", color: "#333", lineHeight: 1.5 }}>
               <Check size={18} color="#a30000" strokeWidth={2.5} style={{ flexShrink: 0, marginTop: "2px" }} />
@@ -271,7 +270,7 @@ export default function ProductPageContent({
           </h3>
 
           <div style={{ display: "grid", gap: "18px", marginBottom: "24px" }}>
-            {processSteps(product).map((step, i) => (
+            {PROCESS_STEPS.map((step, i) => (
               <div key={step.title} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
                 <div style={{
                   width: "28px",

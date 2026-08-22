@@ -186,6 +186,16 @@ input:focus-visible + .consent-box {
   box-shadow: 0 10px 26px rgba(163, 0, 0, 0.1);
 }
 
+/* "Τι καλύπτει" — one cover per row, however long the list runs. */
+.pp-covers {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 0 0 40px;
+}
+
 .pp-related {
   display: flex;
   align-items: flex-start;

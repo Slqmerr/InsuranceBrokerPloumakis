@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import logo from "@/public/logo_white-2.png";
 import mapStill from "@/public/map-office.webp";
+import { OFFICE_ADDRESS, OFFICE_EMAIL, OFFICE_HOURS_LABEL, OFFICE_PHONES } from "../siteMeta";
 
 // lucide-react removed its brand glyphs (Facebook/Linkedin) in this version,
 // so the social marks are inline SVGs sized to match the contact-row icons.
@@ -23,7 +24,6 @@ function LinkedinIcon({ size = 15 }: { size?: number }) {
   );
 }
 
-const OFFICE_ADDRESS = "Κυδωνίας 8 & Ανδρεαδάκη, 71202 Ηράκλειο";
 // Keyless Google Maps embed — geocodes the address server-side.
 // Only mounted once the visitor asks for the live map: the embed pulls well over
 // a megabyte of third-party JS, so the footer ships a self-hosted still instead
@@ -91,16 +91,16 @@ export default function Footer() {
               }}
             >
               <Phone size={15} strokeWidth={1.75} style={{ flexShrink: 0 }} />
-              <a href="tel:+302810326400" style={{ color: "inherit", textDecoration: "none" }}>
-                2810 326 400
+              <a href={`tel:${OFFICE_PHONES[0].tel}`} style={{ color: "inherit", textDecoration: "none" }}>
+                {OFFICE_PHONES[0].display}
               </a>
               <span aria-hidden style={{ opacity: 0.5 }}>·</span>
-              <a href="tel:+306945021091" style={{ color: "inherit", textDecoration: "none" }}>
-                6945 021 091
+              <a href={`tel:${OFFICE_PHONES[1].tel}`} style={{ color: "inherit", textDecoration: "none" }}>
+                {OFFICE_PHONES[1].display}
               </a>
             </div>
             <a
-              href="mailto:dploumakis@gmail.com"
+              href={`mailto:${OFFICE_EMAIL}`}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -111,7 +111,7 @@ export default function Footer() {
               }}
             >
               <Mail size={15} strokeWidth={1.75} />
-              dploumakis@gmail.com
+              {OFFICE_EMAIL}
             </a>
             <span
               style={{
@@ -135,7 +135,7 @@ export default function Footer() {
               }}
             >
               <Clock size={15} strokeWidth={1.75} style={{ flexShrink: 0 }} />
-              Δευτέρα – Παρασκευή: 9:00 – 21:00
+              {OFFICE_HOURS_LABEL}
             </span>
           </div>
 

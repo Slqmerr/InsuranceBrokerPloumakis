@@ -17,4 +17,4 @@ needs:
 iconName: Plane
 color: "#a30000"
 image: /products/taxidi.jpg
-imagePosition: center
+imagePosition: center 80%

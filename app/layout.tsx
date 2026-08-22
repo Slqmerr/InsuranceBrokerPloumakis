@@ -3,7 +3,7 @@ import { Ubuntu_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import { navProducts } from "./components/cmsProducts";
-import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "./siteMeta";
+import { BUSINESS_JSONLD, OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "./siteMeta";
 
 const ubuntuSans = Ubuntu_Sans({
   subsets: ["latin", "greek"], // "greek" subset is required — without it, Greek characters won't load correctly
@@ -67,6 +67,18 @@ export default async function RootLayout({
   return (
     <html lang="el" className={`${ubuntuSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
+        {/* Who this business is, in the vocabulary search engines read. Here
+            rather than on a page because it belongs to every URL equally —
+            the footer states the same address, phones and hours throughout.
+            JSON.stringify does not escape "<", so a stray "</script>" in the
+            data would close this tag early and hand an attacker the page;
+            the replace below is what prevents that, per Next's JSON-LD guide. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(BUSINESS_JSONLD).replace(/</g, "\\u003c"),
+          }}
+        />
         <Navbar idiotes={idiotes} epixeirisi={epixeirisi} />
         {children}
       </body>

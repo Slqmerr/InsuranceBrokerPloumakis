@@ -225,12 +225,6 @@ export default function SynergasiaContent() {
           animate="show"
           style={{ flex: "0 0 58%", display: "flex", flexDirection: "column", justifyContent: "center", padding: "80px 64px" }}
         >
-          <motion.span
-            variants={fadeUp}
-            style={{ color: "rgba(255,255,255,0.75)", fontSize: "13px", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "18px" }}
-          >
-            Γίνε ασφαλιστικός σύμβουλος
-          </motion.span>
 
           <motion.h1
             variants={fadeUp}
@@ -341,7 +335,7 @@ export default function SynergasiaContent() {
           ))}
         </motion.div>
       </section>
-      
+
 
       {/* === CREDIBILITY STRIP (count-up) === */}
       <section style={{ background: "#a30000", padding: "56px 64px" }}>
