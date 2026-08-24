@@ -20,10 +20,11 @@ import { ICON_MAP } from "./iconMap";
 // or under "Λοιπά"), which is a change to what Dimitrios can choose — not
 // something a nav refactor should do as a side effect.
 //
-// `Hotel` used to sit here for the same reason. It moved into ICON_MAP when
-// the ξενοδοχεία/Airbnb product was added: that product is CMS-managed, so its
-// icon has to be one the picker can actually offer, and a hotel icon is a
-// deliberate addition to the editor's vocabulary rather than a side effect.
+// `Hotel` used to sit here for the same reason. It moved into ICON_MAP when the
+// ξενοδοχεία/Airbnb product was added, and stays there now that the product is
+// gone: ICON_MAP is a general vocabulary rather than a list of icons in use —
+// most of its entries belong to no product — so pulling `Hotel` back out would
+// only narrow what Dimitrios can choose, for nothing.
 const NAV_ONLY_ICONS = { BriefcaseBusiness, PackageCheck };
 
 export const NAV_ICON_MAP: Record<string, LucideIcon> = {

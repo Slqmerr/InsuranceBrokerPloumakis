@@ -148,38 +148,6 @@ export const PROFILES: Record<string, QuoteProfile> = {
       },
     ],
   },
-  TOURIST_ACCOMMODATION: {
-    fields: [
-      {
-        name: "accommodationType",
-        label: "Είδος καταλύματος",
-        type: "select",
-        required: true,
-        options: [
-          "Ξενοδοχείο",
-          "Ενοικιαζόμενα δωμάτια / Ξενώνας",
-          "Κατοικία βραχυχρόνιας μίσθωσης (Airbnb, Booking)",
-          "Τουριστικές επιπλωμένες κατοικίες / Βίλα",
-        ],
-      },
-      { name: "rooms", label: "Αριθμός δωματίων ή κλινών", type: "number" },
-      { name: "sqm", label: "Τετραγωνικά μέτρα", type: "number" },
-      { name: "buildYear", label: "Έτος κατασκευής", type: "number" },
-      {
-        name: "facilities",
-        label: "Παροχές που λειτουργούν στη μονάδα",
-        type: "text",
-        placeholder: "π.χ. πισίνα, ανελκυστήρας, εστιατόριο, κουζίνα, γυμναστήριο",
-      },
-      { name: "employees", label: "Αριθμός εργαζομένων", type: "number" },
-      {
-        name: "season",
-        label: "Περίοδος λειτουργίας",
-        type: "select",
-        options: ["Όλο τον χρόνο", "Εποχική (τουριστική περίοδος)"],
-      },
-    ],
-  },
   GROUP: {
     fields: [
       { name: "companyName", label: "Επωνυμία επιχείρησης", type: "text", required: true, autoComplete: "organization" },
@@ -383,7 +351,6 @@ export const SLUG_TO_PROFILE: Record<string, keyof typeof PROFILES> = {
   katoikidio: "PET",
   apotamieusi: "SAVINGS_INVEST",
   "epaggelmatikos-xoros": "BUSINESS_PLACE",
-  "xenodoxeia-enoikiazomena-domatia-airbnb": "TOURIST_ACCOMMODATION",
   "etairika-oximata": "AUTO",
   "omadiki-asfalisi": "GROUP",
   "metafora-emporeumaton": "CARGO",
