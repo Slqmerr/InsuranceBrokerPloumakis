@@ -38,6 +38,6 @@ needs:
   - Αν υπάρχει στεγαστικό δάνειο
 iconName: Home
 color: '#a30000'
-hidden: true
+hidden: false
 image: /products/katoikia.jpg
 imagePosition: 58% center
