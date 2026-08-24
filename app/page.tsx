@@ -9,7 +9,8 @@ import MeetDimitrios from "./components/MeetDimitrios";
 import PartnershipCTA from "./components/PartnershipCTA";
 import SplitFeature from "./components/SplitFeature";
 import familyPhoto from "@/public/family.jpg";
-import figurinesPhoto from "@/public/figurines.jpg";
+// Unsplash — Moses Malik Roldan (@mosesmroldan), photo DGDZizsR5IQ
+import housePhoto from "@/public/house.jpg";
 
 export default function Home() {
   return (
@@ -28,7 +29,7 @@ export default function Home() {
       <WhyBroker />
 
       {/* ── SPLIT: Family — photo cut by the left edge, its curve carving into the colored band.
-          Butts against the mirrored Figurines split so the two bands read as one S-curve. ── */}
+          Butts against the mirrored House split so the two bands read as one S-curve. ── */}
       <SplitFeature
         imageSrc={familyPhoto}
         imageAlt="Οικογένεια"
@@ -39,12 +40,12 @@ export default function Home() {
         ctaHref="/idiotes/oikogeneia"
       />
 
-      {/* ── SPLIT: Figurines — mirrored, photo cut by the right edge ── */}
+      {/* ── SPLIT: House — mirrored, photo cut by the right edge ── */}
       <SplitFeature
         reverse
-        imageSrc={figurinesPhoto}
-        imageAlt="Περιουσία"
-        title="Προστατέψτε αυτό που έχτισατε με κόπο"
+        imageSrc={housePhoto}
+        imageAlt="Οικογενειακή κατοικία"
+        title="Προστατέψτε αυτό που χτίσατε με κόπο"
         body="Από το σπίτι και το αυτοκίνητο μέχρι την επιχείρησή σας. Καλύπτουμε όλους τους κλάδους με λύσεις που ταιριάζουν στις πραγματικές σας ανάγκες."
         ctaLabel="Δείτε τα προϊόντα Κατοικίας"
         ctaHref="/idiotes/katoikia"
