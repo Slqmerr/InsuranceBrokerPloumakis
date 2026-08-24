@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import { Compass, Handshake, LifeBuoy, Wallet } from "lucide-react";
+import { Compass, Handshake, LifeBuoy } from "lucide-react";
 
 const UBUNTU = "var(--font-ubuntu-sans), sans-serif";
 
@@ -30,11 +30,6 @@ const REASONS = [
     icon: LifeBuoy,
     title: "Στο πλευρό σας στην αποζημίωση",
     text: "Όταν συμβεί το απρόοπτο, είμαστε εκεί. Αναλαμβάνουμε τη διαδικασία μαζί σας και φροντίζουμε να λάβετε ό,τι δικαιούστε.",
-  },
-  {
-    icon: Wallet,
-    title: "Χωρίς επιπλέον κόστος",
-    text: "Η καθοδήγηση και η υποστήριξή μας δεν επιβαρύνουν το ασφάλιστρό σας. Κερδίζετε έναν σύμβουλο, χωρίς κρυφές χρεώσεις.",
   },
 ];
 
@@ -68,7 +63,7 @@ export default function WhyBroker() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "-60px" }}
-        style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "24px" }}
+        style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}
       >
         {REASONS.map((r) => (
           <motion.div

@@ -246,10 +246,6 @@ input:focus-visible + .consent-box {
     max-width: 470px !important;
     padding: 0 44px !important;
   }
-
-  .why-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
   .product-strip {
     grid-template-columns: repeat(3, 1fr) !important;
   }
@@ -293,6 +289,13 @@ input:focus-visible + .consent-box {
   .steps-grid {
     grid-template-columns: 1fr !important;
     gap: 20px !important;
+  }
+
+  /* Three cards, so there is no 2+1 orphan row to fall through — the grid
+     goes straight from three columns to one. Below this the cards would be
+     narrower than their own 28px side padding can carry. */
+  .why-grid {
+    grid-template-columns: 1fr !important;
   }
   /* Meet / Partnership stack. Both sections are full-bleed, so the side
      padding lives on the copy — the photo keeps running edge to edge and
