@@ -9,7 +9,6 @@ import {
   IDIWTES_PRODUCTS,
   EXTRA_IDIWTES_PAGES,
   EPIXEIRISI_PRODUCTS,
-  EXTRA_EPIXEIRISI_PAGES,
   type Product,
 } from "./products";
 
@@ -17,8 +16,9 @@ const reader = createReader(process.cwd(), keystaticConfig);
 
 type CmsCategory = "idiotes" | "epixeirisi";
 
-// products.ts now only supplies the hub-family pages the CMS doesn't model —
-// for page content, a CMS entry wins over its products.ts twin.
+// products.ts now only supplies the hub-family pages the CMS doesn't model and
+// the variant tiles of the hub itself — for page content, a CMS entry wins over
+// its products.ts twin.
 //
 // EXTRA_*_PAGES are marked hidden here because that is exactly what the
 // "EXTRA_" arrays have always meant: pages the navbar deliberately omits while
@@ -29,7 +29,7 @@ const asHidden = (products: Product[]): Product[] =>
 
 const STATIC_BY_CATEGORY: Record<CmsCategory, Product[]> = {
   idiotes: [...IDIWTES_PRODUCTS, ...asHidden(EXTRA_IDIWTES_PAGES)],
-  epixeirisi: [...EPIXEIRISI_PRODUCTS, ...asHidden(EXTRA_EPIXEIRISI_PAGES)],
+  epixeirisi: [...EPIXEIRISI_PRODUCTS],
 };
 
 /** The CMS-managed products for a category, in the order the editor dragged
@@ -54,19 +54,29 @@ async function cmsProductsFor(category: CmsCategory): Promise<Product[]> {
     rank.get(product.slug) ?? Number.MAX_SAFE_INTEGER;
 
   return entries
-    .map(({ slug, entry }) => ({
-      icon: iconForName(entry.iconName),
-      title: entry.title,
-      slug,
-      color: entry.color,
-      image: entry.image,
-      imagePosition: entry.imagePosition,
-      intro: entry.intro,
-      description: entry.description,
-      covers: [...entry.covers],
-      needs: [...entry.needs],
-      hidden: entry.hidden,
-    }))
+    .map(({ slug, entry }) => {
+      // A CMS entry wins for prose, but the hub taxonomy stays with the
+      // developer: `variants` is deliberately absent from the Keystatic schema,
+      // so an entry that has a products.ts twin inherits that twin's variant
+      // tiles rather than dropping them. Today that is astiki-efthyni — it has
+      // a CMS entry purely so the editor can drag it in «Σειρά στο μενού».
+      const twin = STATIC_BY_CATEGORY[category].find((p) => p.slug === slug);
+      return {
+        icon: iconForName(entry.iconName),
+        title: entry.title,
+        slug,
+        color: entry.color,
+        image: entry.image,
+        imagePosition: entry.imagePosition,
+        intro: entry.intro,
+        description: entry.description,
+        covers: [...entry.covers],
+        needs: [...entry.needs],
+        hidden: entry.hidden,
+        variantsHeading: twin?.variantsHeading,
+        variants: twin?.variants,
+      };
+    })
     .sort((a, b) => rankOf(a) - rankOf(b));
 }
 
@@ -138,7 +148,7 @@ export async function indexProducts(category: CmsCategory): Promise<NavProduct[]
 
 /** The rows the Keystatic «Σειρά στο μενού» page drags, served to it by
  *  app/api/product-index/route.ts. Only the CMS-managed products — the
- *  hardcoded hub pages have no collection entry to reorder. */
+ *  hardcoded EXTRA_*_PAGES have no collection entry to reorder. */
 export async function orderableProducts(
   category: CmsCategory
 ): Promise<(NavProduct & { hidden: boolean })[]> {

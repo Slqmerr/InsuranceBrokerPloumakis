@@ -2,13 +2,14 @@
 // for now (Phase 1-4 of the CMS rollout); GitHub-mode PR-gated editing is a
 // later phase — see the CMS prompt for the full plan.
 //
-// Scope note: the "Αστική Ευθύνη" hub product and its four sub-cover pages
-// (astiki-efthyni-ergodoti, astiki-efthyni-proiontos,
-// astiki-efthyni-touristikon, epaggelmatiki-astiki-efthyni) are NOT part of
-// this collection. They use `variantGroups` / `related` cross-link data that
-// this flat schema doesn't model, and folding them in would let an editor
-// accidentally corrupt the hub taxonomy. They stay hardcoded in
-// app/components/products.ts, developer-managed, same as before.
+// Scope note: the "Επαγγελματική Αστική Ευθύνη" hub product has an entry in
+// this collection, but only half of it lives here. Its `variants` list of
+// sub-covers is NOT modelled by this flat schema — folding it in would let an
+// editor accidentally corrupt the hub taxonomy — so those tiles stay hardcoded
+// in app/components/products.ts and cmsProducts.ts stitches them back onto the
+// CMS entry. The entry exists so the hub can be dragged like any other product
+// on the «Σειρά στο μενού» page; editing it here changes the prose, never the
+// taxonomy.
 import { config, fields, collection, singleton } from "@keystatic/core";
 // Custom fields: a real colour picker, a real icon picker, a title field that
 // derives and then hides the URL slug, and a drag-to-sort menu order. See each

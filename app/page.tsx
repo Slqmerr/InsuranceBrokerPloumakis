@@ -2,7 +2,6 @@
 
 import Hero from "./components/Hero";
 import ProductCardStrip from "./components/ProductCardStrip";
-import PartnersMarquee from "./components/PartnersMarquee";
 import Footer from "./components/Footer";
 import WhyBroker from "./components/WhyBroker";
 import HowItWorks from "./components/HowItWorks";

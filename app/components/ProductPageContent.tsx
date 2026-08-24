@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { BLUR_MAP } from "./imageBlur";
-import { ArrowUpRight, Check, ChevronRight, Home, Phone } from "lucide-react";
+import { Check, ChevronRight, Home, Phone } from "lucide-react";
 import Footer from "./Footer";
 import HeroCtaButtons from "./HeroCtaButtons";
 import type { Product, ProductVariant } from "./products";
@@ -26,34 +26,19 @@ const PROCESS_STEPS: { title: string; text: string }[] = [
 ];
 
 /**
- * One sub-cover tile. Variants with an `href` become links to their own page;
- * the rest are informational — the hub is the only place they are described.
- * Server component, so hover lives in globals.css (.pp-variant), not handlers.
+ * One sub-cover tile. Informational only — the hub page is where these are
+ * described, so nothing here links out.
  */
 function VariantTile({ variant }: { variant: ProductVariant }) {
-  const body = (
-    <>
-      <span style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
-        <span style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a", lineHeight: 1.35 }}>
-          {variant.title}
-        </span>
-        {variant.href && (
-          <ArrowUpRight size={16} color="#a30000" strokeWidth={2.25} style={{ flexShrink: 0, marginTop: "2px" }} />
-        )}
+  return (
+    <div className="pp-variant">
+      <span style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a", lineHeight: 1.35 }}>
+        {variant.title}
       </span>
       <span style={{ display: "block", fontSize: "13.5px", color: "#5c6470", lineHeight: 1.55, marginTop: "6px" }}>
         {variant.blurb}
       </span>
-    </>
-  );
-
-  if (!variant.href) {
-    return <div className="pp-variant">{body}</div>;
-  }
-  return (
-    <Link href={variant.href} className="pp-variant pp-variant-link">
-      {body}
-    </Link>
+    </div>
   );
 }
 
@@ -180,9 +165,8 @@ export default function ProductPageContent({
           {product.description}
         </p>
 
-        {/* Hub products: the sub-covers this category splits into, grouped by
-            where the risk comes from */}
-        {product.variantGroups && (
+        {/* Hub products: the sub-covers this category splits into */}
+        {product.variants && (
           <div style={{ margin: "0 0 44px" }}>
             <h2 style={{ fontFamily: UBUNTU, fontSize: "22px", fontWeight: 600, margin: "0 0 8px" }}>
               {product.variantsHeading ?? "Είδη κάλυψης"}
@@ -191,26 +175,11 @@ export default function ProductPageContent({
               Επιλέγουμε μαζί σας ποιες από αυτές χρειάζεται η δραστηριότητά σας — συχνά περισσότερες από μία, σε ένα ενιαίο συμβόλαιο.
             </p>
 
-            {product.variantGroups.map((group) => (
-              <div key={group.label} style={{ marginBottom: "28px" }}>
-                <p style={{
-                  fontFamily: UBUNTU,
-                  fontSize: "12px",
-                  fontWeight: 700,
-                  letterSpacing: "0.6px",
-                  textTransform: "uppercase",
-                  color: "#a30000",
-                  margin: "0 0 12px",
-                }}>
-                  {group.label}
-                </p>
-                <div className="pp-variants">
-                  {group.items.map((item) => (
-                    <VariantTile key={item.title} variant={item} />
-                  ))}
-                </div>
-              </div>
-            ))}
+            <div className="pp-variants">
+              {product.variants.map((item) => (
+                <VariantTile key={item.title} variant={item} />
+              ))}
+            </div>
           </div>
         )}
 
@@ -225,31 +194,6 @@ export default function ProductPageContent({
             </li>
           ))}
         </ul>
-
-        {/* Covers a client would look for here but that sit in another product —
-            keeps the category boundary explicit */}
-        {product.related && (
-          <div style={{ margin: "0 0 40px" }}>
-            <h2 style={{ fontFamily: UBUNTU, fontSize: "22px", fontWeight: 600, margin: "0 0 20px" }}>
-              {product.relatedHeading ?? "Σχετικές καλύψεις"}
-            </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "10px" }}>
-              {product.related.map((item) => (
-                <Link key={item.href} href={item.href} className="pp-related">
-                  <span style={{ flex: 1 }}>
-                    <span style={{ display: "block", fontSize: "15px", fontWeight: 700, color: "#1a1a1a" }}>
-                      {item.title}
-                    </span>
-                    <span style={{ display: "block", fontSize: "13.5px", color: "#5c6470", lineHeight: 1.55, marginTop: "4px" }}>
-                      {item.note}
-                    </span>
-                  </span>
-                  <ChevronRight size={18} color="#a30000" strokeWidth={2.25} style={{ flexShrink: 0, marginTop: "2px" }} />
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
 
         <p style={{ fontSize: "14px", color: "#777", lineHeight: 1.7, margin: 0 }}>
           Συνεργαζόμαστε με κορυφαίες ασφαλιστικές εταιρείες, ώστε να βρούμε μαζί σας το πρόγραμμα που ταιριάζει στις ανάγκες σας. Επικοινωνήστε μαζί μας για μια εξατομικευμένη προσφορά.

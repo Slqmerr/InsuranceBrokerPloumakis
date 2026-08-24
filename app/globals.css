@@ -176,16 +176,6 @@ input:focus-visible + .consent-box {
   text-decoration: none;
 }
 
-.pp-variant-link {
-  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.pp-variant-link:hover {
-  border-color: #a30000;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 26px rgba(163, 0, 0, 0.1);
-}
-
 /* "Τι καλύπτει" — one cover per row, however long the list runs. */
 .pp-covers {
   list-style: none;
@@ -194,33 +184,6 @@ input:focus-visible + .consent-box {
   gap: 12px;
   padding: 0;
   margin: 0 0 40px;
-}
-
-.pp-related {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  background: #f7f9fc;
-  border: 1px solid #e8eaef;
-  border-radius: 14px;
-  padding: 16px 18px;
-  text-decoration: none;
-  transition: border-color 0.18s ease, background 0.18s ease;
-}
-
-.pp-related:hover {
-  border-color: #a30000;
-  background: #fff;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pp-variant-link,
-  .pp-related {
-    transition: none;
-  }
-  .pp-variant-link:hover {
-    transform: none;
-  }
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -569,6 +532,76 @@ input:focus-visible + .consent-box {
   }
 }
 
+
+/* ════════════════════════════════════════════════════════════════
+   Wide-screen layer — cap the content column
+   Every section is full-bleed with fixed side padding. That is right up
+   to ~1650px and wrong past it: the bands keep stretching while the copy
+   inside stays capped at 480–620px, so the page reads as a narrow left
+   column with a desert beside it.
+
+   Each rule below swaps the fixed padding for
+       max(<that same fixed padding>, half of what's left beside --shell),
+   so backgrounds and photos still run edge to edge while the content lands
+   in one centred --shell column. Because of the max(), the value IS the old
+   fixed padding until the viewport passes ~1650px — nothing moves on a
+   1440px laptop, and the transition into the cap is continuous.
+
+   `100%` in these resolves against each element's own containing block, so
+   the -half- variants exist for grid items, whose containing block is their
+   grid area (half the viewport) rather than the viewport.
+   ════════════════════════════════════════════════════════════════ */
+@media (min-width: 1200px) {
+  :root {
+    --shell: 1520px;
+    /* full-bleed elements: content box === --shell, centred */
+    --gutter-36: max(36px, calc((100% - var(--shell)) / 2));
+    --gutter-52: max(52px, calc((100% - var(--shell)) / 2));
+    --gutter-64: max(64px, calc((100% - var(--shell)) / 2));
+    /* half-width grid items: same line, measured from a half-viewport box */
+    --gutter-64-half: max(64px, calc(100% - var(--shell) / 2));
+  }
+
+  /* Navbar — address strip, sticky bar, mega-menu panel */
+  .nav-strip,
+  .nav-bar {
+    padding-inline: var(--gutter-36) !important;
+  }
+  .nav-panel {
+    padding-inline: var(--gutter-64) !important;
+  }
+
+  /* Hero — the copy block starts on the shell line instead of the viewport
+     edge. max-width is border-box (Tailwind preflight sets it), so it carries
+     the gutter as well: 560 − 64 = 496px of measure, exactly as before. */
+  .hero-content {
+    padding-left: var(--gutter-64) !important;
+    max-width: calc(496px + var(--gutter-64)) !important;
+  }
+
+  /* Product strip — keeps its own 52px inset, then follows the shell */
+  .product-strip {
+    margin-inline: var(--gutter-52) !important;
+  }
+
+  /* Section shells (home, /emeis, /synergasia), page bands, product body,
+     footer. Vertical padding is untouched. */
+  .section-pad,
+  .band-header,
+  .pp-body,
+  .footer {
+    padding-inline: var(--gutter-64) !important;
+  }
+
+  /* Half-bleed panels — the coloured half still reaches the viewport edge,
+     its copy starts on the shell line. */
+  .emeis-hero-bio {
+    padding-left: var(--gutter-64) !important;
+  }
+  .pp-hero-panel {
+    padding-left: var(--gutter-64-half) !important;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;

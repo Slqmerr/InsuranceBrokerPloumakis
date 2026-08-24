@@ -17,3 +17,4 @@ iconName: PawPrint
 color: "#a30000"
 image: /products/katoikidio.jpg
 imagePosition: center 30%
+hidden: true

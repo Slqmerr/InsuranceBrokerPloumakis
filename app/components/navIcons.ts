@@ -8,18 +8,23 @@
 // no way to serialize them. Only the *name* can cross, and the client resolves
 // it back to a component here.
 import {
-  BriefcaseBusiness, Hotel, PackageCheck, ShieldCheck,
+  BriefcaseBusiness, PackageCheck, ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 import { ICON_MAP } from "./iconMap";
 
 // ICON_MAP is the vocabulary offered to editors in the CMS icon picker. These
-// three are used only by the hardcoded astiki-efthyni hub family in
-// products.ts and are deliberately NOT in ICON_MAP: adding them there would
-// make them appear in the editor's picker (iconField shows every ICON_MAP key,
-// grouped or under "Λοιπά"), which is a change to what Dimitrios can choose —
-// not something a nav refactor should do as a side effect.
-const NAV_ONLY_ICONS = { BriefcaseBusiness, Hotel, PackageCheck };
+// two are used only by the hardcoded astiki-efthyni hub family in products.ts
+// and are deliberately NOT in ICON_MAP: adding them there would make them
+// appear in the editor's picker (iconField shows every ICON_MAP key, grouped
+// or under "Λοιπά"), which is a change to what Dimitrios can choose — not
+// something a nav refactor should do as a side effect.
+//
+// `Hotel` used to sit here for the same reason. It moved into ICON_MAP when
+// the ξενοδοχεία/Airbnb product was added: that product is CMS-managed, so its
+// icon has to be one the picker can actually offer, and a hotel icon is a
+// deliberate addition to the editor's vocabulary rather than a side effect.
+const NAV_ONLY_ICONS = { BriefcaseBusiness, PackageCheck };
 
 export const NAV_ICON_MAP: Record<string, LucideIcon> = {
   ...ICON_MAP,

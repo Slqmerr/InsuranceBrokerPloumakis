@@ -1,7 +1,7 @@
 import {
   Users, Heart, HeartPulse, Stethoscope, Hospital, Ambulance, Baby, PawPrint,
   Car, Bike, Bus, Caravan, Truck, Plane, Sailboat, Ship, Container, Package,
-  Home, Building2, Palette, Umbrella,
+  Home, Building2, Hotel, Palette, Umbrella,
   Briefcase, Store, Factory, Warehouse, HardHat, Handshake, Scale, Gavel,
   PiggyBank, TrendingUp,
   Laptop, Smartphone, Lock, Fingerprint, ShieldCheck, ShieldAlert,
@@ -17,7 +17,7 @@ import {
 export const ICON_MAP = {
   Users, Heart, HeartPulse, Stethoscope, Hospital, Ambulance, Baby, PawPrint,
   Car, Bike, Bus, Caravan, Truck, Plane, Sailboat, Ship, Container, Package,
-  Home, Building2, Palette, Umbrella,
+  Home, Building2, Hotel, Palette, Umbrella,
   Briefcase, Store, Factory, Warehouse, HardHat, Handshake, Scale, Gavel,
   PiggyBank, TrendingUp,
   Laptop, Smartphone, Lock, Fingerprint, ShieldCheck, ShieldAlert,

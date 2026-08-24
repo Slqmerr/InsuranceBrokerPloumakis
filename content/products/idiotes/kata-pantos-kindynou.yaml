@@ -23,6 +23,6 @@ needs:
   - Υφιστάμενες καλύψεις που θέλετε να διευρύνετε
 iconName: Umbrella
 color: "#a30000"
-hidden: true
+hidden: false
 image: /products/kata-pantos-kindynou.jpg
 imagePosition: center

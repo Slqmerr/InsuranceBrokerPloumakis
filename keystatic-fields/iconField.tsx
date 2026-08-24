@@ -31,7 +31,7 @@ const ICON_GROUPS: readonly { label: string; names: readonly IconName[] }[] = [
   },
   {
     label: "Κατοικία / περιουσία",
-    names: ["Home", "Building2", "Palette", "Umbrella"],
+    names: ["Home", "Building2", "Hotel", "Palette", "Umbrella"],
   },
   {
     label: "Επιχείρηση / εργασία",
