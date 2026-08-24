@@ -16,4 +16,4 @@ iconName: ShieldAlert
 color: "#a30000"
 image: /products/cyber.jpg
 imagePosition: center
-hidden: true
+hidden: false
