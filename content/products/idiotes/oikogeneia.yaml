@@ -17,4 +17,4 @@ iconName: Users
 color: "#a30000"
 image: /products/oikogeneia.jpg
 imagePosition: center 40%
-hidden: true
+hidden: false
