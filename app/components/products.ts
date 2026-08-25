@@ -435,10 +435,9 @@ export const EXTRA_IDIWTES_PAGES: Product[] = [
 
 export const PRODUCT_CARDS = [
   { icon: Heart, title: "Υγεία", color: "#fbe4ec", href: "/idiotes/ygeia" },
+  { icon: PiggyBank, title: "Σύνταξη & Αποταμίευση", color: "#fdf3de", href: "/idiotes/apotamieusi" },
   { icon: Home, title: "Κατοικία", color: "#e3f3e8", href: "/idiotes/katoikia" },
+   { icon: Briefcase, title: "Επιχείρηση", color: "#ece4fb", href: "/epixeirisi/epaggelmatikos-xoros" },
   { icon: Car, title: "Οχήματα", color: "#dee8fd", href: "/idiotes/oxima" },
-  // No /epixeirisi landing page yet — first business product is the default
-  { icon: Briefcase, title: "Επιχείρηση", color: "#ece4fb", href: "/epixeirisi/epaggelmatikos-xoros" },
-  { icon: PiggyBank, title: "Αποταμίευση", color: "#fdf3de", href: "/idiotes/apotamieusi" },
   { icon: Sailboat, title: "Σκάφη", color: "#d9f0fe", href: "/idiotes/skafi" },
 ];
