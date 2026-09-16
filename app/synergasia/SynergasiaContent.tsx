@@ -408,7 +408,7 @@ export default function SynergasiaContent() {
             Ξεκίνα σήμερα
           </h2>
           <p className="fade-up" style={{ color: "rgba(255,255,255,0.88)", fontSize: "16px", lineHeight: 1.6, margin: "0 auto", maxWidth: "520px", animationDelay: "0.08s" }}>
-            Συμπλήρωσε τα στοιχεία σου και θα επικοινωνήσουμε μαζί σου για μια πρώτη κουβέντα, χωρίς καμία δέσμευση.
+            Συμπλήρωσε τα στοιχεία σου και θα επικοινωνήσουμε μαζί σου σύντομα.
           </p>
         </div>
 
